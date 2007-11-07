@@ -1,0 +1,9 @@
+** exercices.htm
+   On y trouver le fichier gif et svg, ainsi que le script javascript
+   affichant les informations d'environnement.
+
+** index.htm
+   On y trouve les keywords.
+
+** *.htm
+   Chaque lien du menu est un bouton a trois états.

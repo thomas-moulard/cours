@@ -1,0 +1,14 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Internship's context}{1}
+\contentsline {subsection}{\numberline {1.1}Working conditions}{2}
+\contentsline {section}{\numberline {2}Activity report}{2}
+\contentsline {subsection}{\numberline {2.1}Existing materials}{2}
+\contentsline {subsection}{\numberline {2.2}Accomplished work}{2}
+\contentsline {subsubsection}{\numberline {2.2.1}Reorganization of the code}{2}
+\contentsline {paragraph}{XML module:}{3}
+\contentsline {paragraph}{Geometry module:}{3}
+\contentsline {paragraph}{Drawing module:}{3}
+\contentsline {paragraph}{Translation module}{4}
+\contentsline {subsubsection}{\numberline {2.2.2}Documentation}{4}
+\contentsline {subsection}{\numberline {2.3}Acquired skills}{4}
+\contentsline {section}{\numberline {3}Conclusion}{5}

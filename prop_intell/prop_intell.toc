@@ -1,0 +1,28 @@
+\select@language {french}
+\contentsline {section}{\numberline {1}La propri\'et\'e intellectuelle}{2}
+\contentsline {subsection}{\numberline {1.1}L'originalit\'e}{2}
+\contentsline {subsection}{\numberline {1.2}La titularit\'e}{2}
+\contentsline {subsection}{\numberline {1.3}Oeuvres \`a plusieurs auteurs}{3}
+\contentsline {subsection}{\numberline {1.4}Les droits d'auteur}{3}
+\contentsline {subsubsection}{\numberline {1.4.1}Les droits moraux}{3}
+\contentsline {paragraph}{Le droit de divulgation}{3}
+\contentsline {paragraph}{Le droit au nom}{3}
+\contentsline {paragraph}{Le droit au respect}{3}
+\contentsline {paragraph}{Le droit de retrait et de repentir}{3}
+\contentsline {paragraph}{Concernant le logiciel}{4}
+\contentsline {subsubsection}{\numberline {1.4.2}Les droits patrimoniaux}{4}
+\contentsline {paragraph}{Le droit de reproduction}{4}
+\contentsline {paragraph}{Le droit de repr\'esentation}{4}
+\contentsline {paragraph}{Le droit de suite}{4}
+\contentsline {subsubsection}{\numberline {1.4.3}Exceptions au droit d'auteur}{5}
+\contentsline {subsubsection}{\numberline {1.4.4}La dur\'ee du droit d'auteur}{5}
+\contentsline {section}{\numberline {2}Les brevets}{5}
+\contentsline {subsection}{\numberline {2.1}Les conditions d'obtention d'un brevet}{5}
+\contentsline {paragraph}{Les domaines de brevetabilit\'e}{5}
+\contentsline {subsubsection}{\numberline {2.1.1}La nouveaut\'e}{6}
+\contentsline {paragraph}{Le public}{6}
+\contentsline {paragraph}{L'accessibilit\'e}{6}
+\contentsline {paragraph}{Le d\'elai de priorit\'e}{6}
+\contentsline {subsubsection}{\numberline {2.1.2}L'acitvit\'e inventive}{6}
+\contentsline {subsubsection}{\numberline {2.1.3}L'application industrielle}{7}
+\contentsline {subsection}{\numberline {2.2}La titularit\'e des brevets}{7}

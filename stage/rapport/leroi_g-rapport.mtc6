@@ -1,0 +1,12 @@
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.1}Modules}{\reset@font\mtcSfont 21}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.1.1}src/vgi}{\reset@font\mtcSSfont 21}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.1.2}src/vgitoolkit/vaucanson/vgitoolkit}{\reset@font\mtcSSfont 22}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode VJGraph}{\reset@font\mtcSSSfont 22}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Geometry module}{\reset@font\mtcSSSfont 22}}
+{\reset@font\mtcPfont\mtc@string\contentsline{paragraph}{\noexpand \leavevmode Geometry Properties:}{\reset@font\mtcPfont 22}}
+{\reset@font\mtcPfont\mtc@string\contentsline{paragraph}{\noexpand \leavevmode Layouts:}{\reset@font\mtcPfont 22}}
+{\reset@font\mtcPfont\mtc@string\contentsline{paragraph}{\noexpand \leavevmode GeometricUtilities:}{\reset@font\mtcPfont 23}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Drawing module}{\reset@font\mtcSSSfont 23}}
+{\reset@font\mtcPfont\mtc@string\contentsline{paragraph}{\noexpand \leavevmode Drawing Properties:}{\reset@font\mtcPfont 23}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode XML}{\reset@font\mtcSSSfont 23}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Translation to JGraph}{\reset@font\mtcSSSfont 23}}

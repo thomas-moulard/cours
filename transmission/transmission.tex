@@ -1,0 +1,150 @@
+\documentclass[a4paper, 12pt, leqno]{report}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{eurosym}
+
+\title{\huge{Transmission}}
+
+\lhead{Transmission}
+\chead{}
+\rhead{EPITA 2008}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+
+
+\pagestyle{fancy}
+\headheight 15pt
+\begin{document}
+
+
+\maketitle
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+
+\par
+Dans ce cours sera présenté les techniques de bases de transmission,
+l'architecture en couche, les différentes architectures (TCP/IP, Token
+Ring), la détection et correction des erreurs, les modes de
+transmission, les techniques de multiplexage, les supports de communication.
+
+\paragraph{Bibliographie:}
+\begin{itemize}
+\item Réseaux et télécoms (Claude Servin Ed. Dunod)
+\item Réseaux (Pujolle)
+\end{itemize}
+
+
+\section{Historique}
+
+
+\subsection{Téléinformatique}
+
+\par
+Dans les années 60, IBM voulait raccorder un ordinateur (calculateur à
+l'époque) à des terminaux non-intelligents (écran, clavier,
+imprimante). Ils ont
+utilisés comme support de communication le réseau téléphonique (RTC:
+réseau télephonique commmuté).
+
+\par
+Mais ce réseau a été concu pour transporter la voix sous forme d'un
+signal éléctrique analogique alors que les ordinateurs nécessitent un
+signal éléctrique numérique. Ils ont donc mis au point les modems pour
+faire la conversion numerique/analogique à l'emission et
+analogique/numérique à la reception.
+
+\par
+Problème: chaque terminal posséde sa propre liaison, ce qui est
+coûteux. Les transmissions générent des interruptions aux niveaux du
+calculateur, si il y a trop terminaux, le calculateur passe son temps
+a examiner les interruptions, par ailleurs le calculateur est obligé
+au rythme d'un terminal. Bref tout ceci n'etait pas rentable.
+
+
+\subsection{Le SNA d'IBM}
+
+\par
+On va alors chercher à libérer le calculateur de la gestion des
+communications. On introduit un contrôleur de communication et un
+multiplexeur entre le calculateur et son modem. De même entre les
+terminaux et leur modem (on n'utilise plus qu'un seul modem, on
+introduit un mutliplexeur et un concentrateur.
+
+\par
+Le contrôleur de communication gère les communications pour le
+calculateur.
+Le concentrateur s'appelle aussi contrôleur de grappes (de terminaux).\\
+Le multiplexeur gère le tour de parole. Aujourd'hui tout est intégré
+dans les machines (\copyright Phil. Corp.)
+
+\par
+Problème: Si le calculateur tombe en panne plus rien de marche.
+On va alors etudier la topologie des réseaux, c'est à dire la manière
+dont les ordinateurs sont connectés entre eux par le support (en
+etoile, bus, ring, point à point).
+
+\par
+Il faut aussi gérer les problèmes de collision et de tour de parole
+(protocole MAC, Media Access Control).
+Pour une liaison point à point, on règles les conflits en donnant une
+priorité à l'une des machines (ou par full duplex: deux fils).
+
+\chapter{Le codage de l'information}
+
+\par
+Les équipements informatiques utilisent différents symboles:
+\begin{itemize}
+\item lettres (A-Z)
+\item chiffres (0-9)
+\item symboles spéciaux (?,>,=)
+\item fonctions spécifiques (\r, f1, ESC)
+\end{itemize}
+
+\section{Les codes de longueur fixe}
+
+\par
+Tous les symboles sont codés sur le même nombre de bits.
+
+\subsection{Code CCITT n°5: ASCII}
+
+\par
+CCITT signifie Comité Consultatif International Téléphonique et
+Télégraphique. Il a été remplacé par l'UITT (Union Internationale des
+Télécommunications secteur chargé de la normalisation des
+Télécommunications) depuis 1993.
+
+\par
+Ce code utilise 7 bits pour coder un symbole, soit 128 codes
+possibles. Ce code a été normalisé par l'ANSI (Americam National
+Standard Institut) sous le nom de code
+ASCII (American Standard Code for Information Interchange).
+
+\subsection{Code EBCDIC}
+
+\par
+Les symboles sont codés sur 8 bits. C'est de l'ASCII etendu a 8 bits.
+EBCDIC signifie Extended Binqry Code Decimal Information Coded.
+
+\par
+Ces codes sont de longueur fixes, des données transmises ne servent
+donc a rien.
+
+\section{Les codes de longueurs variables}
+
+\subsection{Huffman}
+
+\par
+
+
+
+\end{document}

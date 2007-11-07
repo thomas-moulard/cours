@@ -1,0 +1,56 @@
+\documentclass[a4paper, 12pt]{report}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphics}
+
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{listings}
+\lstset{language=Java, frame=single, mathescape=true, showspaces=false}
+\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt,
+  basicstyle=\small, frameround=tttf, frame=tRBl}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\title{\huge{Une interface graphique pour Vaucanson}\\
+  Rapport de stage}
+\author{Guillaume \bsc{Leroi}\\ UID: 18147}
+
+\lhead{Rapport de stage}
+\chead{}
+\rhead{ENST - INFRES}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\pagestyle{fancy}
+
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\chapter*{Introduction}
+\input{src/intro}
+
+\chapter{Présentation de l'entreprise}
+\input{src/enst}
+
+\chapter{Travail effectué}
+\input{src/travail}
+
+\chapter{Conclusion}
+\input{src/conclusion}
+
+
+\end{document}

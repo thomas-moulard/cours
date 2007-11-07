@@ -1,0 +1,17 @@
+\ProvidesPackage{vaucanson-g}[2006/25/01 package wrapper for Vaucanson-G]
+\DeclareOption{pstricks1-10}{\def\scalebox{\psscalebox}\AtEndOfPackage{\input VCpatch-pstricks-1-10.tex}}
+\DeclareOption{slides}{\AtEndOfPackage{\input VCPref-slides.tex}}
+\DeclareOption{beamer}{\AtEndOfPackage{\input VCPref-beamer.tex}}
+\ProcessOptions
+\RequirePackage{ifthen}
+\RequirePackage{xcolor}
+\RequirePackage{pstricks}
+\input{dvipsnam.def}
+\RequirePackage{pst-node}
+\RequirePackage{pst-plot}
+\RequirePackage{pst-coil}
+\RequirePackage{multido}
+\RequirePackage{pst-3d}
+\RequirePackage{calc}
+\input Vaucanson-G.tex
+\endinput

@@ -1,0 +1,258 @@
+\documentclass[a4paper, 12pt, leqno]{report}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+\title{\huge{Physique ondulatoire}}
+
+\lhead{Physique ondulatoire}
+\chead{}
+\rhead{EPITA 2008}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+
+
+\pagestyle{fancy}
+
+
+\begin{document}
+
+
+\maketitle
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+
+\section{Approche du mot onde}
+
+\paragraph{Caractéristique d'une onde:}
+\begin{itemize}
+\item sa source
+\item sa période dans le temps et dans l'espace (longueur d'onde)
+\item deux vitesses, une verticale appelé vitesse particulaire et une
+  autre verticale appelé vitesse de propagation ou célérité.
+\item Si ces deux vitesses sont orthogonales, l'onde est transverse.
+\item Si ces deux vitesses ont la même direction, l'onde est longitudinale.
+\end{itemize}
+
+\paragraph{Définition d'une onde:}
+Une onde correspond à la propagation dans un milieu déterminé (air,
+eau, \ldots ) d'une perturbation de nature quelconque, généralement
+périodique dans le temps et dans l'espace; qui transport de
+l'énergie. C'est une vibration qui se déplace.
+
+\section{Les ondes dans la nature et celles créées par l'homme}
+
+\paragraph{Dans la nature:}
+\begin{itemize}
+\item lumière solaire
+\item tremblements de terre
+\item les vagues
+\item ondes de chocs (aurore polaires)
+\end{itemize}
+
+\paragraph{Par l'homme:}
+\begin{itemize}
+\item radio, télé (ondes électro-magnétiques)
+\item ondes sonores
+\end{itemize}
+
+\section{Propriétés communes à toutes les ondes}
+
+\par
+Le phénomène d'onde dépend non seulement du temps mais aussi de la
+position $x$ dans l'espace. Les variables temps et position sont liées
+au sein de la phase.
+$$\textrm{ex:} \; \phi = \omega \left(t - \frac{x}{c}\right)$$
+
+\par
+Du point de vue mathématique, une onde est un champ dépendant du
+temps, i.e une fonction des coordonnées et du temps. Un champ est une
+quantité définie en tout point d'un espace.
+
+\par
+Une onde est dite plane lorsque sa phase est la même en tout point du
+plan.
+
+\par
+La polarisation caractérise la direction de l'oscillation par rapport
+à la direction de propagation.
+
+\par
+Certains milieux sont dispersifs, ils imposent une célérité qui
+dépendent de la fréquence des ondes.
+
+\par
+Lors que des ondes de phases voisines se déplacent dans un milieu
+dispersif, l'amplitude résultante est modulée dans une onde-enveloppe
+qui se déplace a une vitesse de groupe différente de la célérité
+moyenne.
+
+\section{Quelques rappels}
+
+\paragraph{L'amortissement:}
+diminution de l'amplitude d'un phénomène migratoire par perte
+d'énergie (dû aux frottements en général).
+
+\paragraph{Entretenir une vibration:}
+apporter périodiquement de l'énergie pour compenser les pertes.
+
+\chapter{Onde unidimensionnelle}
+
+
+\section{Dans une milieu élastique}
+
+\par
+Un milieu élastique est un milieu qui: si un point du milieu subit une
+brusque déformation aura tendance à revenir à l'équilibre en affectant
+ses proches. On a ainsi une transmission de proche en proche.
+
+\par
+Pendant le passage de l'onde, le milieu ne se déplace pas dans son
+ensemble. mais on observe une variation temporelle et spatiale d'une
+ou plusieurs grandeurs physiques.
+
+\par
+En même temps que la quantité de mouvement, l'énergie cinétique se
+propage d'un élément à un autre. Si bien que l'onde se déplace sans
+transport de matière.
+
+\paragraph{Front d'onde ou surface d'onde:}
+En 3 dimensions, un front d'onde est une sphère ayant pour centre sur
+la source.
+
+\par
+Lorsque l'on peut définir clairement un sens et une direction de
+propagation, l'onde est dite définie.
+
+\par
+Dans ce chapitre on ne s'intéressera uniquement qu'aux ondes
+unidimensionnelles, se propageant dans une direction donnée prise
+comme l'axe des x. C'est une onde progressive plane et dont les plans
+d'onde sont les plans $x = cte$.
+
+\section{Ondes planes progressives sinusoïdale}
+
+\subsection{Équation mathématique}
+
+\par
+Soit $v$ la vitesse de propagation de l'onde et $\omega = vk$:
+\begin{eqnarray*}
+  \epsilon(x,t) & = & \epsilon_0 \cos\left(w\left(t -
+      \frac{x}{v}\right)\right) \\
+  & = & \epsilon_0 \cos(2\pi \frac{t}{T} - \frac{x}{\lambda}) \\
+  & = & \epsilon_0 \cos(\omega t - kx)
+\end{eqnarray*}
+
+\subsection{Ordre de grandeur}
+
+\paragraph{Exemple:}
+La longueur d'onde d'une vibration mécanique est de l'ordre de la distance
+inter-atomique soit $\lambda_0 = 5.10^{-10}m$.
+Pour étudier ce genre de vibrations on utilise une onde lumineuse dont
+la fréquence $f_l$ est égale à la fréquence des vibrations mécaniques.
+\par
+Sachant que les ondes mécaniques se propagent à la vitesse du son dans
+les solides (de l'ordre de $b_o = 5.10^3$).
+\par
+Déterminer la longueur d'onde de la lumière nécessaire à cette étude.
+
+\begin{eqnarray*}
+  f_0 & = & \frac{v}{\lambda} = \frac{5.10^3}{5.10^{-10}} = 10^3
+  \textrm{Hz} \\
+  \lambda_l & = & \frac{c}{f_0} = 3.10^{-5}\textrm{m}
+\end{eqnarray*}
+
+\section{Ondes planes progressives unidimensionnelles}
+
+\par
+Soit $q$ la grandeur physique variant dans l'espace et le temps
+($q(x,t)$), alors cette grandeur physique obéit a l'équation
+differentielle
+$$\frac{\delta^2q}{\delta t^2} = v^2\frac{\delta^2 q}{\delta x^2}$$
+où $v$ est la vitesse de propagation.
+
+\par
+Si l'on dérive $q =q_0 \cos (\omega t - kx)$
+\begin{eqnarray*}
+\frac{\delta q}{\delta t} & = & -q_0\omega \sin (\omega t - kx)\\
+\frac{\delta q}{\delta x} & = & kq_0\sin(\omega t - kx)\\
+\frac{\delta^2 q}{\delta t^2} & = & q\omega^2 \cos (\omega t - kx) \\
+\frac{\delta^2 q}{\delta x^2} & = & -k^2q_0cos( \omega t - kx)\\
+\end{eqnarray*}
+On trouve $w² = v^2k^2$ d'où $w = vk$.
+
+\section{Vitesse de phase et de groupe}
+
+\par
+Soit une onde définie par $\epsilon = \epsilon_0 \sin (\omega t -
+kx)$.
+
+\par
+On appelle vitesse de phase $v_{\phi} = \frac{\omega}{k}$. La
+vitesse de phase est assimilable à la vitesse de propagation de l'onde:
+\begin{itemize}
+\item Si on peut associer une fréquence unique à la fréquence étudiée
+\item Si le milieu est non-dispersif
+\end{itemize}
+
+\par
+Dans la réalité, une onde resulte de la superposition d'au moins deux
+ondes d'amplitude égales et de pulsations voisines $\omega \; et \; d\omega$, auquels
+correspondent des nombres d'ondes $k,\; dk$.
+
+\par
+On définit une vitesse de paquet d'onde ou vitesse de groupe tel que
+$v_g = \frac{d\omega}{dk}$. La vitesse de groupe correspond également
+à la vitesse de propagation de l'énergie. Et elle dépend de la
+relation de dispersion ($\omega = f(k)$) du milieu.
+
+\par
+Si le milieu est non-dispersif, la relation $\omega = f(k)$ devient
+$\omega = vk$ et $v_g = v_{\phi}$
+
+\paragraph{Exemple:}
+Soit une chaîne lineaire d'atomes distants de $a$; on suppose chaque
+atome soumit a l'action de deux ressorts lies a ces deux plus proches
+atomes voisins. On note $\mu$ la raideur du ressort. On donne la
+relation de dispersion
+$$\omega = 2\left(\frac{\mu}{m}\right)^{\frac{1}{2}} \sin\left(\frac{ka}{2}\right)$$
+et
+$$v_0 = \left(\frac{\mu}{m}\right)^{\frac{1}{2}} a$$
+\par
+Calculer la vitesse de groupe et de phase.
+
+$$v_{\phi} = \frac{2v_0}{ka} \sin \left(\frac{ka}{2}\right)$$
+$$v_g = v_0 cos\left(\frac{ka}{2}\right)$$
+
+\par
+Si $k = \frac{\pi}{a} \rightarrow v_g = 0$
+
+\section{Effet Doppler}
+
+\par
+Si la source $s$ d'une onde et l'observateur $o$ sont en mouvement
+relatif. La fréquence des ondes recus par l'observateur est differente
+de la frequence emise par la source:\\
+on montre que la frequence observée est plus grande quand
+l'observateur et la source se rapproche, et est plus faible dans le
+cas contraire.
+
+$$f_{app} = f_0\left(1 + \frac{v_r}{c_r}\right)$$
+
+$$f_{eloi} = f_0\left(1 - \frac{v_r}{c_r}\right)$$
+
+où $v_r$ est la vitesse radiale entre $o$ et $s$. $c_r$ vitesse de
+l'onde par rapport a la source dans la direction de $o$.
+
+
+
+\end{document}

@@ -1,0 +1,303 @@
+\documentclass[a4paper, 12pt, leqno]{article}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\newcommand{\M}{\ensuremath{\mathcal{M}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\transpose}[1]{{\vphantom{#1}}^{\mathit t}{#1}}
+
+\title{\huge{Traitement de la parole}}
+
+\lhead{Traitement de la parole}
+\chead{}
+\rhead{EPITA 2008}
+
+\pagestyle{fancy}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+
+\setcounter{page}{1}
+
+
+\section{Extraction des caractérisques du locuteur}
+
+A partir du signal, une série de prétraitement est necessaire. Le
+signal doit être nettoyé, les silences doivent être supprimés pour ne
+travailler que sur les parties significatives du signal.
+Un moment de silence est à énergie nulle, ces moments sont donc
+facilement effaçable.
+
+
+\subsection{Extraction des fréquences}
+
+Faire une transformée de Fourier sur un signal permet d'extraire les
+différentes fréquences présentes. Cependant, une TF ne permet de
+savoir combien de temps dure une certaine fréquence. Il est donc
+nécessaire de faire la TF sur une partie du signal (une fenêtre).
+
+Différents types de fenêtres existent, pour la pluspart elles valent
+toutes zéro sur tout le signal sauf la partie qui nous intéresse. La
+plus utilisée (car la plus \emph{précise}) est la fenêtre de
+Hamming.\\
+Un nombre de paramètres restent à régler:
+\begin{description}
+\item[overlap] la superposition des fenêtres successives,
+  $\frac{2}{3}$ est pas mal.
+\item[taille de la fenêtre] une fenêtre de courte durée est précise en
+  temps (la durée des différentes fréquences). Une fenêtre longue est
+  plus précise sur les fréquences extraites.
+\end{description}
+
+\subsection{Extraction du pitch}
+
+Le pitch est la fréquence fondamentale qui apparait lorsque le
+locuteur prononce un son voisé. Notons que les sons non-voisés sont
+issus d'un bruit blanc qui est modulé par le conduit vocal.
+
+Le pitch permet d'identifier le sexe du locuteur, un pitch de basse
+fréquence indique un homme, et de fréquence plus haute une femme.
+On peut extraire le pitch par une analyse fréquentielle, le pitch
+étant la fréquence la plus intense, la première.
+
+\subsection{LPC}
+
+LPC (Linear Predictive Coefficient) donne une version \emph{liftée} de la TF. Elle élimine le pitch et
+permet d'extraire une nombre de coefficients $a_i$.
+LPC modélise le conduit vocal, ainsi à partir du signal, on peut
+extraire le bruit blanc, et les différents \emph{états} du conduit
+vocal.
+
+$$y(t) = \sum_{i = 1}^N a_i y(t - i) + \frac{b_0}{a_0} x(t)$$
+
+\paragraph{Principe (vague)}
+
+Cette formule, issue de la théorie du signal, modélise un filtre, le
+conduit vocal. Le conduit vocal est modélisable comme une suite de
+tube de différents diamètre reliés les uns aux autres.
+Les coefficients $a_i$ représentent ces conduits.
+
+\subsection{MFCC}
+
+A utiliser.
+
+Les MFCC (Mel Frequency Cepstal Coefficient) tentent de modéliser le
+système auditif.  A partir du signal de la parole
+
+$$p(t) = h(t) \star e(t)$$
+
+où $e$ est une excitation et $h$ est le filtre du conduit vocal. On
+applique une TF et un $\log$ pour obtenir
+
+$$p'(f) = H'(f) + E'(f)$$
+
+De là, on applique une série de filtre sur les fréquences, pour
+obtenir celle que l'oreille retiendrait.
+
+$$f_m = \frac{N}{f_e} B^{-1} \left( B(f_0) + m \left( \frac{B(f_max)
+      - B(f_0)}{M + 1} \right) \right)$$
+
+où
+\begin{itemize}
+\item $B : \textrm{fréquence} \rightarrow \textrm{mel}$ tel que $B(f)
+  = 1125 \log \left( \frac{f}{700} + 1 \right)$.
+\item $m$ est le numéro du filtre.
+\item $M$ est le nombre total de filtres. Classiquement on utilise $M
+  = 24$.
+\end{itemize}
+
+
+
+\section{Classification}
+
+Quelque soit la technique utilisée, LPC ou MFCC, on dispose désormais
+d'une séquence de coefficients modélisant la parole. Il est temps de
+reconnaître ce qui est dit.
+
+Pour cela, on peut utiliser différents algorithmes de reconnaissances
+de formes et prendre une décision. Selon le problème auquel on veut
+répondre, on classifiera le signal comme mâle ou femelle, ou comme
+étant un certain locuteur (reconnaissance du locuteur), on comme étant
+un certain phonème (en reconnaissance de la parole).
+
+Pour présenter les différentes méthodes, nous allons utiliser
+l'exemple suivant.
+
+\paragraph{Exemple}
+
+Devant une caméra passe des poissons. Un système de traitement d'image
+extrait la taille $l$ du poisson. On désire classer les poissons en
+deux classes: les poissons d'eau douce ($C_1$) et les poissons d'eau
+de mer ($C_2$). La taille est un critère de classification car
+généralement les poissons d'eau de mer sont plus grand.
+
+
+On souhaite classifier un poisson connaissant sa taille. On a donc
+deux distributions $P(C_1 | l)$ et $P(C_2 | l)$. On peut calculer une
+erreur de classification $P(error | l)$.\\
+Si on a décidé $C_1$, $$P(error | l) = P(C_2 | l)$$
+Sinon, si on a décidé $C_2$, $$P(error | l) = P(C_1 | l)$$
+Alors la probabilité d'une erreur de classification vaut
+$$P(error) = \int_{- \infty}^{+ \infty} P(error | l) P(l) dl$$
+
+On souhaite minimiser cette erreur, $P(l)$ étant fixé. On va alors
+minimiser $P(error | l)$ et donc choisir la plus petite des deux
+valeurs $P(C_1 | l)$ et $P(C_2 | l)$.
+On décide donc $C_1$ si $P(C_1 | l) > P(C_2 | l)$ et $C_2$ si $P(C_1 |
+l) < P(C_2 | l)$.
+
+\subsection{Décision bayesienne à un paramètre: $l$}
+
+Mais comment calculer $P(C_i | l)$? Le plus souvent on dispose d'une
+base d'exemples à partir de laquelle on peut calculer la distribution
+d'une certaine classe de poisson selon leur taille: $P(l | C_i)$.\\
+Puis grâce au théorème de Bayes:
+
+$$P(C_1 | l) = \frac{P(l | C_1) P(C_1)}{P(l)}$$
+
+\begin{itemize}
+\item $P(C_1 | l)$ est la probabilité à posteriori.
+\item $P(l | C_1)$ est appelé la probabilité à priori.
+\item $P(l)$ est appelé l'évidence.
+\end{itemize}
+
+On décide donc de $C_1$ si
+\begin{eqnarray*}
+  \frac{P(l | C_1) P(C_1)}{P(l)} & > & \frac{P(l | C_2) P(C_2)}{P(l)} \\
+  \mathcal{P}(l | C_1) P(C_1) & > & P(l | C_2) P(C_2)\\
+  g_{c_1}(l) & > & g_{c_2}(l)
+\end{eqnarray*}
+
+Dans cet exemple, on a minimisé l'erreur, cependant en général on
+essaie de minimiser un coût. On pondère alors les erreurs par les
+coûts qu'elles engendrent. On note le coût par $\lambda_{ij}$: coût
+correspondant à classer un exemple de classe $j$ en classe $i$.\\
+Si on a décidé de $C_1$ alors
+$$(S_1) \;\;\; P(error | l) = P(C_2 | l) \lambda_{12} + P(C_1 | l) \lambda{11}$$
+Sinon (on a décidé de $C_2$)
+$$(S_2) \;\;\; P(error | l) = P(C_1 | l) \lambda_{21} + P(C_2 | l) \lambda{22}$$
+On a alors un critère de décision
+$$\textrm{Si } \frac{S_1}{S_2} < 1 \textrm{ alors } C_1 \textrm{ sinon
+} C_2$$
+Qui par Bayes devient
+$$\textrm{Si } \frac{P(l | C_2) P(C_2) \lambda_{12} + P(l | C_1) \lambda_{11}}{P(l
+  | C_1) P(C_1) \lambda_{21} + P(l | C_2) \lambda_{22}} < 1 \textrm{
+  alors } C_1 \textrm{ sinon } C_2$$
+
+
+\subsection{Cas à plusieurs paramètres}
+
+Jusqu'ici, la loi normale est utilisé pour les distributions, elle
+s'écrit comme ceci
+
+$$P(X; \mu; \sigma) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left( \frac{(x
+    - \mu)^2}{2\sigma^2} \right)$$
+
+\paragraph{Propriétés}
+
+$$\int_{-\infty}^{+\infty} P(X,\mu,\sigma) dX = 1 \textrm{  et  }
+\int_{\mu - 2\sigma}^{\mu + 2\sigma} P(X,\mu,\sigma) dX = 0.95$$
+avec
+\begin{itemize}
+\item $\mu$ la moyenne.
+\item $\sigma$ l'écart type.
+\end{itemize}
+
+$$\sigma = \sqrt{\left( \frac{1}{N} \sum_{i = 1}^N x_i^2 \right) - \mu^2}$$
+Imaginons que l'on ait desormais $n$ paramètres alors
+\begin{itemize}
+\item $\mu \in \R$ : la moyenne.
+\item $\Sigma \in \M_n(\R)$ : matrice de covariance.
+\end{itemize}
+
+$$P(X, \mu, \Sigma) = \frac{1}{|\Sigma|^{\frac{1}{2}} \sqrt{2\pi}}
+\exp \left( -\frac{1}{2}. \transpose{(X - \mu)}.\Sigma^{-1}.(c - \mu)
+\right)$$
+avec
+$$\Sigma =
+\begin{pmatrix}
+  var(X) & cov(X,Y) \\
+  cov(X, Y) & var(Y)
+\end{pmatrix}
+$$
+et
+$$cov(X_i, Xj) = \frac{1}{N} \sum_{k = 1}^N (x_{i, k} - \mu_i)(x_{j,k}
+- \mu_j)$$
+
+$$\forall X \in \R^N \;\; \Sigma = \frac{1}{N} \sum_{k = 1}^N (X_k -
+\mu).\transpose{(X_k - \mu)}$$
+
+\subsubsection{Cas $\Sigma = \sigma^2 I$}
+
+Rappelons notre critère de décision
+$$P(l[C_1)P(C_1) > P(l|C_2)P(C_2) \textrm{ avec } l \in \R^n$$
+alors
+\begin{eqnarray*}
+  \exp\left(-\frac{1}{2}. \transpose{(l - \mu_{C_1})}.\Sigma^{-1}.(l -
+    \mu_{C_1}) \right).P(C_1) &  > &
+  \exp\left(-\frac{1}{2}. \transpose{(l - \mu_{C_2})}.\Sigma^{-1}.(l -
+    \mu_{C_2}) \right).P(C_2) \\ %% Fin deuxieme ligne
+  -\frac{1}{2}.\transpose{(l - \mu_{C_1})}.\Sigma^{-1}.(l -
+  \mu_{C_1}) + \log\left(P(C_1\right) &  > &
+  -\frac{1}{2}. \transpose{(l - \mu_{C_2})}.\Sigma^{-1}.(l -
+  \mu_{C_2}) + \log(P(C_2))
+\end{eqnarray*}
+On remarque que $$\Sigma = \sigma^2 I \Rightarrow \Sigma^{-1} =
+\frac{1}{\sigma^2} I$$
+alors
+\begin{eqnarray*}
+  -\frac{1}{2\sigma^2}.\transpose{(l - \mu_{C_1})}.I.(l -
+  \mu_{C_1}) + \log(P(C_1)) &  > &
+  -\frac{1}{2\sigma^2}. \transpose{(l - \mu_{C_2})}.I.(l -
+  \mu_{C_2}) + \log(P(C_2)) \\ %% Fin 1ere ligne
+  -\frac{1}{2\sigma^2} \|l - \mu_{C_1}\|^2 + \log(P(C_1)) &  > &
+  -\frac{1}{2\sigma^2} \|l - \mu_{C_2}\|^2  + \log(P(C_2)) \\
+  %% Fin 2eme ligne
+  \|l - \mu_{C_1}\|^2 - \|l - \mu_{C_2}\|^2 & < & -2\sigma^2 \left(
+    \log(P(C_2)) - \log(P(C_1)) \right)
+\end{eqnarray*}
+
+
+\subsubsection{Cas $\Sigma_i = \Sigma$}
+
+Où $\Sigma_i$ est la matrice de covariance de la classe $C_i$. Les
+matrices sont donc ici toute identique.
+
+\begin{eqnarray*}
+  -\frac{1}{2} \transpose{(l - \mu_{C_1})} \Sigma^{-1} (l -
+  \mu_{C_1}) + \log(P(C_1)) &  > &
+  -\frac{1}{2} \transpose{(l - \mu_{C_2})} \Sigma^{-1} (l -
+  \mu_{C_2}) + \log(P(C_2)) \\ %% 1ere ligne
+  \transpose{(l - \mu_{C_1})} \Sigma^{-1} (l - \mu_{C_1}) -
+  \transpose{(l - \mu_{C_2})} \Sigma^{-1} (l - \mu_{C_2})
+  &  > & \log(P(C_2)) - \log(P(C_1)) \\%% 2eme ligne
+  \textrm{Distance de Mahanalobis: } dist(x,y) & =  &
+  \transpose{(x-y)} \Sigma^{-1} (x-y)
+\end{eqnarray*}
+
+
+
+
+\subsection{GMM}
+
+\subsection{Chaînes de Markov}
+
+
+
+
+
+
+\end{document}

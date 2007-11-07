@@ -1,0 +1,264 @@
+\documentclass[a4paper, 12pt, leqno]{report}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{eurosym}
+
+\title{\huge{RO - Stochastique}}
+
+\lhead{RO-Stochastique}
+\chead{}
+\rhead{EPITA 2008}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+
+
+\pagestyle{fancy}
+\headheight 15pt
+\begin{document}
+
+
+\maketitle
+\tableofcontents
+\newpage
+
+\chapter*{Introduction}
+
+Le calcul stochastique est l'étude des phénomènes aléatoires
+dépendant du temps.\\
+La recherche opérationnelle (RO) s'appuie sur la théorie des graphes,
+et permet de résoudre des problèmes tels que:
+\begin{itemize}
+\item calcul du chemin le plus court
+\item transport a coût minimal
+\item ordonnancement de projets
+\end{itemize}
+
+La RO stochastique permet de résoudre des problèmes liés au hasard:
+\begin{itemize}
+\item problème des fils d'attente. Pour un  un usagé donné, on peut
+  chercher le temps moyen d'attente, en fonction des aléas des
+  arrivées et du temps de service.
+\end{itemize}
+
+\paragraph{Notion d'ergodicité}
+
+Il y a deux façons d'observer une processus aléatoire:
+\begin{enumerate}
+\item examen microscopique: chaque instant et objet sont observés. On
+  observe une agitation microscopique, on est dans l'incapacité de
+  ``voir'' un comportement.
+\item examen macroscopique: on observe d'un point de vue plus
+  haut. Utilisation de moyenne, statistique.
+\end{enumerate}
+
+Au niveau macroscopique, on observe deux types de processus:
+\begin{itemize}
+\item les processus ergodiques: un ordre apparaît, ce phénomène est
+  appelé la stabilisation macroscopique.
+\item les processus non-ergodiques: on observe pas plus d'ordre qu'au
+  niveau microscopique, l'agitation continue.
+\end{itemize}
+
+\chapter{Rappel de probabilité}
+
+\section{Exercice 1}
+
+Soit une main au bridge (13 cartes tirées au hasard dans un jeu de 52
+cartes).
+
+\begin{enumerate}
+\item Quelle est la probabilité $q_k$ d'avoir exactement $k$ as? ($k =
+  0, 1, 2, 3$ ou $4$)
+\item Quelle est la probabilité d'avoir au moins un as?
+\item Quelle est la probabilité d'avoir une main rouge?
+\end{enumerate}
+
+\paragraph{1.}
+
+Le nombre de main possible est $C^{13}_{52}$.
+
+Un main ayant $k$ as et donc $13 - k$ non-as, soit
+$C^{k}_4.C^{13-k}_{48}$.
+
+D'où: $$q_k = \frac{C^{k}_4.C^{13-k}_{48}}{C^{13}_{52}}$$
+
+\paragraph{2.}
+
+Une main avec au moins un as est le complément d'une main avec aucun
+as. D'où $P(\textrm{au moins un as}) = 1 - P(\textrm{zéro as}) = 1 -
+q_0$
+
+\paragraph{3.}
+
+$$P(\textrm{un main rouge}) = \frac{C^{13}_{28}}{C^{13}_{52}}$$
+
+\section{Exercice 2}
+
+Dans un lot de coton d'une quantité donné: 75\% des fibres ont moins
+de 45mm de longueur.
+
+\paragraph{1.}
+
+Quelle est la probabilité que sur, 3 fibres tirées au hasard, 2
+soient plus longues que 45mm et l'un plus courte? (sans ordre
+particulier)\\
+
+On a 75\% de fibres courtes et 25\% de fibres longues. On tire une
+fibre au hasard:
+\begin{itemize}
+\item $P(1C) = \frac{3}{4} = p$
+\item $P(1L) = \frac{1}{4} = q$
+\end{itemize}
+
+C'est un problème binomiale car on a que deux possibilités (court et
+long).
+
+\begin{eqnarray*}
+  P(2L,1C) & LLC = & q^2 p \\
+           & LCL = & qpq = q^2 \\
+           & CLL = & pq^2
+\end{eqnarray*}
+
+Soit $P(2L,1C) = 3q^2p$.
+
+\subsection{Loi binomiale}
+
+Lors d'un tirage, où deux cas sont possibles:
+\begin{itemize}
+\item un cas de probabilité $p$
+\item un cas de probabilité $q$
+\end{itemize}
+
+On fait $n$ tirages successifs et on calcule la probabilité d'avoir
+$m$ fois l'évènement $p$ et $n - m$ fois l'évènement $q$. Cette
+probabilité vaut $C^m_n p^m q^{n - m}$
+
+\section{Exercice 3}
+
+On considère deux urnes:
+\begin{itemize}
+\item $U1$: 4 boules blanches (bb)
+\item $U2$: 3 boules blanches et 1 boule noire
+\end{itemize}
+Un individu choisit une urne au hasard et tire 2 boules successivement
+dans cette urne.
+\begin{enumerate}
+  \item
+  \begin{itemize}
+  \item[a)] sachant qu'il remet la boule après le premier tirage, quelle est
+    la probabilité de tirer 2 boules blanches?
+  \item[b)] sachant que la première boule était blanche, quelle est la
+    probabilité que la deuxième le soit aussi?
+  \end{itemize}
+\item Même questions quand 1 mais sans remise.
+\end{enumerate}
+
+\begin{itemize}
+\item [1a)]
+  \begin{eqnarray*}
+    U1 & \rightarrow & P(2bb) = 1\\
+    U2 & \rightarrow & P(2bb) = \frac{3}{4}.\frac{3}{4} =
+    \frac{9}{16} \\
+    P_t & = & \frac{1}{2}\left(1 + \frac{9}{16}\right) = \frac{25}{32}
+  \end{eqnarray*}
+\item [2a)]
+    \begin{eqnarray*}
+    U1 & \rightarrow & P(2bb) = 1\\
+    U2 & \rightarrow & P(2bb) = \frac{3}{4}.\frac{2}{3} =
+    \frac{1}{2} \\
+    P_t & = & \frac{1}{2}\left(1 + \frac{1}{2}\right) = \frac{24}{32}
+  \end{eqnarray*}
+\end{itemize}
+
+\paragraph{Attention! Raisonnement FAUX pour 1b}
+
+Le premier tirage n'a pas d'importance car on remet la boule dans
+l'urne. Et on reprends pour la deuxième boule. On cherche simplement
+la probabilité que la deuxième boule soit blanche (en oubliant le
+``sachant que la première boule était blanche'').
+$$P(2^ebb) = \frac{1}{2} . 1 + \frac{1}{2}.\frac{3}{4}$$
+
+Ce raisonnement est faux, car on ne sait pas dans quelle urne le
+premier a eu lieu. L'évènement ``la première boule est blanche'' est
+plus probable pour l'urne $U1$.
+La proportion $P(U1) = \frac{1}{2}$ doit être remplacé $P(U1|1^ebb)$
+(de même pour l'urne $U2$).
+
+\subsection{Théorème de BAYES}
+
+$$P(A|B) = \frac{P(B|A)P(A)}{p(B)}$$
+
+\begin{itemize}
+\item [1b)]
+  \begin{eqnarray*}
+    P(U1|1^ebb) & = & \frac{P(1^ebb|U1).P(U1)}{P(1^ebb)} \\
+                & = & \frac{1.\frac{1}{2}}{\frac{1}{2} +
+                  \frac{1}{2}.\frac{3}{4}} \\
+                & = & \frac{4}{7} \\
+    P(U2|1^ebb) & = & \frac{P(1^ebb|U2).P(U2)}{P(1^ebb)} \\
+                & = & \frac{\frac{3}{4}.\frac{1}{2}}{\frac{1}{2} +
+                  \frac{1}{2}.\frac{3}{4}} \\
+                & = & \frac{3}{7} \\
+                & & \\
+    P(2^ebb|1^ebb) & = & P(U1|1^ebb).P(2^ebb|1^ebb) +
+    P(U2|1^ebb).P(2^ebb|1^ebb) \\
+                  & = & \frac{4}{7} . 1 + \frac{3}{7} . \frac{2}{3} \\
+                  & = & \frac{25}{28}
+  \end{eqnarray*}
+
+\item [2b)]
+  \begin{eqnarray*}
+    P(2^ebb|1^ebb) & = & \frac{4}{7}.1 + \frac{3}{7}.\frac{2}{3} \\
+                   & = & \frac{24}{28}
+  \end{eqnarray*}
+\end{itemize}
+
+\section{Exercice 4}
+
+Un atelier usine des boulons en utilisant trois machines:$A, B,
+C$. Ces machines produisent respectivement 5\%, 4\%, 2\% de boulons
+défectueux. On tire un boulon au hasard dans un  lot de fabrication,
+ce boulot est défectueux. Quelle est la probabilité qu'il ait été
+produit par la machine A, B, ou C, sachant que $(A, B, C)$ produisent
+$(25, 35, 40)$\% des boulons.\\
+Ici M signifie machine et b.d signifie boulon défectueux:
+$$P(M|b.d) = \frac{P(b.d|M)P(M)}{P(b.d)}$$
+
+\begin{itemize}
+\item [Machine A]
+  \begin{eqnarray*}
+    P(b.d|A) & = & 0,05 \\
+    P(A) & = & 0,25 \\
+    P(b.d) & = & \frac{25}{100}.\frac{5}{100} +
+    \frac{35}{100}.\frac{4}{100} + \frac{40}{100}.\frac{2}{100} \\
+           & = & \frac{345}{10000} \\
+    P(A|b.d) & = & \frac{\frac{5}{100}\frac{25}{100}}{\frac{345}{100}} \\
+             & = & \frac{25}{69}
+  \end{eqnarray*}
+\item [Machine B]
+  \begin{eqnarray*}
+    P(b.d|B) & = & 0,04 \\
+    P(B) & = & 0,35 \\
+    P(b.d) & = & \frac{345}{10000} \\
+    P(B|b.d) & = & \frac{\frac{4}{100}\frac{35}{100}}{\frac{345}{100}} \\
+             & = & \frac{28}{69}
+  \end{eqnarray*}
+\item [Machine C]
+  \begin{eqnarray*}
+    P(b.d|C) & = & 0,02 \\
+    P(C) & = & 0,40 \\
+    P(b.d) & = \frac{345}{10000} \\
+    P(C|b.d) & = & \frac{\frac{2}{100}\frac{40}{100}}{\frac{345}{100}} \\
+             & = & \frac{16}{69}
+  \end{eqnarray*}
+\end{itemize}
+
+\end{document}

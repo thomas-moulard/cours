@@ -1,0 +1,658 @@
+\documentclass[a4paper, 12pt, leqno]{article}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{gastex}
+\usepackage[usenames]{xcolor}
+
+\usepackage{listings}
+\gasset{linewidth=0.3,Nw=7.0,Nh=7.0,Nmr=3.3,AHLength=2.5,AHlength=2.1,%
+  loopdiam=6.0}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+\lstset{language=C++,frame=single, mathescape=true, showspaces=false}
+\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt,
+  basicstyle=\small, frameround=tttf, frame=tRBl}
+
+\title{\huge{Réseaux de Pétri}}
+\geometry{vmargin=3cm, hmargin=2.5cm}
+
+\lhead{Réseaux de Pétri}
+\chead{}
+\rhead{EPITA 2008}
+
+\gasset{linewidth=0.3,Nw=8.0,Nh=8.0,Nmr=4.0,Nfill=y,fillcolor=white}
+
+
+\pagestyle{fancy}
+
+\begin{document}
+\newcommand{\transition}[1]{\ensuremath{\stackrel{{#1}}{\longrightarrow}}}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Réseaux de Pétri}
+
+\subsection{Définitions}
+
+
+\paragraph{Définition}
+
+Un réseau de Pétri $\langle P, T, Pre, Post \rangle$ où
+\begin{itemize}
+\item $P$: ensemble fini des places
+\item $T$: ensemble fini des transitions
+\item $Pre$: $P \times T \longrightarrow \mathbb{N}$ (poids des arcs sortants)
+\item $Post$: $P \times T \longrightarrow \mathbb{N}$ (poids des arcs entrants)
+\end{itemize}
+
+\paragraph{Un marquage}
+représente le nombre de place ayant au moins un jeton.
+
+\begin{center}
+\begin{picture}(50,20)(-25,-12)
+  \node(A)(-20,0){$\bullet \bullet$}
+  \node(B)(20,0){}
+  \gasset{Nw=.7,Nh=7,Nmr=0,fillgray=0} % black rectangle
+  \gasset{ExtNL=y,NLdist=1,NLangle=90} % external label above the node
+  \node(Ta)(0,  0){$t_a$}
+
+  \gasset{ELdistC=y,ELdist=2}
+  \drawedge(A,Ta){}
+  \drawedge(Ta,B){}
+\end{picture}
+
+$M_0 =$
+\begin{tabular}{c | c}
+  $P_1$ & $2$ \\
+  $P_2$ & $0$
+\end{tabular}
+\end{center}
+
+
+\paragraph{La règle de franchissement}
+définit comment on passe d'un marquage à un autre. Ainsi, à partir
+d'un marquage $M$, $t \in T$ est franchissable si et seulement si:
+$$\forall p \in P, M(p) \geq Pre(p,t)$$
+
+\begin{figure}[h]
+  \centering
+  \begin{picture}(50,50)(-25,-20)
+    \node(A)(-20,15){$\bullet\bullet\bullet$}
+    \node(B)(-20,-15){$\bullet$}
+    \node(C)(20,0){}
+
+    \gasset{Nw=.7,Nh=7,Nmr=0,fillgray=0} % black rectangle
+    \gasset{ExtNL=y,NLdist=1,NLangle=90} % external label above the node
+    \node(Ta)(0,0){$t_a$}
+
+    \gasset{ELdistC=y,ELdist=2}
+    \drawedge(A,Ta){3}
+    \drawedge(B,Ta){1}
+    \drawedge(Ta,C){2}
+  \end{picture}
+  \caption{Les deux transitions sont franchissables.}
+\end{figure}
+
+Le franchissement d'un transition se note $M \transition{t}  M'$ et
+$\forall p \in P, M'(p) = M(p) - Pre(p, t) + Post(p, t)$.
+
+\begin{center}
+  \begin{picture}(50,40)(-25,-20)
+    \node(A)(-20,15){}
+    \node(B)(-20,-15){}
+    \node(C)(20,0){$\bullet$}
+
+    \gasset{Nw=.7,Nh=7,Nmr=0,fillgray=0} % black rectangle
+    \gasset{ExtNL=y,NLdist=1,NLangle=90} % external label above the node
+    \node(Ta)(0,0){$t_a$}
+
+    \gasset{ELdistC=y,ELdist=2}
+    \drawedge(A,Ta){2}
+    \drawedge(B,Ta){1}
+    \drawedge(Ta,C){2}
+  \end{picture}
+\end{center}
+
+
+Une séquence de franchissement se note
+$M_0 \transition{t_0} M_1 \transition{t_1} M_2 \transition{t_2} \cdots
+\transition{t_{n-1}} M_n$
+
+
+\begin{center}
+\begin{picture}(170,70)(0,-10)
+  \node(P4)(40,0){$P_4$}
+  \node(P5)(120,0){$P_5$}
+
+  \node(P1)(10,50){3$|P_1$}
+  \node(P2)(80,50){4$|P_2$}
+  \node(P3)(140,50){2$|P_3$}
+
+  \gasset{Nw=7,Nh=.7,Nmr=0,fillgray=0} % black rectangle
+  \gasset{ExtNL=y,NLdist=1,NLangle=0} % external label above the node
+  % transitions
+  \node(T1)(20,25){$t_1$}
+  \node(T2)(50,25){$t_2$}
+  \node(T3)(80,25){$t_3$}
+  \node(T4)(110,25){$t_4$}
+  \node(T5)(140,25){$t_5$}
+
+  \gasset{ELdistC=y,ELdist=2}
+  \drawedge(T1,P1){3}
+  \drawedge(P4,T1){2}
+
+  \drawedge(T2,P4){6}
+  \drawedge(P1,T2){2}
+  \drawedge(P2,T2){3}
+
+  \drawedge(T3,P2){}
+  \drawedge(P4,T3){3}
+  \drawedge(P5,T3){3}
+
+  \drawedge(P2,T4){}
+  \drawedge(P3,T4){2}
+  \drawedge(T4,P5){}
+
+  \drawedge(T5,P3){}
+  \drawedge(P5,T5){}
+\end{picture}
+\end{center}
+
+\begin{center}
+  \begin{tabular}{c c c c c}
+    \begin{tabular}{c | c}
+      $M_0$ & 3 \\
+      & 4 \\
+      & 3 \\
+      & 0 \\
+      & 0
+    \end{tabular}
+    & $\transition{t_2}$ &
+    \begin{tabular}{c | c}
+      $M_1$ & 1 \\
+      & 1 \\
+      & 2 \\
+      & 6 \\
+      & 0
+    \end{tabular}
+    & $\transition{t_4}$ &
+    \begin{tabular}{c | c}
+      $M_2$ & 1 \\
+      & 0 \\
+      & 0 \\
+      & 6 \\
+      & 1
+    \end{tabular}
+  \end{tabular}
+\end{center}
+
+\paragraph{Représentation matricielle}
+
+La matrice d'incidence est définie par $C = Post - Pre$. Le
+franchissement $M \transition{t} M'$ se calcule alors grâce à $M'(p) =
+M(p) + C(p, t)$.
+
+
+\paragraph{Vecteur caractéristique}
+
+Soit $s$ une séquence de franchissement $s$. Alors, le vecteur
+$\underline{s}: T \longrightarrow \mathbb{N}$ et $\underline{s}(T)$
+vaut le nombre d'apparitions de $t$ dans $s$.
+
+\paragraph{Équation caractéristique}
+
+Soit $M \transition{s} M'$ alors $M' = M + C.\underline{s}$.
+
+
+\subsection{Le graphe d'accessibilité}
+
+Le graphe d'accessibilité (GA) d'un réseaux de Pétri marqué $\langle
+R, M_0 \rangle$ est un système de transitions $\langle Q, \Delta,
+\lambda, q_0$ où:
+\begin{itemize}
+\item[$Q$] est l'ensemble des marquages (états) accessibles dans $R$.
+\item[$\Delta$] est l'ensemble des transitions.
+\item[$\lambda$] est une fonction étiquetant les arcs du graphe par le
+  nom de la transition de $R$ franchie.
+\item[$q_0$] marquage (état) initial.
+\end{itemize}
+
+\subsubsection{Algorithme}
+
+\begin{lstlisting}
+  $\text{\textbf{NE}: ensemble des nouveaux états}$
+  $\text{\textbf{MA}: ensemble des marquages accessibles}$
+
+  NE $\leftarrow M_0$
+  tant que $NE \neq \emptyset$ faire
+    NE $\leftarrow$ NE $\backslash \{ e \}$
+    pour toutes transitions $t$ franchissables à partir de $e$
+      Soit $e \transition{t} e'$
+      Si $e' \notin$ MA alors
+        MA $\leftarrow e'$
+        NE $\leftarrow e'$
+      fin si
+    fin pour
+  fin tant que
+\end{lstlisting}
+
+\subsubsection{Vivacité des graphes d'accessibilité}
+
+Soit un réseau de Pétri $\langle R, M_0 \rangle$, ce réseau est:
+
+\begin{itemize}
+\item pseudo vivant si $\forall M \in GMA(R)$ il existe une transition
+  $t$ tel que $M \transition{t}$ existe.
+\item quasi vivant si $\forall t \in T$ il existe $M \in GMA(R)$ tel
+  que $M \transition{t}$.
+\item vivant si $\forall M \in GMA(R), \langle R, M \rangle$ est
+  quasi vivant.
+\end{itemize}
+
+\paragraph{État d'accueil}
+
+L'état d'accueil $M_a$ d'un réseau de Pétri $\langle R, M_0 \rangle$ est un marquage
+tel que
+$\forall M \in GMA(R)$, il existe une séquence $s$ tel que $s = M
+\transition{s} M_a$
+
+\paragraph{Non borné}
+
+$\langle R, M_0 \rangle$ est non borné si pour tout $n \in
+\mathbb{N}$, il existe un marquage $M \ in GMA(R)$ et une place $p$
+tel que $M(p) > n$.
+
+\paragraph{Relation entre propriétés}
+
+\begin{itemize}
+\item Si $\langle R, M_0 \rangle$ est pseudo vivant ou non borné alors
+  $\langle R, M_0 \rangle$ admet une séquence infinie.
+\item Si $\langle R, M_0 \rangle$ est vivant alors $\langle R, M_0
+  \rangle$ est pseudo et quasi vivant.
+\item Si $\langle R, M_0 \rangle$ est quasi vivant et il admet $M_0$
+  comme marquage d'accueil alors $\langle R, M_0 \rangle$ est vivant.
+\end{itemize}
+
+
+\paragraph{Exemple: graphe d'accessibilité infini}
+
+\begin{center}
+  \begin{picture}(50,40)(-25,-20)
+    \node(A)(0,10){$\bullet$}
+    \node(B)(20,-15){}
+
+    \gasset{Nw=7,Nh=.7,Nmr=0,fillgray=0} % black rectangle
+    \gasset{ExtNL=y,NLdist=1,NLangle=180} % external label above the node
+    \node(Ta)(0,-10){$t_a$}
+
+    \gasset{ELdistC=y,ELdist=2}
+    \drawedge(A,Ta){}
+    \drawedge[curvedepth=4.0](Ta,A){}
+    \drawedge(Ta,B){}
+  \end{picture}
+\end{center}
+
+Lorsque l'on calcule graphe d'accessibilité, l'algorithme ne termine
+pas. En effet $P_1$ aura toujours un jeton, et $P_2$ accumulera des
+jetons à chaque itération.
+
+\subsection{Graphe de couverture}
+
+\subsubsection{Algorithme}
+
+\begin{lstlisting}
+  pour toutes transitions $t$
+    si $M_0 \transition{t} M'$ alors
+      insérer $M'$ dans l'arbre
+      si $M' > M_0$ alors
+        pour toutes places $p$ tel que $M'(p) > M_0(p)$
+          $M'(p) \leftarrow \omega$
+\end{lstlisting}
+
+Cet algorithme génère un arbre. Il faut \emph{replier} l'arbre pour
+obtenir le graphe de couverture. Cet opération s'appelle repliage et
+consiste à fusionner les différentes occurrences du même noeud dans
+l'arbre.
+
+\paragraph{Exemple de repliage}
+
+\begin{center}
+  \begin{picture}(50,20)(-25,-10)
+    \gasset{Nw=13,Nh=7}
+    \node(N1)(-10, 0){$1,0,0$}
+    \node(M1)(10, 0){$1,0,0$}
+
+    \drawedge(N1,M1){}
+  \end{picture}
+\end{center}
+
+\paragraph{Problème de la couverture}
+
+$\omega$ représente l'infini, en l'introduisant on perd de
+l'information sur l'accessibilité. De plus des réseaux de Pétri
+différents peuvent ainsi avoir des couvertures identiques.
+
+
+\paragraph{Exemple}
+
+\begin{center}
+  \begin{picture}(50,20)(-25,-10)
+    \node(A)(-20,10){$\bullet$}
+    \node(B)(20,10){}
+
+    \gasset{Nw=.7,Nh=7,Nmr=0,fillgray=0} % black rectangle
+    \gasset{ExtNL=y,NLdist=1,NLangle=90} % external label above the node
+    \node(Ta)(0,10){$t_a$}
+
+    \gasset{ELdistC=y,ELdist=2}
+    \drawedge(A,Ta){}
+    \drawedge[curvedepth=4.0](Ta,A){}
+    \drawedge(Ta,B){2}
+  \end{picture}
+\end{center}
+
+Ici $P_2$ accumule les jetons 2 par 2, cependant le graphe de
+couverture sera marqué par $\omega$. On perd l'information que le
+nombre de jetons est pair.
+
+
+\section{Réseaux de Pétri coloré}
+
+\subsection{Définitions}
+
+\paragraph{Réseaux de Pétri coloré}
+
+Un RP coloré est une structure $\langle P, T, C, W^-, W^+, M_0
+\rangle$.
+\begin{itemize}
+\item $C$: définit pour chaque place ou transition son domaine de couleur.
+\end{itemize}
+
+
+\paragraph{Règle de franchissement}
+
+Un transition $t$ est franchissable pour une instance $c_t \in C(t)$
+et un marquage $M$ si et seulement si:
+\begin{itemize}
+\item $t$ est non gardée ou la garde vaut vrai.
+\item $\forall p \in P, M(p) \geq W^-(p, t)(c_t)$.
+\end{itemize}
+
+
+\paragraph{Exemple}
+
+\begin{center}
+  \begin{picture}(50,40)(0,-35)
+    \node(A)(0,0){$a$}
+    \node(B)(20,0){$b$}
+    \node(C)(10,-30){$a,b$}
+
+    \gasset{Nw=7,Nh=.7,Nmr=0,fillgray=0} % black rectangle
+    \gasset{ExtNL=y,NLdist=1,NLangle=0} % external label above the node
+    \node(Ta)(10,-15){$t_a  [x_1 = a]$}
+
+    \gasset{ELdistC=y,ELdist=2}
+    \drawedge(A,Ta){$x_1$}
+    \drawedge(B,Ta){$x_2$}
+    \gasset{ELdistC=y,ELdist=5}
+    \drawedge(Ta,C){$x_1,x_2$}
+  \end{picture}
+\end{center}
+
+
+\subsubsection{Fonctions de base}
+
+\begin{itemize}
+\item identité.
+\item successeur dans $C$ sur $C$ ordonné circulairement, noté $x++$.
+\item synchronisation (en entrée sur une transition), ou diffusion (en
+  sortie d'une transition), noté $C.all$.
+\end{itemize}
+
+
+\paragraph{Exemple}
+
+\begin{center}
+  \begin{picture}(50,40)(0,-40)
+    \node(A)(10,-10){$2b$}
+
+    \gasset{Nw=7,Nh=.7,Nmr=0,fillgray=0} % black rectangle
+    \gasset{ExtNL=y,NLdist=1,NLangle=0} % external label above the node
+    \node(Ta)(10,-30){$t_a  [x_1 = a]$}
+
+    \gasset{ELdistC=y,ELdist=10}
+    \drawedge(A,Ta){2<x$++$>}
+  \end{picture}
+\end{center}
+
+Dans cet exemple, la transition est franchissable car deux $b$ sont
+dans la place, deux $b$ sont donc consommé. Cependant $x$ prend la
+valeur $a$.
+
+
+\section{Analyse structurelle}
+
+\subsection{Invariants}
+
+Les invariants permettent de caractériser un processus, de dénoter la
+présence d'une ressource nécessaire à l'exécution.
+
+\begin{center}
+  \begin{picture}(50,50)(0,-50)
+    \node(p1)(10,-10){$\bullet$}
+    \node(p2)(10,-50){$\bullet$}
+    \node(r)(-10,-30){}
+
+    \gasset{Nw=7,Nh=.7,Nmr=0,fillgray=0} % black rectangle
+    \gasset{ExtNL=y,NLdist=1,NLangle=0} % external label above the node
+    \node(Ta)(10,-30){$t_a$}
+    \node(Tb)(10,-70){$t_b$}
+
+    \gasset{ELdistC=y,ELdist=10}
+    \drawedge(p1,Ta){}
+    \drawedge(Ta,p2){}
+    \drawedge(p2,Tb){}
+    \drawedge[curvedepth=-9.0,syo=-.7,ELpos=0](Tb,p1){}
+    \drawedge[syo=-.7](Tb,r){}
+    \drawedge(r,Ta){}
+  \end{picture}
+\end{center}
+
+\subsubsection{Annulateurs}
+
+\begin{description}
+\item[P-flot] Soit un vecteur $\vec{v} \in \mathbb{Z}^p$ tel que
+  $\vec{v}^t.C = \vec{0}$.
+\item[P-semiflot] Soit un vecteur $\vec{v} \in \mathbb{N}^p$ tel que
+  $\vec{v}^t.C = \vec{0}$.
+\end{description}
+
+En utilisant les définitions des annulateurs sur le réseau de Pétri
+(cf. fig \ref{fig:annul}), on va exhiber les invariants à l'aide de la
+matrice d'incidence.
+
+\begin{figure}[h]
+\centering
+\begin{picture}(50,60)(0,-50)
+  \gasset{Nw=8.5, Nh=8.5}
+  \node(ap1)(0,0){AP1}
+  \node(bp1)(40,0){BP1}
+  \node(ap2)(0,-40){AP2}
+  \node(bp2)(40,-40){BP2}
+
+  \gasset{Nw=12}
+  \node(a)(-30,-20){$\bullet$ (A)}
+  \node(b)(70,-20){$\bullet$ (B)}
+
+  \gasset{Nw=.7,Nh=7,Nmr=0,fillgray=0} % black rectangle
+  \gasset{ExtNL=y,NLdist=1,NLangle=90} % external label above the node
+  \node(ac1)(-20,0){AC1}
+  \node(bc1)(60,0){BC1}
+  \node(ts1)(20,0){TS1}
+
+  \gasset{NLangle=270}
+  \node(ac2)(-20,-40){AC2}
+  \node(bc2)(60,-40){BC2}
+  \node(ts2)(20,-40){TS2}
+
+  \gasset{ELdistC=y,ELdist=10}
+  \drawedge(ap1,ts1){}
+  \drawedge(bp1,ts1){}
+  \drawbpedge(ts1,200,5,a,5,50){}
+  \drawbpedge(ts1,340,5,b,175,50){}
+
+  \drawedge(ap2,ts2){}
+  \drawedge(bp2,ts2){}
+  \drawbpedge(ts2,160,5,a,355,50){}
+  \drawbpedge(ts2,20,5,b,185,50){}
+
+  \drawbpedge(a,100,0,ac1,180,10){}
+  \drawedge(ac1,ap1){}
+
+  \drawedge(ac2,ap2){}
+  \drawbpedge(a,260,0,ac2,180,10){}
+
+  \drawbpedge(b,70,0,bc1,0,10){}
+  \drawedge(bc1,bp1){}
+
+  \drawedge(bc2,bp2){}
+  \drawbpedge(b,280,0,bc2,0,10){}
+\end{picture}
+\caption{Deux processus avec deux fils d'exécution synchronisés}
+\label{fig:annul}
+\end{figure}
+
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{c | c c c c c c}
+   & $AC_1$ & $BC_1$ & $AC_2$ & $BC_2$ & $TS_1$ & $TS_2$ \\
+   \hline
+   A & -1 & 0 & -1 & 0 & 1 & 1\\
+   $AP_1$ & 1 & 0 & 0 & 0 & -1 & 0\\
+   $AP_2$ & 0 & 0 & 1 & 0 & 0 & -1\\
+   $B$ & 0 & -1 & 0 & -1 & -1 & -1\\
+   $BP_1$ & 0 & 1 & 0 & 1 & -1 & 0\\
+   $BP_2$ & 0 & 0 & 0 & 1 & 0 & -1
+\end{tabular}
+\end{center}
+
+$$\Downarrow$$
+$$\text{fusion des états } A, AP_1 \text{ et } B, BP_1$$
+
+\begin{center}
+\begin{tabular}{c | c c c c}
+   & $AC_2$ & $BC_2$ & $TS_1$ & $TS_2$ \\
+   \hline
+   $A + AP_1$ & -1 & 0 & 0 & 1\\
+   $AP_2$ & 1 & 0 & 0 & -1\\
+   $B + BP_1$ & 0 & -1 & 0 & 1\\
+   $BP_2$ & 0 & 1 & 0 & -1
+\end{tabular}
+\end{center}
+
+\begin{eqnarray*}
+  A + AP_1 + AP_2 & = & 0\\
+  B + BP_1 + BP_2 & = & 0
+\end{eqnarray*}
+
+\subsection{Trappes}
+
+\paragraph{Définition}
+
+Soit $S$ l'ensemble des places, et $P \in S$. Soit $T$ une transition. Alors:
+\begin{tabular}{r c l}
+  $P^*$ & $\longrightarrow$ & ensemble des transitions en sortie de $P$.\\
+  $^*P$ & $\longrightarrow$ & ensemble des transitions en entrée de
+  $P$.\\
+  $T^*$ & $\longrightarrow$ & ensemble des places en sortie de $T$.\\
+  $^*T$ & $\longrightarrow$ & ensemble des places en entrée de
+  $T$.
+\end{tabular}
+
+\par
+On parle de trappe lorsque $S^* \subseteq {^*S}$. Le principe d'une
+trappe est que si un jeton rentre, il ne réapparaît pas.
+
+\paragraph{Exemple}
+
+\begin{center}
+  \begin{picture}(50,40)(0,-40)
+    \node(p1)(-20,-10){$P_1$}
+    \node(p2)(20,-10){$P_2$}
+    \node(p3)(45,-30){$P_3$}
+
+    \gasset{Nw=.7,Nh=7,Nmr=0,fillgray=0} % black rectangle
+    \gasset{ExtNL=y,NLdist=1,NLangle=90} % external label above the node
+    \node(t1)(0,0){$t_1$}
+    \node(t4)(60,-30){$t_4$}
+    \gasset{NLangle=270}
+    \node(t2)(0,-20){$t_2$}
+
+    \gasset{Nw=7,Nh=.7,Nmr=0,fillgray=0,NLangle=0}
+    \node(t3)(45,-10){$t_3$}
+
+    \gasset{ELdistC=y,ELdist=10}
+    \drawbpedge(p1,30,10,t1,180,10){}
+    \drawbpedge(t1,0,10,p2,0,0){}
+    \drawbpedge(p2,180,10,t1,290,5){}
+    \drawbpedge(p2,210,10,t2,0,10){}
+    \drawbpedge(t2,180,10,p1,340,10){}
+
+    \drawbpedge(t3,130,10,p2,45,10){}
+    \drawedge(t3,p3){}
+    \drawedge(p3,t4){}
+  \end{picture}
+\end{center}
+
+
+\begin{eqnarray*}
+  (P_1,P_2)^* & = & (t_1, t_2)\\
+  {^*}(P_1,P_2) & = & (t_1, t_3, t_2)\\
+  (P_1,P_2)^* & \subseteq & {^*}(P_1,P_2)
+\end{eqnarray*}
+
+\subsection{Verrous}
+
+Un verrou est équivalent à du ``code mort'' du réseau de Petri.
+
+$${^*}S \subseteq S^*$$
+
+\begin{center}
+  \begin{picture}(50,40)(0,-30)
+    \node(p1)(-20,-10){$P_1$}
+    \node(p2)(20,-10){$P_2$}
+    \node(p3)(20,-30){$P_3$}
+
+    \gasset{Nw=.7,Nh=7,Nmr=0,fillgray=0} % black rectangle
+    \gasset{ExtNL=y,NLdist=1,NLangle=90} % external label above the node
+    \node(t1)(0,0){$t_1$}
+    \gasset{NLangle=270}
+    \node(t2)(0,-20){$t_2$}
+
+    \gasset{Nw=7,Nh=.7,Nmr=0,fillgray=0,NLangle=0}
+    \node(t3)(45,-10){$t_3$}
+
+    \gasset{ELdistC=y,ELdist=10}
+    \drawbpedge(p1,30,10,t1,180,10){}
+    \drawbpedge(t1,0,10,p2,0,0){}
+    \drawbpedge(p2,180,10,t1,290,5){}
+    \drawbpedge(p2,210,10,t2,0,10){}
+    \drawbpedge(t2,180,10,p1,340,10){}
+    \drawbpedge[syo=-1](t2,350,5,p3,135,10){}
+
+    \drawbpedge(t3,130,10,p2,45,10){}
+  \end{picture}
+\end{center}
+
+
+\end{document}

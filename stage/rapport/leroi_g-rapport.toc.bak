@@ -1,0 +1,45 @@
+\select@language {french}
+\chapterbegin 
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {paragraph}{Inter\^et personnel}{1}
+\contentsline {paragraph}{D\'eroulement du stage}{2}
+\contentsline {paragraph}{Particularit\'e de ce stage}{2}
+\contentsline {chapter}{\numberline {2}Travail effectu\'e}{3}
+\contentsline {section}{\numberline {2.1}Cahier des charges}{3}
+\contentsline {subsection}{\numberline {2.1.1}But g\'en\'eral}{3}
+\contentsline {subsection}{\numberline {2.1.2}R\'esultats \`a obtenir}{3}
+\contentsline {subsubsection}{R\'eorganisation du code}{3}
+\contentsline {subsubsection}{Corrections mineures}{4}
+\contentsline {subsubsection}{Documentation}{5}
+\contentsline {section}{\numberline {2.2}Compte-rendu d'activit\'e}{5}
+\contentsline {subsection}{\numberline {2.2.1}Conception}{5}
+\contentsline {subsection}{\numberline {2.2.2}Modules}{6}
+\contentsline {subsubsection}{XML}{6}
+\contentsline {subsubsection}{Module g\'eom\'etrique et graphique}{6}
+\contentsline {subsubsection}{Module d'affichage}{7}
+\contentsline {subsection}{\numberline {2.2.3}Corrections diverses}{8}
+\contentsline {subsubsection}{TAF-KIT}{8}
+\contentsline {subsubsection}{Ind\'ependance des coordonn\'ees}{8}
+\contentsline {subsubsection}{Documentation}{9}
+\contentsline {section}{\numberline {2.3}Interpr\'etation et critiques des r\'esultats}{9}
+\contentsline {paragraph}{Ergonomie}{9}
+\contentsline {paragraph}{Messages d'erreurs}{10}
+\contentsline {paragraph}{Qualit\'e du rendu graphique}{10}
+\contentsline {chapter}{\numberline {3}Conclusion}{12}
+\contentsline {part}{I\hspace {1em}Annexes}{14}
+\contentsline {xpart}{Annexes}{15}
+\contentsline {chapter}{\numberline {1}Mod\'elisation}{16}
+\contentsline {chapter}{\numberline {2}Screenshots}{19}
+\contentsline {chapter}{\numberline {3}Documentation}{21}
+\contentsline {section}{\numberline {3.1}Modules}{21}
+\contentsline {subsection}{\numberline {3.1.1}src/vgi}{21}
+\contentsline {subsection}{\numberline {3.1.2}src/vgitoolkit/vaucanson/vgitoolkit}{22}
+\contentsline {subsubsection}{VJGraph}{22}
+\contentsline {subsubsection}{Geometry module}{22}
+\contentsline {paragraph}{Geometry Properties:}{22}
+\contentsline {paragraph}{Layouts:}{22}
+\contentsline {paragraph}{GeometricUtilities:}{23}
+\contentsline {subsubsection}{Drawing module}{23}
+\contentsline {paragraph}{Drawing Properties:}{23}
+\contentsline {subsubsection}{XML}{23}
+\contentsline {subsubsection}{Translation to JGraph}{23}

@@ -1,0 +1,297 @@
+\documentclass[a4paper, 12pt]{article}
+
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{latexsym}
+
+\title{\huge{Protocoles de liaison}}
+
+\lhead{Protocoles de liaison}
+\chead{}
+\rhead{EPITA 2008}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\pagestyle{fancy}
+
+
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\newpage
+
+\section{Point to Point Protocol}
+\label{sec:PPP}
+
+\begin{itemize}
+\item Liaison point à point
+\item HDLC ne peut être utilisé dans un environnement multiprotocolé,
+  PPP remédie a cet inconvénient
+\item Un champ spécifique ``Protocol-ID'' est inséré entre le champ
+  ``commande'' et le champ ``données''
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+\begin{tabular}[c]{| c | c | c | c | c | c | c |}
+  \hline
+  8 & 8 & 8 & 16 & 16 & 8 & 8 \\
+  \hline
+  Fanion & Adresse & Commande & Protocole & Données & FCS & Fanion \\
+  \hline
+  0111 1110 & 1111 1111 &     &           &         &     & 0111 1110 \\
+  \hline
+\end{tabular}
+
+  \caption{Trame PPP}
+  \label{ppp}
+\end{figure}
+
+\begin{itemize}
+\item Adresse: invisible dans une liaison point à point, valeur fixée
+  à FF
+\item Protocole:
+  \begin{itemize}
+  \item 0x0021 $\rightarrow$ IPV4
+  \item 0x800F $ \rightarrow$ IPV6
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\item peut fonctionner aussi bien sur une liaison asynchrone que sur
+  une liaison synchrone
+\item sur une liaison synchrone $=$  transparence comme dans HDLC
+  (insertion d'un zéro de transparence)
+\item sur une liaison asynchrone, la transparence du fanion est
+  assurée par la séquence de caractère ESC\_PPP, ESC\_FLAG
+\item le caractère ESC\_PPP, est remplacé par la séquence ESC\_PPP, ESC\_ESC
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}[c]{| c | c | c | c | c |}
+    \hline
+    \ldots & Fanion & \ldots & ESC\_PPP & \ldots \\
+    \hline
+  \end{tabular}
+  \caption{Message à envoyer}
+  \label{fig:sendmsg}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}[c]{| c | c | c | c | c | c | c | c | c |}
+    \hline
+    Fanion & \ldots & ESC\_PPP & ESC\_FLAG & \ldots & ESC\_PPP &
+    ESC\_ESC & \ldots & fanion \\
+    \hline
+  \end{tabular}
+  \caption{Message envoyé}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}[c]{| c | c | c | l |}
+    \hline
+    MM & P/P & MMM & M: Modification \\
+    11 &     & 100 & SABM: Set Asynchronous Protocol Mode \\
+    11 &     & 110 & SABME: Set Asyncronous Protocol Mode Extended \\
+    00 &     & 010 & DISC: Disconnected \\
+    00 &     & 011 & UA: Unnumbered Acknowledge \\
+    01 &     & 100 & FRMR: FRaMe Reject \\
+    11 &     & 000 & DM: Disconnect Mode \\
+    \hline
+  \end{tabular}
+  \caption{Trame non numéroté}
+\end{figure}
+
+
+\section{Serial Line Internet Protocol}
+\label{sec:SLIP}
+
+\begin{itemize}
+\item asynchrone orienté caractère
+\item très simple
+\item n'effectue que la délimitation des trames
+\item n'offre aucun service complémentaire: pas de détection, ni de
+  correction d'erreurs
+\item seule la transparence aux caractères de délimitation est réalisée
+\end{itemize}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}[h]{| c | c | c |}
+    \hline
+    END & Caractères transports & END \\
+    0xC0 &                      & 0xC0 \\
+    \hline
+  \end{tabular}
+  \caption{Structure de la trame}
+\end{figure}
+
+\begin{itemize}
+\item La transparence des caractères END est assurée par la séquence
+  ESC\_SLIP, ESC\_END
+\item le caractère d'échappement ESC\_SLIP est lui-même remplacé par
+  ESC\_SLIP, ESC\_ESC
+\end{itemize}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}[h]{| c | c | c | c | c |}
+    \hline
+    \ldots & END & \ldots & ESC\_SLIP & \ldots \\
+    \hline
+  \end{tabular}
+  \caption{Message à envoyer}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}[h]{| c | c | c | c | c | c | c | c | c |}
+    \hline
+    END & \ldots & ESC\_SLIP & ESC\_END & \ldots & ESC\_SLIP &
+    ESC\_ESC & \ldots & END \\
+    \hline
+  \end{tabular}
+  \caption{Message envoyé}
+\end{figure}
+
+\section{HDLC}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}[h]{| c | c | c | c | c | c |}
+    \hline
+    8 & 8 & 8 & 16 & 16 & 8 \\
+    \hline
+    Fanion & Adresse (sur 8 bits MOD8) & Commande & INFO & FCS & F \\
+    \hline
+  \end{tabular}
+  \caption{Trame}
+\end{figure}
+
+
+\subsection{Adresse}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}[h]{| c | c |}
+    \hline
+    0000 0001 & requête \\
+    0000 0011 & réponse \\
+    \hline
+  \end{tabular}
+\end{figure}
+
+\begin{itemize}
+\item Mode de base: MOD8
+\item le champ ``commande'' est codé sur 8 bits
+\end{itemize}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}[h]{| c | c |}
+    \hline
+    0000 0100 & requête \\
+    0000 1100 & réponse \\
+    \hline
+  \end{tabular}
+\end{figure}
+
+\begin{itemize}
+\item Mode étendu: MOD128
+\item le champ ``commande'' est codé sur 16 bits
+\end{itemize}
+
+
+\subsection{Trame (I)}
+
+\vspace{0.5cm}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}[h]{| c | c | c | c |}
+    \hline
+    0 & $N(S)$ & F/F & $N(R)$ \\
+    \hline
+  \end{tabular}
+\end{figure}
+
+\begin{itemize}
+\item 0: code d'identification de trame
+\item $N(S)$: numéro de séquence de trame envoyée (s: send)
+\item $N(R)$: numéro de séquence de trame reçue (r: receive)
+\item Codé sur 3 bits en MOD8: trames numérotées de 0 à 7
+\item Codé sur 7 bits en MOD128: trame numérotées de 0 à 127
+\end{itemize}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}[h]{| c | c | r l | c | c |}
+    \hline
+    Ns & Nr  &   &  & Ns & Nr \\
+    \hline
+    0  & 0 & I, Ns=0, P=0, Nr=0 & & 0 & 0 \\
+    1 & 0 & I, Ns=1, P=0, Nr=0 & & 0 & 1 \\
+    2 & 0 & I, Ns=2, P=1, Nr=0 & & 0 & 2 \\
+    3 & 0 & & S, RR, F=1, Nr=3 & 0 & 2 \\
+    3 & 0 & I, Ns=3, P=0, Nr=0 & & 0 & 3 \\
+    4 & 0 & I, Ns=4, P=0, Nr=0 & & 0 & 3 \\
+    5 & 0 & I, Ns=5, P=0, Nr=0 & & 0 & 3 \\
+    6 & 0 & & S, REJ, F=1, Nr=3 & 0 & 3 \\
+    3 & 0 & I, Ns=3, P=0, Nr=0 & & 0 & 3 \\
+    \hline
+  \end{tabular}
+\end{figure}
+
+
+\subsection{Trame de supervision (S)}
+
+\begin{figure}[h!]
+  \centering
+
+  \begin{tabular}[b]{| c | c | c | c |}
+    \hline
+    10 & SS & P/F & $N(R)$ \\
+    \hline
+  \end{tabular}
+\end{figure}
+
+\begin{itemize}
+\item 10: code d'identification
+\item SS:
+  \begin{itemize}
+  \item 00: Receive Ready (accusé positif, XON contrôle de flux
+  \item 01: Reject (accusé négatif, retransmission séquentielle à
+    partir de l'erreur
+  \item 10: Receive Not Ready (accusé positif, XOFF contrôle de flux)
+  \item 11: Selective REJect (Accusé négatif, retransmission
+    uniquement de la trame demandée)
+  \end{itemize}
+\end{itemize}
+Non utilisé dans les WAN.
+
+
+\subsection{Rappels}
+
+\begin{itemize}
+\item Mode ABM: primaire - primaire $\rightarrow$ Full Duplex
+\item Mode ARM: primaire - secondaire $\rightarrow$ Half Duplex
+\item Mode NRM: maître - esclave
+\end{itemize}
+
+
+\end{document}

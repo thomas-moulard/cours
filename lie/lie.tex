@@ -1,0 +1,71 @@
+\documentclass[a4paper, 12pt, leqno]{report}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+
+\title{\huge{Groupes et algebre de Lie}}
+
+\lhead{Groupes et algebre de Lie}
+\chead{}
+\rhead{EPITA 2008}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+% \renewcommand{\H}{\stackrel{\wedge}{H}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+
+
+\pagestyle{fancy}
+
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+
+\section{Rappel sur les groupes}
+
+\paragraph{Definition}
+
+On appelle commutateur de $x$ et $y$, l'element $xyx^{-1}y^{-1}$. On
+note $G'$ et on l'appelle groupe derive l'ensemble
+$$G' = \left \{ xyx^{-1}y^{-1} \; | \; (x,y) \in G^2 \right \}$$
+
+\paragraph{Propriete}
+
+$G'$ est un groupe, et un sous groupe de $G$.
+
+\paragraph{Definition}
+
+Un groupe $G$ est dit resoluble si il existe $p \in \N^*$ tel que
+$G^{(p)} = \left \{ e \right \}$.
+\begin{itemize}
+\item $G^{(0)} = G$
+\item $G^{(p+1)} = \left( G^{(p)} \right)'$
+\end{itemize}
+
+\paragraph{Definition}
+
+$G$ est abeblien lorsque $\star$ est commutative. En consequence, tout
+sous groupe est distingue ($xHx^{-1} = Hxx^{-1} = H$).
+
+\paragraph{Definition}
+
+Le centre de $G$, note $Z(G)$, est l'ensemble des elements qui
+commutent avec tout le monde.
+
+$$Z(G) = \left \{ g \in G \; | \; \forall x \in G \; g \star x = x \star
+  g \right \}$$
+
+\end{document}

@@ -1,0 +1,745 @@
+\documentclass[a4paper, 12pt, leqno]{article}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{xspace}
+
+\title{\huge{Introduction à la théorie des jeux}}
+
+\lhead{Théorie des jeux}
+\chead{}
+\rhead{EPITA 2008}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\renewcommand{\P}{\ensuremath{\mathcal{P}}}
+\newcommand{\M}{\ensuremath{\mathcal{M}}}
+\newcommand{\FN}{\ensuremath{\mathcal{N}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+
+\newcommand{\argmax}{\mathop{\mathrm{argmax}}}
+\newcommand{\transpose}[1]{{\vphantom{#1}}^{\mathit t}{#1}}
+
+\pagestyle{fancy}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+
+\setcounter{page}{1}
+\section{Introduction}
+
+\subsection{Conventions}
+
+\paragraph{}
+Les conventions suivantes seront utilisés tout au long de ce document
+pour les paramètres des jeux, et ne seront pas répétés:
+
+\begin{itemize}
+\item un joueur $p \in \P$ (l'ensemble des joueurs).
+\item une stratégie d'un joueur $p$, $\sigma_p \in S_p$ (où $S_p$ est
+  l'ensemble des stratégies du joueur $p$).
+\item on note $\sigma_{-p}$, un profil stratégique de $\Pi_{j \in \P
+    \backslash p} S_j$.
+\item des fonctions de gain (ou d'utilité) $u_p : \Pi_{p \in \P} S_p
+  \rightarrow \R$.
+\end{itemize}
+
+\subsection{Rappel sur les relations d'ordre}
+
+\paragraph{}
+Une relation d'ordre est une relation à deux arguments vérifiant:
+\begin{itemize}
+\item réflexivité large: $\forall x \; x \leq x$. Si anti-reflexivité
+  on a alors un ordre strict: $\forall x \; \neg x \leq x$.
+\item transitivité: $\forall x,y,z \;\; x \leq y \wedge y \leq z
+  \Rightarrow x \leq z$.
+\item anti-symétrique: $\forall x \forall y \;\; x \leq y \wedge y \leq
+  x \Rightarrow x = y$. Dans le cas d'un ordre strict, on écrit
+  $\forall x \forall y \; \neg \left ( x < y \wedge y < x \right )$
+\end{itemize}
+
+\paragraph{}
+Un ordre est dit total lorsque:
+\begin{itemize}
+\item ordre large total: $\forall x \forall y \;\; x \leq y \vee y
+  \leq x$.
+\item ordre strict total $\forall x \forall y \;\; \neg \left ( x \leq
+    y \right ) \wedge \neg \left ( y  \leq x \right )$.
+\end{itemize}
+
+\subsection{Définitions}
+
+\paragraph{Définition:}
+
+$\sigma \in \Pi_{p \in \P} S_p$ est appelé profil stratégique. Si \P
+est ordonné, le jeu s'effectue de façon non simultanée, autrement dit
+si \P est non ordonnée revient à déclarer que le jeu est \emph{simultanée}.
+
+\paragraph{Exemple:}
+
+Le jeu d'échecs n'est pas simultanée, $\P = \{ \textrm{blanc},
+\textrm{noir} \}$ et $ \textrm{blanc} > \textrm{noir}$.
+
+\paragraph{Remarque:}
+
+Si $\P$ est totalement ordonné (au sens strict) alors on peut indexer
+les joueurs de \P. Un ensemble d'indices $I$ étant un ensemble
+possedant un plus petit élément tel que $\forall A \subset I \;\; A$
+possède un plus petit élément aussi.
+
+\paragraph{Définition: Relation de préférence}
+
+Une relation de préférence $<_p$ du joueur $p$ est une relation
+d'ordre partielle sur l'ensemble de ses stratégies $S_p$.
+
+\paragraph{Définition: Rationalité}
+
+Un joueur est dit rationnel lorque
+
+$$\forall \sigma_pj, \sigma_{p'} \in S_p  u_p(\sigma_{-p}, \sigma_p)
+< u_i(\sigma_{ip}, \sigma_{p'}) \Rightarrow \sigma_p > \sigma_{p'}$$
+Si $\sigma_p > \sigma_{p'}$, on dit que $\sigma_p$ domine
+$\sigma_{p'}$.
+
+\section{Les jeux matricielles}
+
+Pour un jeu à deux joueurs, on représente matriciellement le jeu
+$\Gamma = \langle \{R, C\}, \{S_R, S_C\}, \{u_R, u_C\} \rangle$ de la
+façon suivante, où $\sigma_i \in S_R$ et $\sigma_j \in S_C$:
+
+$$A \in \M_{|S_R| \times |S_C|}(\R) \textrm{ où } A_{ij} =
+u_R(\sigma_i, \sigma_j)$$
+
+$$B \in \M_{|S_R| \times |S_C|}(\R) \textrm{ où } B_{ij} =
+u_C(\sigma_i, \sigma_j)$$
+
+\paragraph{Remarque:}
+
+il faut que $S_R$ et $S_C$ soient bien ordonnées, ou que leurs
+stratégies soient indexées. De plus, on considère uniquement le cas où
+$S_R$ et $S_C$ sont finis.
+
+\paragraph{Exemple: le dilemne des prisonniers\\}
+
+Représentation matricielle:
+$$
+\left (
+\begin{matrix}
+  C & -3 & -10 \\
+  T & 0 & -5
+\end{matrix}
+\right )
+$$
+
+On remarque que $C < T$, un prisonnier rationnel jouera $T$ (donc la
+trahison).
+
+\subsection{Quelques définitions}
+
+\subsubsection*{Jeu symétrique}
+
+Un jeu est dit symétrique lorsque:
+\begin{itemize}
+\item $\forall (p, p') \in \P^2 \;\; S_p = S_{p'}$
+\item le jeu est simultané
+\item Pour toute permutation $\Pi$ sur l'ensemble des joueurs, les
+  fonctions d'utilité renvoient des valeurs permutées suivant la
+  permutation donnée.
+\end{itemize}
+
+Pour un jeu matriciel $(A, B)$, dire qu'il est symétrique revient à
+dire que $B = A^t$.
+
+\subsubsection*{Meilleur réponse}
+
+Une meilleur réponse d'un joueur $p \in \P$ à un profil stratégique
+$\sigma$ est une stratégie $\sigma_p \in S_p$ telle que
+
+$$\forall \sigma^*_p \in S_p \;\; u_p(\sigma_{-p}, \sigma^*_p) <
+u_p(\sigma_{-p}, \sigma_p)$$
+On la notera
+
+$$br(\sigma_{-p}) = \argmax_{\star \in S_p} (u_p(\sigma_{-p},
+\star))$$
+
+\subsubsection*{Jeu à somme nulle}
+
+Un jeu est dit à somme nulle lorsque tous ce qui est a gagné par des
+joueurs et perdus par d'autres en quantité égale, c'est à dire:
+
+$$\forall \sigma \in \Pi S_p \;\; \sum_{p \in \P} u_p(\sigma) = 0$$
+
+\paragraph{Exemple:}
+
+Le poker, et les jeux à défaite - victoire - nul sont à somme nulle.
+
+
+\subsection{La notion d'information}
+
+\subsubsection{Perfection}
+
+Un jeu est à information parfaite lorsque chaque joueur connait les
+actions de chaque autre joueur au moment de jouer et leur
+conséquence. Dans le cas contraire, on dit que le jeu est à
+information imparfaite.
+
+\paragraph{Exemple:}
+\begin{itemize}
+\item le dilemme des prisonniers est à information imparfaite.
+\item les echecs sont à information parfaite.
+\end{itemize}
+
+\paragraph{Exemple: pierre, feuille, ciseaux}
+
+PFC est un jeu simultané à information imparfaite. Sa représentation
+matricielle est la suivante
+
+$$
+\begin{pmatrix}
+  P & 0 & -1 & 1 \\
+  F & 1 & 0  & -1 \\
+  C & -1 & 1 & 0
+\end{pmatrix}
+$$
+
+\subsubsection{Complétude}
+
+Un jeu est dit à information complète lorsque les paramètres du jeu
+sont connus de tous les joueurs (par connu, on sous-entend
+accessible). Dans le cas contraire, le jeu est à information
+incomplète.
+
+\paragraph{Exemple:}
+
+\begin{itemize}
+\item le poker est à information complète, mais aussi à information imparfaite.
+\item Le traffic sur internet est à information incomplète (on ne
+  connaît pas le nombre d'utilisateurs).
+\end{itemize}
+
+\subsection{Equilibre de Nash}
+
+\paragraph{Définition:}
+
+Un équilibre de Nash est un profil stratégique $\sigma$ tel que
+$$\forall p \in \P \;\; \forall \sigma^*_p \in S_p \;\;\;
+u_p(\sigma_{-p}, \sigma_p^*) \leq u_p(\sigma)$$
+
+\paragraph{Exemple:}
+Le dilemme des prisonniers
+
+Pour ce jeu, le profil stratégique (trahir, trahir) est un équilibre
+de Nash.
+
+\paragraph{Propriété:}
+
+$\sigma$ est un équilibre de Nash si et seulement si $\forall p \in \P
+\;\; \sigma_p \in br(\sigma_{-p})$.
+
+\paragraph{Remarque:}
+
+L''équilibre de Nash n'est pas universel. Il existe des jeux sans
+équilibre de Nash (comme Pierre - Feuille - Ciseaux).
+
+\paragraph{Propriété:}
+
+L'équilibre de Nash n'est pas unique dans un jeu.
+
+\paragraph{Exemple:}
+
+La guerre des sexes.
+
+\begin{center}
+  \begin{tabular}{c | c c}
+    & Foot & Shopping \\
+    \hline
+    Foot & $(1,2)$ & $(0, 0)$ \\
+    Shopping & $(0,0)$ & $(2,1)$
+  \end{tabular}
+\end{center}
+
+
+
+Il existe deux équilibres de Nash: (Foot, Foot) et (Shopping, Shopping).
+
+\subsection{Forme normale}
+
+\subsubsection{Définition}
+
+Etant donné un jeu $\Gamma$, on peut définir la forme normale de
+$\Gamma$ notée $\FN_\Gamma$ qui est un jeu dans lequel:
+\begin{itemize}
+\item Si $\P$ est l'ensemble des joueurs de $\Gamma$ alors $\P$ est
+  l'ensemble des joueurs de $\FN_\Gamma$.
+\item Si $S_p$ est l'ensemble des stratégies d'un joueur $p \in \P$
+  alors $\Delta(S_p)$, l'ensemble des distributions de probabilités
+  sur $S_p$, est l'ensemble des stratégies du joueur $p$.
+$$\delta \in \Delta(S_p) \Leftrightarrow \delta : S_p
+\longrightarrow \left[ 0,1 \right] \textrm{ tel que } \int_{S_p}
+\delta = 1$$
+\item La fonction d'utilité $\overline{u_p}$ d'un joueur $p \in \P$
+  est l'espérance de son gain.
+  \begin{eqnarray*}
+    \overline{u_p}(\delta_i \ldots \delta_p) & = &  E(u_p(\delta_i \ldots
+    \delta_p)) \\
+    & = & \sum_{\sigma \in \Pi S_p} u_p(\sigma) P(X = \sigma)
+  \end{eqnarray*}
+  où $X$ est la variable aléatoire qui donne le profil stratégique
+  obtenu aux moyens des distributions données.
+\end{itemize}
+
+\subsubsection{Calcul des utilités dans un jeu sous forme normale}
+
+Soit $\delta_R, \delta_C$ deux stratégies d'un jeu sous forme normale,
+et $S_R = \left\{ \sigma_1 \ldots \sigma_n \right\}$ et $S_C = \left\{
+  \tau_1 \ldots \tau_m \right\}$.\\
+On observe que:
+$$\sum_{i \leq n} S_R(\sigma_i) = 1 \textrm{ et } \sum_{i \leq m}
+S_C(\tau_i) = 1$$
+
+On peut assimiler $S_R$ et $S_C$ à deux vecteurs $\lambda$ et $\mu$
+respectivement dans $\R^n$ et $\R^m$ vérifiant $\lambda_i =
+\delta_R(\sigma_i)$ et $\mu_i = \delta_C(\tau_i)$. On obtient naturellement que
+les représentants de $\sigma_i$ et $\tau_i$ sont les bases canoniques
+respectives de $\R^n$ et $\R^m$.\\
+Ainsi pour $(\lambda, \mu) \in \Delta_n \times \Delta_m$:
+\begin{eqnarray*}
+  \overline{u_p}(\lambda, \mu) & = & \overline{u_p}(S_R, S_C) \\
+  & = & \sum_{(\sigma, \tau) \in S_R \times S_C} u_p(\sigma,
+  \tau)P(X=(\sigma, \tau)) \\
+  & = & \sum_{(\sigma, \tau) \in S_R \times S_C} \delta_r(\sigma)
+  \delta_C(\tau) u_p(\sigma, \tau) \\
+  & = & \sum_{\sigma \in S_R} \sum_{\tau \in S_C} \delta_r(\sigma)
+  \delta_C(\tau) u_p(\sigma, \tau) \\
+  & = & \sum_{i \leq n} \sum_{j \leq m} \delta_r(\sigma_i)
+  \delta_C(\tau_j) u_p(\sigma_i, \tau_j) \\
+\end{eqnarray*}
+
+On pose $P \in \M_{n \times m}{R}$ telle que $P_{ij} = u_p(\sigma_i,
+\tau_j)$. Et comme $\lambda_i = \delta_R(\sigma_i)$ et $\mu_i =
+\delta_C(\tau_i)$.\\
+On a donc:
+$$\overline{u_p}(\lambda, \mu) = \sum_{i \leq n} \sum_{j \leq m} \delta_r(\sigma_i)
+  \delta_C(\tau_j) P_{ij} = \lambda^t . P . \mu$$
+
+\subsubsection{Exemple de calcul}
+
+On considère \emph{pierre - feuille - ciseaux}, et on fait jouer une
+stratégie uniforme aux deux joueurs.\\
+Pour $p \in \left\{ R, C \right\}$, on a:
+$$\lambda_p =
+\begin{pmatrix}
+  \frac{1}{3} \\
+  \frac{1}{3} \\
+  \frac{1}{3}
+\end{pmatrix}
+$$
+
+\begin{eqnarray*}
+  u_R(\lambda_R, \lambda_C) & = & \left( \frac{1}{3} \right)^2
+  \begin{pmatrix}
+    1 & 1 & 1
+  \end{pmatrix}
+  \begin{pmatrix}
+    0 & -1 & 1 \\
+    1 & 0  & -1 \\
+    -1 & 1 & 0
+  \end{pmatrix}
+  \begin{pmatrix}
+    1 \\
+    1 \\
+    1
+  \end{pmatrix} \\
+  & = & \frac{1}{9}     %% Deuxieme ligne
+  \begin{pmatrix}
+    0 & 0 & 0
+  \end{pmatrix}
+  \begin{pmatrix}
+    1 \\
+    1 \\
+    1
+  \end{pmatrix}\\
+  & = & 0 \\               %% 3e ligne
+  \textrm{De même } u_C(\lambda_R, \lambda_C) & = & 0
+\end{eqnarray*}
+
+
+Supposons maintenant que $R$ joue une stratégie $\alpha =
+\begin{pmatrix}
+  x \\
+  y \\
+  1 - (x + y)
+\end{pmatrix}
+$ avec $x,y > 0$.\\
+On obtient
+\begin{eqnarray*}
+  u_R(\alpha, \lambda_C) & = & \frac{1}{3}(x y (1 - (x + y))
+  \begin{pmatrix}
+    0 & -1 & 1 \\
+    1 & 0  & -1 \\
+    -1 & 1 & 0
+  \end{pmatrix}
+  \begin{pmatrix}
+    1 \\
+    1 \\
+    1
+  \end{pmatrix} \\
+  u_R(\alpha, \lambda_C) & = & \frac{1}{3}(x y (1 - (x + y)) %% nouvelle ligne
+  \begin{pmatrix}
+    0 \\
+    0 \\
+    0
+  \end{pmatrix} \\
+  & = & 0 \leq u_R(\lambda_R, \lambda_C)                              %% nouvelle ligne
+\end{eqnarray*}
+
+\subsection{Propriétés}
+
+\subsubsection*{Terminologie}
+
+Si $\Gamma$ est un jeu dans lequel $S_p$ est l'ensemble des stratégies
+du joueur $p \in \P$, on appelle:
+\begin{description}
+\item[stratégie pure] un élément de $S_p$.
+\item[stratégie mixte] une stratégie du jeu $\FN_p$.
+\end{description}
+On confondra les stratégies pures avec les distributions
+atomiques. Par extension, $\sigma \in \Pi S_p$ est un profil
+pur. $\delta \in \Pi \Delta(S_p)$ est un profil mixte.
+
+\paragraph{Lemme}
+
+Etant donné un jeu matriciel $(R,C)$ et un profil mixte $(\lambda,
+\mu) \in \Delta_n \times \Delta_m$, il existe toujours une meilleur
+réponse pure à $\lambda$ (reps. à $\mu$).
+
+\subsubsection*{Preuve}
+
+Soit $\mu \in \Delta_m$ fixé. Et supposons que $\lambda_0 \in
+br(\mu)$.\\
+On a
+
+$$\transpose{\lambda_0}R\mu = \sum_{i \leq n}\lambda_0(i).
+\transpose{e_i}.R.\mu = \max_{\alpha \in \Delta_n} \transpose{\alpha}
+R \mu$$
+
+Examinons les gains. Soit $\left\{ \transpose{e_i} R \mu \; | \; i
+  \leq n \right\}$ un ensemble fini. Il existe $e_k$ tel que
+$\transpose{e_k}R\mu = \max_{i \leq n} (\transpose{e_i}R\mu)$.  Si
+l'on suppose qu'il existe $j$ tel que $\lambda_0(j) > 0$ et que
+$e_jR\mu \neq \max_{i \leq n} (\transpose{e_i}R\mu)$.\\
+Alors on a
+
+$$\transpose{\lambda_0}R\mu < \sum_{i \neq j, i \neq k}
+\lambda_0 . \transpose{e_i} R \mu + (\lambda_0(j) + \lambda_0(i)).
+\transpose{e_k}R\mu$$
+Ainsi si $\lambda_0(i) > 0$ alors cela implique
+que $\transpose{e_i}R\mu = \max(e_iR\mu) = G$.\\
+Ainsi
+\begin{eqnarray*}
+  \transpose{\lambda_0}R\mu & = & \sum_{i \in I} \lambda_0(i)
+  . \transpose{e_i} R \mu \\
+  & = & \sum_{i \in I} \lambda_0(i) G \\
+  & = & G \\
+  & = & \transpose{e_k} R \mu
+\end{eqnarray*}
+
+
+\paragraph{Théorème}
+
+La recherche d'une meilleure réponse à une stratégie mixte $\mu$
+s'effectue en $\mathcal{O}(n)$.
+
+\paragraph{Démonstration}
+
+Par le lemme précedant, on calcule l'ensemble des valeurs $\left\{
+  \transpose{e_i}R\mu \; | \; i < n \right\}$, et on extrait $i_0$ qui
+réalise le maximum.
+
+
+\paragraph{Théorème}
+
+Si $(\lambda, \mu)$ est un équilibre de Nash, alors on a
+\begin{eqnarray*}
+  \forall i \leq n \; \lambda_i > 0 & \Rightarrow & e_i \in br(\mu) \\
+  \forall j \leq m \; \mu_j > 0 & \Rightarrow & f_j \in br(\lambda)
+\end{eqnarray*}
+
+\paragraph{Démonstration}
+
+En utilisant le raisonnement de la preuve du lemme précedant.
+
+On dit que $\lambda$ est une combinaison convexe de $\left\{ x_i,
+  \ldots, x_n \right\} \in \R^n$ lorsque
+$$\lambda = \sum_{i \leq n} \textrm{ avec } \sum_{i \leq n} \lambda_i
+= 1 \textrm{ et } \forall i \leq n \; \lambda_i \geq 0$$
+
+Ainsi si $(\lambda, \mu)$ est un équilibre de Nash, $\lambda$ et $\mu$
+sont construit dans un sous simplexe de $\Delta_n$ et $\Delta_m$
+respectivement.
+
+\paragraph{Propriété}
+
+Si $\forall i \in I \subset \left[1..n\right] \; \transpose{e_i}R\mu = C^{te}$
+alors si $\sum x_i = 1$ et $x_i \geq 0$
+$$\sum_{i \in I} x_i.\transpose{e_i}R\mu = C^{te}$$
+
+\paragraph{Théorème}
+
+(Xieng, Deng, 2006)
+
+Trouver un équilibre de Nash pour un jeu matriciel (à deux joueurs)
+est un problème PPAD-complet.\\
+PPAD signifie ``problème dont on est assuré qu'il existe une solution
+que l'on souhaite trouver''.
+
+\paragraph{Théorème}
+
+(Nash, 1954)
+
+Tout jeu sous forme normale possède un équilibre de Nash (en stratégie mixte).
+
+
+\section{Les jeux déterministes}
+
+Ceux sont des jeux pour lesquels le hasard n'intervient pas:
+\begin{itemize}
+\item le nombre de joueurs est déterminé.
+\item les stratégies accessibles sont déterministes.
+\end{itemize}
+
+\emph{Attention!} dans le cas des jeux sous forme normale, la
+stratégie peut être probabiliste mais le joueur a accès à toutes.
+
+Par exemple, le poker est probabiliste, les fonctions d'utilité sont
+des fonctions probabilistes.\\
+Dans les jeux sous forme normale dérivant d'un jeu matriciel où la
+matrice est déterministe, les gains ne sont pas probabilistes.
+
+\paragraph{Remarque}
+
+On peut voir un jeu de carte donné, non pas comme un jeu probabiliste
+(la distribution fait alors partie du jeu) mais comme une classe de
+jeu déterministe à information incomplète.
+
+\subsection{Définitions et théorèmes}
+
+\paragraph{Définition}
+
+$\sigma_p$ est une stratégie gagnante pour $p \in \P$ lorsque dans un
+jeu d'utilité $\{0, -1, 1\}$
+$$\forall \sigma_{-p} u_p(\sigma_{-p}, \sigma_p) = 1$$
+
+\paragraph{Théorème}
+(Zermelo)
+
+Tout jeu à deux joueurs, à information complète et parfaite,
+déterministe, dans lequel les gains sont (Victoire ou Défaite) à somme
+nulle est tel que l'un des deux joueurs possède une \emph{stratégie
+  gagnante}.
+
+\paragraph{Théorème}
+(Von Neumann)
+
+Dans tout jeu à deux joueurs à information complète, parfaite,
+déterministe à somme nulle aux gains (Victoire, Défaite, Nul), l'un
+des joueurs possède une stratégie dans laquelle il assure au moins le
+nul.
+
+$$\exists i \in \{p_1, p_2\},\; \exists \sigma_i \; \forall \sigma_i'
+\;\; u_p(\sigma_i', \sigma_i) \geq 0$$
+
+\paragraph{Exemples}
+
+\begin{itemize}
+\item Jeu de go (Zermelo)
+\item Echecs (Von Neumann)
+\item Dames (Von Neumann), une stratégie gagnante est même connu désormais.
+\end{itemize}
+
+\subsection{Le jeu de Gale}
+
+On se donne un quadrillage de taille $n \times k \; (n > 0, k >
+0)$. Alternativement, deux joueurs choisissent un carré et enlèvent
+tout carré situé en haut et à droite du carré choisi.
+
+Le perdant est celui qui prend le dernier carré. Le gagnant est
+l'autre. A chaque coup, un joueur est obligé de prendre un carré (on
+ne passe jamais son tour).
+
+\paragraph{Propriété}
+
+Le premier joueur possède une stratégie gagnante.
+
+\paragraph{Démonstration}
+
+Par le théorème de Zermelo, il existe pour l'un des joueurs une
+stratégie gagnante.
+\begin{itemize}
+\item Supposons que le joueur 2 la possède.
+\item Demandons au joueur 1 de jouer le dernier carré, et laissons le joueur
+  2 utiliser sa stratégie gagnante.
+\end{itemize}
+A partir de là, deux solutions sont possibles:
+\begin{itemize}
+\item soit le premier coup à jouer pour la stratégie gagnante est le
+  dernier carré, auquel cas le joueur 2 n'a pas de stratégie gagnante.
+\item soit le premier coup est $(n_1, k_1)$ pour la stratégie
+  gagnante. En remarquant que le joueur 1 aurait joué $(n_1, k_1)$
+  tout en laissant le jeu dans le même état qu'après le joueur 2, et
+  en utilisant ce raisonnement inductivement sur chaque coup, on
+  remarque que quelque soit ce que le joueur 2 aurait pu jouer, le
+  joueur 1 peut le faire.\\
+  Il vient que le joueur 1 peut jouer la stratégie gagnante du joueur
+  2.
+\end{itemize}
+
+\subsubsection{Le cas $2 \times n$}
+
+Soit un quadrillage $2 \times n$. On notera un \emph{état} du jeu $\langle
+p, q \rangle$, c'est à dire un jeu où la ligne 1 a $p$ cases et la
+ligne 2 a $q$ cases.
+
+\paragraph{Stratégie gagnante}
+
+\begin{itemize}
+\item Premier coup: (n, 2)
+\item Si le joueur 2 joue $(k, i)$ $(i \in \{1, 2\}, \; k \leq n, (k,
+  i) \neq (n, 2))$
+  \begin{itemize}
+  \item Si $(i = 1)$ alors le joueur 1 joue $(k-1, 2)$
+  \item Si $(i = 2)$ alors le joueur 1 joue $(k+1, 2)$
+  \end{itemize}
+\end{itemize}
+
+\paragraph{Démonstration}
+
+Après le premier coup, le jeu est en $\langle n, n-1 \rangle$.
+
+\begin{itemize}
+\item Si le joueur 2 joue $\langle k, 1 \rangle$ alors le jeu est en
+  $\langle k-1, k-1\rangle$. Il devient possible au joueur 1 de jouer
+  $(k-1, 2)$ dont on remarque que c'est le coup initial pour un jeu $2
+  \times k-1$.
+\item Si le joueur 2 joue $\langle k, 2 \rangle$ alors le jeu est en
+  $\langle n, k-1 \rangle$, le coup $k = n$ étant impossible, le
+  joueur 1 peut jouer $(k+1, 1)$ laissant le jeu dans l'état $\langle
+  k-1, k \rangle$, soit le premier coup du joueur 1 dans un jeu $2
+  \times k$.
+\item Pour $k = 1$, le jeu $2 \times k$ est le jeu en jouant $(1, 2) =
+  (k, 2)$, la position devient $\langle 1, 1 \rangle$. Le joueur 2
+  perd.
+\end{itemize}
+Le résultat est donc montré inductivement.
+
+
+\subsubsection{Le cas $(n, n)$}
+
+\paragraph{Théorème}
+
+Le joueur 1 joue comme premier coup $(2, 2)$. Le joueur 1 répondra au
+joueur 2 par le coup symétrique suivant la diagonale du carré
+initiale. Ceci détermine une stratégie gagnante.
+
+\paragraph{Démonstration}
+
+\begin{itemize}
+\item Le jeu commence dans une position $\langle n, n \rangle$.
+\item Le joueur 2 peut donc:
+  \begin{itemize}
+  \item soit enlever $p$ carrés de la barre horizontale.
+  \item soit enlever $p$ carrés de la barre verticale.
+  \end{itemize}
+\item Considérons l'horizontal (sans perte de généralité):
+  \begin{itemize}
+  \item le jeu devient $\langle n, n-p \rangle$, si le joueur 1 joue
+    symétriquement, le jeu devient $\langle n-p, n-p$.
+  \item En posant $k = n - p$, on se retrouve dans jeu $(k, k)$ après
+    le premier coup du joueur 1. Ce cas initial est perdant pour le
+    joueur 2.
+  \end{itemize}
+\end{itemize}
+Inductivement, on montre que cette stratégie est perdante pour le
+joueur 1.
+
+\paragraph{Remarque}
+
+On peut définir le jeu de Gale avec un quadrillage de dimensions
+supérieur à 2.
+
+On peut envisager des cas où les dimensions du jeu sont infinies
+(transfinies, Chomp en anglais).
+
+\paragraph{Définition}
+
+Un jeu à horizon infini est un jeu pour lequel on ne peut borner le
+nombre de coup.*
+
+\paragraph{Exemple}
+\begin{itemize}
+\item Le jeu de Gale, les échecs sont à horizon finis.
+\item Le jeu de Gale transfini est à horizon infini, cependant le
+  nombre de tour est fini (\emph{i.e} on ne sait pas donner une borne
+  au nombre de coup, bien que ceux-ci soient finis.
+\item La bataille est à horizon infini où la partie peut être à temps
+  infini.
+\end{itemize}
+r
+
+\paragraph{Démonstration}
+
+(Echecs)
+
+64 cases, 32 pièces donc le nombre de configurations possibles aux
+échecs est inférieur $64^{33}$. Une règle indique qu'on ne passer plus
+de $N$ fois ($N$ fixé à l'avance) par la même configuration. On
+obtient que le nombre de coup est par $N 64^{33} < +\infty$.
+
+\section{Jeu sur un ensemble à ordre partiel}
+
+Plus communement appelé \emph{Poset game}: Partially ordered Set Game.
+
+\paragraph{Définition}
+
+Il s'agit de jeux (généralement à 2 joueurs) où l'on joue sur un
+ensemble partiellement ordonné $(E, <)$ (un poset) tel qu'il existe
+une élément minimal pour cet ordre, \emph{i.e} $\exists x \; \forall y
+\;  x \leqslant y$.
+
+On déclare perdant un joueur prenant l'élément minimal, gagnant les
+autres.
+
+Chaque coup consiste en la prise d'un élément $e_i \in E$ et on
+construit une suite $E_{i+1} = E_i \backslash \{ z \in E \; | \; e
+\leqslant z \}$.
+
+\paragraph{Remarque}
+
+Si le jeu est à 3 joueurs ou plus, l'existence d'une stratégie
+gagnante n'est pas assuré.
+
+
+\paragraph{Exemple}
+
+\begin{itemize}
+\item Le jeu des allumettes. On dispose de $N$ allumettes munies de
+  l'ordre linéaire. A chaque coup on peut prendre au plus $K$ allumettes.
+\item Les jeux de Nim. On dispose de piles de pièces de hauteur
+  variée. Chaque joueur à son tour prend au plus $k$ pièces sur une
+  même pile. Le perdant est celui qui ne peut plus rien enlever.
+\end{itemize}
+
+
+
+\end{document}

@@ -1,0 +1,323 @@
+\documentclass[a4paper, 12pt, leqno]{article}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+
+\newcommand{\transposee}[1]{{\vphantom{#1}}^{\mathit t}{#1}}
+%%\newcommand{\sup}{\mathop{\mathrm{Sup}}}
+
+\title{Analyse numérique matricielle}
+
+\geometry{vmargin=2.5cm, hmargin=3cm}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Rappels et notions}
+
+\par
+On se donne un corps $\mathbb{K}$ avec ($\mathbb{K} = \mathbb{C} \;
+ou \; \mathbb{K} = \mathbb{C}$).
+
+\par
+On note $
+$$M_{m,n}(K)$ l'espace des matrices à m lignes et n colonnes à
+coefficients dans $K$.
+$$A = (a_{ij}) \; i \in [1..m] \; et \; j \in [1..n]$$
+$$\transposee{A} = (a_{ji}) \; \textrm{est la transposée de} \; A$$
+$$A^{*} \in M_{m,n}(K) \; \textrm{tel que} \; a^{*}_{ij} = \overline{a_{ji}} \;
+\textrm{est la matrice adjointe de A.}$$
+
+\paragraph{Définition:}
+Si $A \in M_n(K)$ et $\lambda{}_1 \cdots \lambda{}_n$ les valeurs
+propres de $A$. On appelle rayon spectral de $A \; \rho(A) =
+max_{1 \leq i \leq n}|\lambda_i|$.
+
+\paragraph{Matrices semblables:}
+$A$ et $B$ sont semblables si et seulement si $\exists \; P$
+inversible tel que $B = P^{-1}AP$.
+
+\paragraph{Matrice normale:}
+Une matrice $A$ est dite normale si et seulement si $A^*A = AA^* = I$.
+
+\paragraph{Densité:}
+$I_n(\mathbb{C})$ est dense dans $M_n(\mathbb{C})$ si
+$$\forall A \in M_n(\mathbb{C}) \; \exists \; \textrm{une suite de
+  matrice} \; A_{\epsilon} \in I_n(\mathbb{C}) \; \textrm{tel que} \;
+A_{\epsilon} \longrightarrow_{\epsilon \rightarrow 0} A$$
+
+\subsection{Produit scalaire}
+
+$$\forall (x,y) \in \mathbb{R}^n \; (x,y) = \transposee{y}x = \sum_{i=1}^n{x_iy_i}$$
+$$\forall (x,y) \in \mathbb{C}^n \; (x,y) = y^*x = \sum_{i=1}^n{x_i\overline{y_i}}$$
+On note la norme associé $$\|x\| = \sqrt{(x,x)}$$.
+
+\paragraph{Propriétés:}
+$$\forall A \in M_n(\mathbb{R}) \; (Ax, y) = (x, \transposee{A}y)$$
+$$\forall A \in M_n(\mathbb{C}) \; (Ax, y) = (x, A^*y)$$
+
+\paragraph{Définition:}
+Soit $Q \in M_n(\mathbb{R})$. $Q$ est orthogonale si et seulement si
+$Q^{-1} = \transposee{Q}$ d'ou $\transposee{Q}Q = Q\transposee{Q} = I$.\\
+Soit $U \in M_n(\mathbb{C})$. $U$ est unitaire si et seulement si
+$U^*U = UU^* = I$ ie $U^{-1} = U^*$
+
+\paragraph{Proposition:}
+$\forall Q$ orthogonale, on a $\|Qx\|_2 = \|x\|_2 \; \forall x \in
+\mathbb{R}^n$.\\
+$\forall U$ unitaire, on a $\|Ux\|_2 = \|x\|_2 \; \forall x \in
+\mathbb{R}^n$.
+
+\paragraph{Remarque:}
+D'un manière générale $$\|x\|_p = \left(\sum_{i=1}^n{|x_i|^p}\right)^{\frac{1}{p}}$$
+
+\section{Réductions des matrices}
+
+\paragraph{Définition:}
+Une matrice $A \in M_n(\mathbb{C})$ est hermitienne si et seulement si
+$A^* = A$.
+
+\paragraph{Lemme 2.1:}
+Soit $u \in \mathbb{C}^n$ tel que $\|u\|_2 = 1$, alors la matrice $H =
+I - 2uu^*$ est une matrice hermitienne unitaire appelée matrice
+unitaire élèmentaire.
+
+\paragraph{Remarque:}
+Si $H$ est unitaire alors $H^2 = I$
+
+\paragraph{Lemme 2.2:}
+Soit $a \in \mathbb{C}^n \; (a \neq \overrightarrow{0})$.\\
+$\exists \; H \in M_n(\mathbb{C})$ une matrice unitaire élèmentaire et un
+nombre $\alpha \in \mathbb{C}$ tel que $$Ha = \alpha e_1 \;
+\textrm{où} \; e_1 = (1\;0 \cdots 0)$$.
+
+\subsection{Théorème de Schur}
+
+\par
+Soit $A \in M_n(\mathbb{C})$, il existe une matrice unitaire $U \in
+M_n(\mathbb{C})$ tel que $T = U^*AU$ soit triangulaire supérieure. Les
+élèments de la diagonale de $T$ sont les valeurs propres de $A$.
+
+\paragraph{Remarque:}
+Soit $A \in M_n(\mathbb{R})$ ayant toutes ses valeurs propres réelles
+alors $\exists \; Q$ orthogonale dans $M_n(\mathbb{R})$ tel que $\transposee{Q}AQ
+= T$.
+
+\paragraph{Corrolaire 1:}
+Une CNS pour qu'une matrice $A \in M_n(\mathbb{C})$ soit hermitienne
+est qu'il existe une matrice unitaire $U$ tel que $U^*AU = \nabla =
+\textrm{matrice diagonale réelle}$.
+
+\paragraph{Remarque:}
+Soit $A$ hermitienne alors $\exists \; U$ unitaire tel que $U^*AU =
+\nabla$. Alors $AU = U\nabla$
+$$U =
+\begin{pmatrix}
+  u_1 & \cdots & u_i & \cdots & u_n\\
+  \vdots & \vdots & \vdots & \vdots & \vdots \\
+  \vdots & \vdots & \vdots & \vdots & \vdots \\
+\end{pmatrix}$$
+où $u_i$ sont des matrices colonnes correspondant aux colonnes de U,
+alors $\forall j \in [1..n] \; Au_j = \lambda_ju_j$ et $u_j$ est le
+$j^{\textrm{ème}}$ vecteur propre associé à $\lambda_j$.
+$$U^*U = I \leftrightarrow U_i^*U_j = \delta_{ij}$$
+Donc $(u_i)_{1\leq i \leq n}$ est une base orthonormée de vecteurs propres.
+
+
+\paragraph{Corrolaire 2:}
+Une CNS pour qu'une matrice $A \in M_n(\mathbb{R})$ soit symétrique
+est qu'il existe $Q$ orthogonale tel que
+$$\transposee{Q}AQ = \nabla =
+\begin{pmatrix}
+  \lambda_1 & 0 & \cdots & 0 \\
+  0 & \lambda_2 & \cdots & 0 \\
+  \vdots & \vdots & \ddots & 0 \\
+  0 & \cdots & 0 & \lambda_n\\
+\end{pmatrix}$$
+
+\section{Normes vectorielles et matricielles}
+
+\paragraph{Définition:}
+L'application $x \in \mathbb{R}^n$ ou $\mathbb{C}^n \rightarrow \|x\|
+\in \mathbb{R}_+$ est une norme vectorielle si
+\begin{eqnarray*}
+  & \|x\| \geq 0 \\
+  & \|\lambda x\| = |\lambda|\|x\| \; \forall \lambda \in \mathbb{R} \; \textrm{ou} \; \mathbb{C} \\
+  & \|x+y\| \leq \|x\| + \|y\|
+\end{eqnarray*}
+
+\paragraph{Définition:norme subordonnée}
+On appelle norme matricielle sur $M_n(\mathbb{C})$ toute application $M_n(\mathbb{C}) \rightarrow \mathbb{R}_+$
+ vérifiant
+\begin{eqnarray*}
+ \|A\| & \geq & 0 \\
+ \forall \lambda \in \mathbb{R} \; ou \; \mathbb{C} \; \|\lambda A\| & = & |\lambda| \|A\| \\
+ \|A+B\| & \leq & \|A\| + \|B\| \\
+ \|AB\| & \leq & \|A\|\|B\|
+\end{eqnarray*}
+
+\paragraph{Défintion:}
+Etant donné une norme vectorielle $\|x\|$ sur $\mathbb{C}^n$. La norme
+matricielle $\|A\|$ sur $M_n(\mathbb{C})$ définie par
+$$\|A\| = \sup_{x \neq 0}\left(\frac{\|Ax\|}{\|x\|}\right)$$
+est dite subordonnée à la norme vectorielle.
+
+\paragraph{Remarque:}
+$$\|I\| = \sup_{x \neq 0}\left(\frac{\|x\|}{\|x\|}\right)$$
+
+
+\paragraph{Exemples}
+\begin{eqnarray*}
+  \|x\|_2 = \left(\sum_{i=1}^n{|x_i|^2}\right)^{\frac{1}{2}} & : & \textrm{norme vectorielle} \\
+  \|A\|_2 = \sup_{x \neq 0} \left(\frac{\|AX\|_2}{\|X\|_2}\right) & :
+  & \textrm{norme spectrale} \\
+  \|X\|_1 = \sum_{i = 0}^n{|x_i|} \\
+  \|X\|_{\infty} = \max_i |x_i|
+\end{eqnarray*}
+
+\paragraph{Proposition:}
+$$\|A\|_2 = \sqrt{\rho(A^*A)}$$
+
+\paragraph{Remarque:}
+Si $A = A^*$, on a $\|A\|_2 = \rho(A)$. En effet $\|A\|_2 =
+\sqrt{\rho(A^2)} = \sqrt{\rho(A)^2} = \rho(A)$.
+
+
+\paragraph{Définition:norme compatible}
+Une norme vectorielle $\|X\|$ sur $\mathbb{C}^n$ et une norme
+matricielle $\|A\|$ sont dites comatibles si
+$$\forall \; X \in \mathbb{C}^n, \; \forall \, A \in M_n(\mathbb{C})
+\; \|AX\| \leq \|A\|.\|X\|$$
+
+\paragraph{Théorème:}
+Si $A \in M_n(\mathbb{C})$, on a pour toute norme matricielle
+$$\rho(A) \leq \|A\|$$
+
+\paragraph{Remarque:}
+$$\forall \; \epsilon > 0 \; \exists \; \textrm{une norme matricielle
+  telle que} \; \|A\| \leq \rho(A) + \epsilon$$
+
+\paragraph{Théorème:}
+On a pour toute matrice $A \in M_n(\mathbb{C}$ et toute norme
+matricielle
+$$\lim_{k \rightarrow +\infty} \|A^k\|^{\frac{1}{k}} = \rho(A)$$
+
+\section{Diagonalisation}
+
+\par
+Soit $E$ un espace vectoriel sur $\mathbb{K}$ et $f$ un endomorphisme
+$E \rightarrow E$ (f linéaire).
+
+\paragraph{Définition:}
+$f$ est diagonalisable si et seulement il existe une base de $E$
+formée de vecteurs propre $(u_1 \cdots u_n)$ telle que
+$$f(u_i) = \lambda_i u_i \Rightarrow M(f)_{u_i} = \begin{pmatrix}
+  \lambda_1 & 0 & \cdots & 0 \\
+  0         & \ddots & 0 & \vdots \\
+  \vdots    &    0    & \lambda_{n-1}  & \vdots   \\
+  0         & \cdots & \cdots & \lambda_n
+\end{pmatrix}
+$$
+
+\par
+$A = Mat(f)_{e_i} = (a_{ij})$ matrice de $f$ dans la bse canonique
+$(e_i) i \in [1 .. n]$.
+
+\par
+Le polynôme caractéristique de $f$ est $P_f(\lambda) = \det(f -
+\lambda I) = \det (A - \lambda I)$.
+
+\par
+L'ensemble des vecteurs propres de $f$: $Sp_{\mathbb{K}}(f) = Sp_{\mathbb{K}}(A)$.
+
+\paragraph{Définition:}
+Soit $P \in \mathbb{K}[X]$ de degré $n$. On dit que $P$ est scindé
+dans $\mathbb{K}$ si $P$ admet $n$ racines dans $\mathbb{K}$.
+
+\paragraph{Définition:}
+On appelle sous espace propre de $f$
+$$E_{\lambda} = Ker(f - \lambda I) = Ker(A - \lambda I) = \left\{ x \in
+    E \; / \; f(x) = \lambda x \right\} = \left\{ x \in  E \; / \; (f - \lambda
+  I)(x) = 0 \right\}$$
+
+\paragraph{Théorème: somme directe}
+$f$ est diagonalisable si et seulement si
+$$E = E_{\lambda_1} + \cdots + E_{\lambda_n}$$
+
+\paragraph{Théorème:}
+$$dim E_{lambda} \leq mult(\lambda)$$
+
+\paragraph{Théorème: diagonalibilité et plolynôme}
+$f$ est diagonalisable si et seulement si
+$$\textrm{(i)} \; P_f(X) \; \textrm{est scindé dans} \; \mathbb{K}$$
+$$\textrm{(ii)} \; dim E_{\lambda_i} = \alpha_i \; \textrm{(multiplicité
+  de} \lambda_i \textrm{)}.$$
+
+\section{Polynômes annulateurs}
+
+\par
+$E$ un espace vectoriel sur $\mathbb{K}$ et $Q \in \mathbb{K}[X] \;
+Q(X) = a_mX^m + \cdots + a_1X + a_0$.
+\par
+Si $f \in End(E)$, on note $Q(f)$ l'endomorphisme de $E$ défini par
+$$Q(f) = a_mf^m + \cdots + a_1f + a_0I_d$$.
+
+\paragraph{Définition:}
+Soit $f \in End_{\mathbb{K}}(E)$.\\
+Un polynôme $Q \in \mathbb{K}[X]$ est annualteur de $f$ si $Q(f) = 0$.
+
+\paragraph{Proposition:}
+soit $Q(X)$ un polynôme annulateur de $f$ alors les valeurs propres
+figurent parmi les racines de ce polynôme.
+
+\paragraph{Remarque:}
+Attention! Toutes les racines ne sont pas necessairement valeurs
+propres.
+
+\subsection{Théorème: Cayley - Halmilton}
+
+\paragraph
+Soit $f$ un endomorphisme de $E$ et $P_f(X)$ le polynôme
+caractéristique de $f$ alors $P_f(f) = 0$.
+
+\subsection{Théorème}
+
+\paragraph{}
+$f$ est diagonalisable si et seulement si il existe un polynôme scindé
+n'ayant que des racines simples et qui annule $f$.
+
+\paragraph{Définition:}
+On appelle polynôme minimal de $f$, noté $m_f(X)$, le polynôme
+normalisé annulateur de $f$ de dégré le plus petit.
+$$m_f(X) = X^m + a_{m-1}X^{m-1} + \cdots + a_1X + a_0$$
+
+\paragraph{Remarque:}
+Si $P(X)$ est multiple de $m_f(X)$ alors $P(f) = 0$
+
+\paragraph{Proposition:}
+$P \in \mathbb{K}[X]$ est annulateur de $f$ si et seulement $m_f(X)$
+divise $P(X)$.
+
+\paragraph{Conséquence:}
+$m_f(X)$ divise le polynôme caracteristique $P_f(X)$.
+
+\paragraph{Proposition:}
+Les racines de $m_f(X)$ sont exactement les racines de $P_f(X)$.
+
+\subsection{Théorème}
+$f$ est diagonalisable si et seulement si
+$$\textrm{(i)} \; m_f(X) \; \textrm{est scindé dans} \; \mathbb{K}$$
+$$\textrm{(ii)} \; m_f(X) \; \textrm{n'admet que des racines
+  simples.}$$
+
+
+\end{document}
+

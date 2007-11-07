@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.0"
+   width="297mm"
+   height="210mm"
+   id="svg1880">
+  <defs
+     id="defs1882">
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       style="overflow:visible"
+       id="Arrow2Lend">
+      <path
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.97309,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path4723" />
+    </marker>
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       style="overflow:visible"
+       id="Arrow1Lend">
+      <path
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none"
+         id="path4741" />
+    </marker>
+  </defs>
+  <g
+     id="layer1">
+    <path
+       d="M 279.07948 241.17001 A 45.786476 46.513245 0 1 1  187.50652,241.17001 A 45.786476 46.513245 0 1 1  279.07948 241.17001 z"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:black;stroke-width:3.54330707;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1891" />
+    <path
+       d="M 279.07948 241.17001 A 45.786476 46.513245 0 1 1  187.50652,241.17001 A 45.786476 46.513245 0 1 1  279.07948 241.17001 z"
+       transform="translate(283.4427,0.215502)"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:black;stroke-width:3.54330707;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3682" />
+    <path
+       d="M 265.17427,211.69034 C 310.65474,157.21655 373.09403,164.41121 373.09403,164.41121 C 373.09403,164.41121 421.23412,156.9251 479.81914,210.88498"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2.83464575;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow2Lend);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4755" />
+    <flowRoot
+       transform="translate(4,8)"
+       style="font-size:18px"
+       id="flowRoot5644"
+       xml:space="preserve"><flowRegion
+         id="flowRegion5646"><rect
+           width="98.669495"
+           height="48.306942"
+           x="341.23199"
+           y="126.38234"
+           style="font-size:18px"
+           id="rect5648" /></flowRegion><flowPara
+         style="font-size:22px"
+         id="flowPara5652">a + b</flowPara></flowRoot>    <flowRoot
+       transform="translate(18,-2)"
+       style="font-size:22px"
+       id="flowRoot5656"
+       xml:space="preserve"><flowRegion
+         id="flowRegion5658"><rect
+           width="52.418167"
+           height="37.00106"
+           x="208.64487"
+           y="227.10745"
+           style="font-size:22px"
+           id="rect5660" /></flowRegion><flowPara
+         id="flowPara5662">p</flowPara></flowRoot>    <flowRoot
+       transform="translate(16,4)"
+       style="font-size:22px"
+       id="flowRoot5664"
+       xml:space="preserve"><flowRegion
+         id="flowRegion5666"><rect
+           width="46.251324"
+           height="40.08448"
+           x="493.34747"
+           y="219.9128"
+           style="font-size:22px"
+           id="rect5668" /></flowRegion><flowPara
+         id="flowPara5672">q</flowPara></flowRoot>  </g>
+</svg>

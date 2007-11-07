@@ -1,0 +1,23 @@
+\select@language {french}
+\contentsline {chapter}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {1.1}Approche du mot onde}{2}
+\contentsline {paragraph}{Caract\'eristique d'une onde:}{2}
+\contentsline {paragraph}{D\'efinition d'une onde:}{2}
+\contentsline {section}{\numberline {1.2}Les ondes dans la nature et celles cr\'e\'ees par l'homme}{2}
+\contentsline {paragraph}{Dans la nature:}{2}
+\contentsline {paragraph}{Par l'homme:}{2}
+\contentsline {section}{\numberline {1.3}Propri\'et\'es communes \`a toutes les ondes}{3}
+\contentsline {section}{\numberline {1.4}Quelques rappels}{3}
+\contentsline {paragraph}{L'amortissement:}{3}
+\contentsline {paragraph}{Entretenir une vibration:}{3}
+\contentsline {chapter}{\numberline {2}Onde unidimensionnelle}{4}
+\contentsline {section}{\numberline {2.1}Dans une milieu \'elastique}{4}
+\contentsline {paragraph}{Front d'onde ou surface d'onde:}{4}
+\contentsline {section}{\numberline {2.2}Ondes planes progressives sinuso\IeC {\"\i }dale}{4}
+\contentsline {subsection}{\numberline {2.2.1}\'Equation math\'ematique}{4}
+\contentsline {subsection}{\numberline {2.2.2}Ordre de grandeur}{5}
+\contentsline {paragraph}{Exemple:}{5}
+\contentsline {section}{\numberline {2.3}Ondes planes progressives unidimensionnelles}{5}
+\contentsline {section}{\numberline {2.4}Vitesse de phase et de groupe}{5}
+\contentsline {paragraph}{Exemple:}{6}
+\contentsline {section}{\numberline {2.5}Effet Doppler}{6}

@@ -1,0 +1,79 @@
+\documentclass[a4paper, 12pt]{report}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[french]{varioref}
+\usepackage[french]{minitoc}
+
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{listings}
+\lstset{language=Java, frame=single, mathescape=true, showspaces=false}
+\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt,
+  basicstyle=\small, frameround=tttf, frame=tRBl}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\title{\huge{Une interface graphique pour Vaucanson}\\
+  Rapport de stage\\
+\vspace{5cm}
+\small{Résumé:
+Le but de ce stage est de produire un prototype interface graphique
+pour Vaucanson. En partant d'un prototype existant, dont il faudra
+principalement réorganiser la structure, un autre prototype sera
+produit. On espère cette fois atteindre un niveau de qualité
+permettant sa diffusion. Une documentation sera aussi produite,
+facilitant ainsi les évolutions futures du projet.}
+}
+
+\author{Guillaume \bsc{Leroi}\\ UID: 18147}
+
+\lhead{Rapport de stage}
+\chead{}
+\rhead{ENST - INFRES}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+\linespread{1.3}
+\pagestyle{empty}
+
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\doparttoc
+\dominitoc
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+\pagestyle{fancy}
+\setcounter{page}{1}
+\chapter{Introduction}
+\input{src/intro.tex}
+
+\chapter{Travail effectué}
+\input{src/travail.tex}
+
+\chapter{Conclusion}
+\input{src/conclusion.tex}
+
+\part{Annexes}
+\parttoc
+\newpage
+%%\listoffigures
+\newpage
+\setcounter{chapter}{0}
+\input{src/annexe.tex}
+
+
+\end{document}

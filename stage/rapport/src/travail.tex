@@ -1,0 +1,418 @@
+
+\section{Cahier des charges}
+
+
+\subsection{But général}
+
+Le but de ce stage est de produire, à partir d'un prototype existant,
+une version toujours expérimentale mais diffusable et documentée.  Le
+logiciel produit devra permettre de visualiser des automates simples,
+d'éditer ses propriétés géométriques et graphiques et d'appliquer les
+algorithmes proposés par le TAF-KIT à ces automates.
+
+La documentation utilisateur permettra de découvrir et d'expliquer les
+fonctionnalités du logiciel. Cette documentation, existant déjà depuis
+le premier prototype, devra être mise à jour.
+
+Une documentation développeur est nécessaire. Elle devra présenter la
+structure du projet, présenter les différents modules. C'est à dire
+expliquer leur utilité, leur fonctionnement et donner des indications
+sur l'emplacement de certains calculs.
+
+
+\subsection{Résultats à obtenir}
+
+Le prototype existant était déjà à une stade avancé, il permettait de:
+\begin{itemize}
+\item afficher un automates à partir d'un fichier XML
+\item modifier cet automate et ces différentes propriétés
+\item appliquer des algorithmes à ces automates
+\end{itemize}
+
+\vspace{0.3cm}
+
+\subsubsection{Réorganisation du code}
+
+L'un des principaux buts de ce stage est d'organiser le projet en
+quatre modules distincts et indépendants. Cette modélisation comporte:
+
+\begin{itemize}
+\item le module XML: il permet de charger et sauvegarder des automates
+  au format XML (existait déjà dans le prototype).
+\item le module géométrique: il gère la manipulation des valeurs
+  géométriques, comme les coordonnées d'un état, la forme d'une
+  transition, toutes informations se rattachant à la ``forme général''
+  de l'automate.
+\item le module graphique: il gère la manipulation des propriétés
+  graphiques de l'automate, tel que l'emplacement d'un label sur sa
+  transition, la couleur d'un état, l'épaisseur d'une transition.
+\item le module d'affichage: ce module traduit les propriétés
+  géométriques et graphiques pour JGraph.
+\end{itemize}
+
+Les modules géométrique et graphique doivent fournir des valeurs par
+défaut pour les propriétés qu'ils gèrent.
+Les quatre modules forme les différentes étapes par lesquelles un
+automate passera.
+
+\begin{itemize}
+\item XML: A partir du fichier XML, on construit un objet VJGraph, qui
+  représenté notre automate.
+\item Puis il passe dans le module géométrique. Si certains éléments
+  ne disposent pas de propriétés géométriques, celles-ci sont ajoutées
+  avec les valeurs par défaut.
+\item De même pour le module graphique et les propriétés associées.
+\item Finalement le module d'affichage traduit les propriétés
+  précédentes pour JGraph.
+\end{itemize}
+
+\subsubsection{Corrections mineures}
+
+Le première version de l'interface graphique pour Vaucanson (VGI) a
+été écrite en 2004, depuis le projet Vaucanson a connu plusieurs
+modifications que VGI n'a pas suivi. Il faudra donc, un premier temps,
+mettre à jour VGI en fonction de Vaucanson 1.0.
+
+\vspace{0.3cm}
+
+En particulier:
+\begin{itemize}
+\item le format XML a quelque peu changé
+\item les algorithmes étaient appliqués grace à l'utilisation
+  d'exécutables spéciaux, il serait intéressant de les remplacer par
+  ceux du TAF-KIT pour éviter une redondance de fonctionnalités
+  inutiles.
+\end{itemize}
+
+\vspace{0.3cm}
+
+De plus, le prototype utilise JGraph pour afficher et manipuler le
+graphe de l'automate. Cette bibliothèque ayant évolué depuis
+2004, il faudra donc mettre à jour le prototype pour qu'il puisse
+utiliser la dernière version de JGraph disponible.
+
+Notons que la nécessité d'utiliser la dernière version de JGraph
+disponible est apparu eu cours du stage, et ne semblait pas nécessaire
+au début.
+
+Outre les mises à jour, certaines fonctionnalités nécessitent des
+modifications.\\
+Le prototype de départ permet de sauvegarder les propriétés
+géométriques et graphiques du graphe. Mais les unités utilisées ne
+sont pas toujours celles désirées. Par ailleurs, certaines propriétés
+définies dans le format XML ne sont pas utilisées, ou mal utilisées.
+
+\vspace{0.3cm}
+
+On souhaiterait que:
+\begin{itemize}
+\item la position d'un état soit exprimée dans une unité indépendante,
+  pas en pixel.
+\item les unités des angles soit des degrés et non des radians.
+\item le label d'une transition soit positionné selon un pourcentage
+  (ou 0\% représente le début de la transition et 100\% l'extrémité
+  fléchée de la transition) et non pas en utilisant des coordonnées
+  absolues.
+\item l'opération de centrage de l'automate ne modifie les coordonnées
+  des états de l'automate, mais ``déplace'' la fenêtre pour que
+  l'automate y soit centré.
+\end{itemize}
+
+\subsubsection{Documentation}
+
+Le manuel utilisateur existe déjà, il a été écrit par Pouchet lors de
+son stage en 2004. Celui-ci détaille l'utilisation de l'interface
+graphique, c'est à dire comment charger et sauvegarder un automate,
+comment en créer un nouveau, utiliser les algorithmes et changer les
+différentes propriétés. Ce manuel étant complet, il ne nécessitera
+probablement pas de modifications.\\
+
+La documentation développeur est quand à elle quasi inexistante.
+Certaines parties du code sont documentées mais elles sont rares et
+rarement au format Javadoc ou Doxygen. Le code en fait ne demande que
+peu de documentation, il est généralement très simple. Cependant un
+document expliquant la structure du projet, l'utilité des différents
+modules et les classes qui les composent, faciliterait la prise en
+main du code pour les étudiants qui seraient amenés a y travailler.
+
+\section{Compte-rendu d'activité}
+
+\subsection{Conception}
+
+Avec l'aide de mon maître de stage et de Louis-Noel Pouchet, une
+modélisation a été décidé. Cette modélisation est basée sur les
+différentes étapes que se détachent quand on analyse notre manière de
+dessiner un automate.
+
+Trois étapes se détachent en particulier:
+\begin{enumerate}
+\item On décide de la forme de l'automate, c'est à dire on place les
+  états, on décide de la forme des transitions, l'emplacement des labels.
+\item Puis on décide de son apparence, certains états doivent être
+  colorés, l'épaisseur des transitions.
+\item Le rendu final, ou l'affichage à l'écran.
+\end{enumerate}
+
+On peut donc déduire trois modules: un module géométrique, graphique
+et un module d'affichage.
+Dans le cas de notre logiciel, l'automate est contenu dans un fichier
+XML, il faut donc un module dont la tache est de lire ce fichier et de
+créer un objet manipulable par le reste du programme.
+
+Par ailleurs, l'affichage est géré par JGraph. Il n'est donc pas
+nécessaire d'écrire un module d'affichage, mais plutôt un module
+chargé de traduire les différentes propriétés graphiques et
+géométriques de l'automate.
+
+Des diagrammes UML présentant succinctement la modélisation du projet
+sont présents dans les annexes. Des références aux diagrammes
+correspondant seront faîtes par la suite, au fur et à mesure de la
+présentation des différents modules.
+
+\subsection{Modules}
+
+\subsubsection{XML}
+
+Le module XML utilisé est celui déjà présent dans le premier
+prototype. Quelques modifications sont cependant nécessaire pour que
+le module soit à jour par rapport à l'état actuel du format XML.
+
+Ces mises à jour consistent globalement à changer le nom de certains
+attributs, et d'utiliser les modules Geometry et Drawing pour extraire
+les données à stocker dans le fichier XML.
+
+
+\subsubsection{Module géométrique et graphique}
+
+Les modules géométriques et graphiques sont en tout point
+semblables. Ils ne différent que par l'ensemble des propriétés qu'ils
+gèrent.
+
+Le module Geometry permet la manipulation des propriétés géométriques
+de l'automate, et en particulier celles de ses états et
+transitions. Chaque état ou transition possède deux tables
+associatives contenant leurs propriétés géométriques et graphiques.
+
+Les valeurs contenues par ces tables sont extraites et insérées grâce
+à la classe GeometryProperties qui fournit un ensemble de méthodes
+statiques, ainsi que des valeurs par défaut pour chaque propriété.
+Les types des valeurs étant assez variés (entier, chaine de caractère,
+énumération), toutes les données sont stockées sous forme de chaine de
+caractère dans la table associative.
+
+Ainsi d'une part, leur sauvegarde au format XML est facilitée et
+d'autre part la classe GeometryProperties se charge de fournir les
+données vers les types concrets. Ainsi on pourra dans le futur
+modifier la manière dont les propriétés sont stockées sans
+modifier trop de code. Il suffira d'adapter les différentes méthodes
+statiques de la classe GeometryProperties.
+
+La figure \ref{lst:geo} présentent quelques exemples de méthodes que
+l'on peut trouver dans la classe GeometryProperties.
+
+\begin{figure}[h]
+\begin{lstlisting}
+public final static String TRANSITIONTYPE = "transitionType";
+public static void setTransitionType(Transition e, String type)
+{
+  Map geometry = e.geometry_get();
+
+  if (type != null || type.equals(LINE) || type.equals(ARCL) ||
+      type.equals(ARCR) || type.equals(CURVE))
+       geometry.put(TRANSITIONTYPE, type);
+  else
+       geometry.put(TRANSITIONTYPE, TRANSITIONTYPEDEFAULT);
+}
+
+public static String getTransitionType(Transition e)
+{
+  Map geometry = e.geometry_get();
+  String type = (String) geometry.get(TRANSITIONTYPE);
+  return type;
+}
+
+// Values for transitionType
+public final static String LINE = "line";
+public final static String ARCL = "arcL";
+public final static String ARCR = "arcR";
+public final static String CURVE = "curve";
+public final static String TRANSITIONTYPEDEFAULT = LINE;
+\end{lstlisting}
+  \caption{Extrait de code de la classe GeometryProperties}
+  \label{lst:geo}
+\end{figure}
+
+Une fois les classes GeometryProperties et DrawingProperties créées,
+il a fallu mettre à jour l'ensemble du code pour qu'il utilise ces
+méthodes. Ainsi le module XML et l'ensemble des classes gérant
+l'interaction avec l'utilisateur ont été adaptés pour utiliser ces
+méthodes.
+
+
+\subsubsection{Module d'affichage}
+
+Le module d'affichage est composé d'un ensemble de classe chargées de
+fournir à JGraph des indications sur comment dessiner le graphe de
+l'automate, ou qui parfois étendent le comportement de JGraph en
+prenant en charge elles même certaines parties du dessin.
+
+Ainsi dans ce module on trouvera les classes:
+\begin{itemize}
+\item Router: à partir des informations géométriques d'une transition,
+  principalement sa forme (ligne, arc), cette classe fournit une suite
+  de points par lesquelles le tracé de la transition doit passer.
+\item StateView: cette classe prend en charge l'affichage d'un état.
+\item TransitionView: cette classe ne gère que l'affichage d'un label
+  associé à une transition. Cependant, elle pourrait a l'avenir
+  prendre en charge l'affichage de la transition.
+\end{itemize}
+
+Voir la modélisation en Annexes: Figure \ref{fig:affichage} en
+\vpageref{fig:affichage}.
+
+\subsection{Corrections diverses}
+
+\subsubsection{TAF-KIT}
+
+Le remplacement des programmes d'origine par ceux du TAF-KIT fut assez
+rapide. Pour lancer un exécutable, VGI utilise une méthode appelée
+\emph{call\_program}, cette méthode prend en arguments un tableau de
+chaînes de caractères contenant le nom du binaire a lancer et ses
+arguments (nom de l'algorithme, alphabets utilisés\ldots), et une
+chaîne de caractère représentant l'entrée sur laquelle l'exécutable va
+travailler. Il a donc fallu:
+
+\begin{itemize}
+\item modifier la construction du tableau, pour que les arguments
+  correspondent à ce qu'attend le TAF-KIT.
+\item modifier la méthode de sélection des binaires, i.e quelques
+  exécutables choisir en fonction du type de l'automate (booléen, à
+  multiplicités, transducteurs).
+\end{itemize}
+
+\subsubsection{Indépendance des coordonnées}
+
+On souhaite que les coordonnées soient exprimées dans une unité
+factice, autre que celle précédemment utilisée des pixels. Le but est
+de simplement montrer à l'utilisateur des valeurs plus simple et plus
+manipulable. Par ailleurs on désire aussi que l'origine de ces
+coordonnées soit située au centre de la ``feuille'' de dessin.
+Trois systèmes de coordonnées apparaissent alors:
+
+\begin{enumerate}
+\item les coordonnées de l'automate: coordonnées factices avec
+  l'origine au milieu de la feuille de dessin, faîtes pour
+  faciliter la compréhension de l'utilisateur.
+\item les coordonnées de dessin: coordonnées exprimées en pixel,
+  représentant l'emplacement exact sur la feuille de dessin. L'origine
+  est classiquement le coin supérieur gauche.
+\item les coordonnées à l'écran: coordonnées utilisées pour indiquer
+  l'emplacement d'un événement généré par l'utilisateur.
+\end{enumerate}
+
+La gestion du drag\&drop et la modification des coordonnées d'un état
+qui en découle, ont donc été adaptés pour prendre en compte les
+conversions nécessaires lorsque l'on passe d'un système de coordonnée
+à l'autre.
+
+L'affichage d'un état, dépendant de ces coordonnées, a été aussi
+adapté. C'est à dire, il faut convertir les coordonnées factices en
+coordonnées de la feuille de dessin, tout en s'assurant que ces
+dernières ne soit jamais négatives.
+
+En effet, JGraph (et les composants Java en général) dispose l'origine
+en haut à gauche de la zone de dessin, et ne gère pas les coordonnées
+négatives. Si l'un des composantes de nos coordonnées serait malgré
+tout négative (i.e hors de la feuille de dessin), il faut alors
+agrandir cette zone de dessin suffisamment pour que l'état y soit
+placé et reprendre tout le dessin.
+
+\subsubsection{Documentation}
+
+La documentation développeur présente la structure du projet, la
+hiérarchie des dossiers et du code. Elle indique l'utilité et le
+fonctionnement des différents modules, ainsi que l'emplacement de
+certains calculs importants. La documentation réalisée est présente
+dans les annexes de ce rapport.
+
+La documentation est présente en annexe de ce document en
+\vpageref{doc}.
+
+
+\section{Interprétation et critiques des résultats}
+
+Le but de ce stage a été globalement atteint. La nouvelle modélisation
+et la documentation développeur faciliteront les développements
+futures.
+En se référant au modélisation \vpageref{fig:overview}, on remarque
+que l'interface est correctement séparé des classes représentant et
+manipulant les automates. Par ailleurs si l'on regarde la modélisation
+\vpageref{fig:affichage}, on remarque que la nouvelle modélisation
+permet d'étendre ou de modifier le comportement de VGI sans trop de
+problèmes.
+
+L'ajout d'une propriétés ne demande que la modification de la classe
+GeometryProperties pour ajouter les fonctions permettant de manipuler
+la propriété ajoutée. Et le rendu graphique de cette propriété
+n'entraîne que la modification des classes TransitionView ou
+StateView.
+
+VGI est désormais à jour vis-à-vis de Vaucanson et de JGraph.
+
+
+Cependant un certain nombre de points posent toujours problème.
+En effet le logiciel:
+\begin{itemize}
+\item reste peu agréable à utiliser.
+\item n'informe pas l'utilisateur de manière claire des erreurs
+  survenues.
+\item le rendu graphique laisse parfois à désirer.
+\end{itemize}
+
+Cependant ces défauts de jeunesse ne sont pas sans espoir de voir un
+jour une amélioration. Le projet étant, a priori, plus facile à
+prendre en main et à modifier, des modifications futures devraient
+résoudre ces problèmes.
+
+\paragraph{Ergonomie}
+
+L'interface graphique de VGI nécessite quelques modifications. Il faut
+aussi modifier la manière dont l'utilisateur crée des états et des
+transitions, car en utilisant VGI nous-mêmes, nous  nous sommes rendu
+compte que ces fonctionnalités essentielles n'étaient pas facile et
+agréable à utiliser.
+
+Par exemple, comme on peut le voir sur la copie d'écran
+\vpageref{fig:ui}, pour créer une transition il faut sélectionner deux
+états (cliquer sur le premier et cliquer sur le deuxième en utiliser
+la touche ``shift'') et cliquer sur le bouton ``conn''.
+
+La simple opération d'ajouter une transition nécessite trois cliques
+de souris, ce qui est beaucoup trop pour une opération que l'on est
+amené à faire très souvent.
+
+\paragraph{Messages d'erreurs}
+
+Lors du développement de VGI, la différenciation entre messages
+d'erreur et messages de debugage n'a pas été faites. Par conséquent,
+la plupart des messages d'erreurs sont écrits sur la sortie d'erreur
+du terminal, sans indications à l'utilisateur.
+
+L'interface de VGI disposant d'une zone de texte en dessous de chaque
+automate, une première solution, peu coûteuse, serait de différencier
+les messages d'erreur et de les afficher dans cette zone de texte.
+
+Et plus tard, une fois que VGI sera en phase de finalisation, peut
+être choisir une solution plus commune comme implémenter une solution
+à base de pop-up pour prévenir l'utilisateur des erreurs rencontrées.
+
+\paragraph{Qualité du rendu graphique}
+
+La qualité du rendu graphique de VGI est quelque peu décevante, et
+ceci même malgré l'utilisation de l'anti-aliasing.
+Le promblème n'a pas encore été étudié en détail, il est donc
+difficile de proposer des solutions.
+Un solution de remplacement serait d'utiliser un rendu vectoriel, mais
+JGraph ne permet pas ce genre de modifications profondes.
+Une possible solution plus simple existerait si le problème venait
+d'une mauvaise utilisation de JGraph.

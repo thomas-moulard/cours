@@ -1,0 +1,349 @@
+\documentclass[a4paper, 12pt, leqno]{article}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+
+\title{\huge{Physique atomique et quantique}}
+
+\lhead{Physique ondulatoire}
+\chead{}
+\rhead{EPITA 2008}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\renewcommand{\H}{\stackrel{\wedge}{H}}
+
+\pagestyle{fancy}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+
+\section{Introduction}
+
+\par
+La physique atomique est descriptive, mais explique mal ce qui passe
+au niveau de l'atome. La physique quantique est plus mathématique mais
+epxlique mieux les phénomènes.
+
+\section{Rappels}
+
+\subsection{La quantification}
+
+\par
+L'apport d'énergie pour faire bouger un electron est quantifié. Toutes
+les orbites ne sont pas permises (non continue). Il y'a des paliers.
+
+\paragraph{Quelles sont les grandeurs quantifiées?}
+Les orbites (rayons). Un electron est soumis à la force
+électrostatique et la force centrifuge.
+$$-\frac{ke^2}{r^2} = \frac{mv^2}{r}$$
+
+Cependant dans cette équation rien n'est quantifiée. On ajoute donc
+$$mvr = n\frac{h}{2\pi} \; n \in \mathbb{N}$$.
+
+\par
+L'énergie de l'électron est aussi quantifiée.
+
+
+\subsection{Les raies d'émission et d'absorption}
+
+\par
+Si on maintient l'apport d'énergie, l'électron ne reste cependant pas
+sur son orbite, il monte et descend d'une orbite à l'autre. En
+descendant, il restitue de l'énergie sous forme lumineuse. Il y'a
+autant de raies d'emissions que de manière de descendre.
+
+\paragraph{Spectroscopie:}
+C'est l'étude des raies.  En observant les raies du soleil, on peut
+déterminer sa composition, l'abondance de ses composantes et sa
+température.
+
+\chapter{Nombres quantiques et lasers}
+
+\section{Nombres quantiques}
+
+\paragraph{n: nombre quantique principal}
+La relation de quantification de Bohr: $mvr = n\frac{h}{2\pi}$
+Cependant lorsque que l'on calcule $E_n$, le résultat est toujours
+plus petit que celui mésuré.
+\par
+En fait, les orbites sont des ellipses.
+
+\paragraph{l: nombre quantique secondaire}
+Il correspond à la forme de l'orbite (circulaire ou elliptique).
+
+\paragraph{m: nombre quantique magnétique}
+Il correspond au plan de l'orbite.
+
+\paragraph{n: nombre quantique de spin}
+Il correspond au sens de rotation de l'électron sur lui-même.
+
+\section{Lasers}
+
+$$E = h\nu = h\frac{c}{\lambda}$$
+
+\par
+Des ondes monochromatiques en phase forment une lumière dite cohérente.
+La lumière laser est formér d'ondes cohérentes, elle est énergetique
+et n'est pas diffusé par les molécules d'air (à la différence de la
+lumière blanche peu energétique et diffusé par l'air).
+
+\paragraph{Problème:} il n'est pas facile de créer des ondes en
+phases. De plus même en phase, elles peuvent se dephaser.
+
+\subsection{Etat métastable et structure fine}
+
+\par
+On appelle structure fine ou hyperfine l'ensemble des raies d'un
+niveau n (différent sous niveau pour un niveau n donné, variation
+selon les nombres quantiques $l$, $m$ et $s$).
+
+\par
+Parmi tous ces états l'un d'entre eux est métastable (plus long que
+les autres).
+
+\subsection{Laser: l'atome à notre secours}
+
+\par
+Quand un électron se trouve dans un état métastable (niveau
+d'excitation qui dure plus longtemps que les autres, $10^{-3}s$ au
+lieu de $10^{-8}s$), on apporte un peu d'énergie sous forme d'un onde
+monochromatique de même fréquence que le photon émis lorsque
+l'électron redescend au niveau fondamentale. L'onde émise est
+monochromatique et en phase avec l'onde que nous fournissont.
+
+\subsection{Application du laser: l'imprimante}
+
+\par
+Avec un faisceau laser, on écrit un 'e' (par exemple) sur la feuille
+(on ne rien mais les atomes du papier ont été ionisé, charge
+positive).
+\par
+Puis on envoie de l'encre chargé négativement. Il y'en a un peu
+partout donc on envoie un souffle d'air qui enlève l'encre des zones
+non chargées. Puis on chauffe pour fixer l'encre au papier.
+
+\section{CCD: Charged Coupled Device}
+
+\par
+On expose une plaque de silicium découpé en ligne de pixel à la
+lumière. Les atomes de celle-ci sont ionisés. Il y a une forte
+ionisation si un pixel a recu beaucoup de lumière.
+
+\par
+On récupère les électrons libres pour connaître la lumière recu par
+chaque pixels. On fait passer un fil chargé positivement et on vide
+ligne par ligne les électrons.
+
+\par
+On a alors un courant dont les variations représentent les variations
+de luminosité pixel par pixel.
+
+\par
+Pour la couleur, on utilise trois CCD (même idée que pour les
+imprimantes lasers avec un passage par couleur).
+
+\section{L'effet tunnel}
+
+\subsection{Expérience:}
+
+\par
+Sur une zone d'une plaque de silicium, on applique une tension
+$V_0$. Cette zone est polarisé. Puis on envoie des électrons (avec un
+générateur de courant, les électrons ont une énergie cinétique $E_0$)
+dans la plaque.
+\par
+On note trois zones et on s'interesse à la propagation des électrons:
+\begin{itemize}
+\item la zone I: état libre, les electrons se propagent librement.
+\item la zone II: état lié (zone soumise a la tension $V_0$).
+\item La zone III: état libre.
+\end{itemize}
+
+\par
+En physique quantique, une petite quantité d'électrons passe à travers
+la zone II malgré que l'énergie cinétique des électrons soit
+inférieure à la barrière de potentiel: c'est l'effet Tunnel.
+
+\par
+A noter qu'en physique quantique, même si l'énergie cinétique des
+électrons est supérieure à celle de la barrière de potentiel. Certains
+électrons ne passeront pas.
+
+\subsection{Application: microscope à effet Tunnel}
+
+\par
+STM: Scanning Tunelling Microscope.
+
+\par
+Un pointe chargée positivement balaye les atomes d'un échantillon un
+par un. Par effet tunnel, des électrons quittent l'atome et passent
+dans la pointe. Un courant proportionnelle à la proximité de l'atome
+se forme. On en déduit une représentation graphique par ordinateur.
+
+\par
+En réalité, on veut conserver un courant constant pour cela, on fait
+se déplacer verticalement le support de l'échantillon grâce à une
+boucle de contre réaction.
+
+\subsection{Manipulation des atomes}
+
+\par
+Avec un STM, les atomes balayés perdent des électrons. On a donc des
+ions positifs. On charge alors la pointe négativement, l'atome vient
+sur la pointe. On lache l'atome en rechargeant la pointe positivement.
+
+\section{Dualité onde/corpuscule}
+
+\subsection{Experiences}
+
+\paragraph{Interférence:}
+On dispose d'une source de lumière S. On dispose aussi d'un plaque de
+carton percé de deux trous très fin. On peut representer ces deux
+trous comme deux nouvelles sources de lumières. Si on dispose une
+feuille derrière ces deux trous, on remarque une zone d'interférence.
+
+\par
+Ce phénomène s'explique bien avec la notion d'onde.
+
+\paragraph{Choc}
+Quand on projette un photon (grain de lumière) sur un électron, le
+photon percute l'electron et perd de l'énergie. Cette deuxième
+experience s'explique mieux avec la notion de corspuscule.
+
+\subsection{De Broglie, Davisson et Germer}
+
+\paragraph{1921:} Louis de Broglie (prononcé de Breuille) décide
+d'écrire une thèse intitulée ``mécanique ondulatoire''. On connait à
+l'époque les électrons sous forme de corpuscule. (ayant une charge,
+une masse, \ldots).
+\par
+Dans sa thèse il explique que des électrons en mouvement se comporte
+comme des ondes. Et il pose l'équation suivante:
+$$\lambda = \frac{h}{mv}$$
+
+\paragraph{1924:} Louis de Broglie passe sa thèse.
+
+\paragraph{1925:} Davisson et Germer (USA) décident de verifier la
+thèse de De Broglie, en utilisant deux sources d'électrons et voir
+si des interférences ont lieu.
+
+\paragraph{1927:} Les experiences se revelent positives, on arrive à
+faire des interférences avec des électrons.
+
+\paragraph{1929:} Louis De Broglie reçoit le prix Nobel. En 1934,
+Gemer et Davisson recoivent un prix Nobel pour leurs expériences.\\
+
+\paragraph{Conclusion:}
+La lumière est une onde (interférence). La lumière est composée de
+photons, des grains d'énergie de masse nul. (les chocs).
+Il en est donc de même pour les électrons.
+
+\par
+On pose
+\begin{eqnarray*}
+  2\pi r & = & n\lambda \\
+  2\pi r & = &n\frac{h}{mv} \\
+  mvr & = & n\frac{h}{2\pi} \\
+\end{eqnarray*}
+En utilisant la définition de Louis de Broglie, on retrouve la
+relation de quantification de Bohr.
+
+\section{L'équation de Schrödinger}
+
+\par
+Ervin Schrödinger.
+
+$$\stackrel{\wedge}{H} | \psi_N ) = E_N | \psi_N )$$
+
+\par
+Dans cette équation, les inconnues sont $E_N$ et $\psi_N$
+\begin{itemize}
+\item $E_N$ sont les énergies du système
+\item $\psi_N$ sont les fonctions d'onde du système. Elles
+  représentent les états du système.
+\end{itemize}
+
+\par
+L'équation de Schrödinger est une équation aux énergies. Elle permet
+de calculer les énergies et les fonctions d'onde d'un électron, ainsi
+que d'en déduire les probabilités associées.
+
+\par
+Les fonctions d'onde sont reliées aux probabilités par le fait qu'il
+est plus probable de trouver un électron en état $n = 1$ qu'en $n =
+10$.
+
+
+\par
+Il existe aussi une équation au spins ou aux moments
+magnétiques. Respectivement,
+$$\stackrel{\wedge}{S} | \psi_N ) = E_N | \psi_N )$$
+$$\stackrel{\wedge}{M} | \psi_N ) = E_N | \psi_N )$$
+
+\subsection{L'opérateur hamiltonien $\H$}
+
+\par
+$H$ (ou hamiltonien) est utilisé en mécanique lorsqu'on s'interesse
+surtout aux énergies. On définit $H$ comme la somme de l'énergie
+cinétique et de l'énergie potentiel (i.e $H = E_c + E_p$).
+
+\par
+Cependant la notation qui suit differe quelque peu. On pose $T = E_c$
+et $V = E_p$.
+
+\par
+$E_c$ (ou $T$) s'exprime en fonction de $p$ la quantité de mouvement.
+Par ailleurs, on sait que $p = mv$ et que $E_c = \frac{1}{2}mv^2 =
+\frac{1}{2}m \frac{p^2}{m^2}$. D'où
+
+$$E_c = \frac{p^2}{2m}$$
+
+\par
+On admet aussi que
+$$\stackrel{\wedge}{p_x} = \frac{h}{i}\frac{\delta}{\delta x}$$
+
+On en deduit:
+$$\H = \frac{\stackrel{\wedge}{p^2}}{2m} + \stackrel{\wedge}{V}$$
+
+\par
+Calculons $\stackrel{\wedge}{p^2}$
+
+\begin{eqnarray*}
+  \stackrel{\wedge}{p^2} & = & \stackrel{\wedge}{p_x} +
+  \stackrel{\wedge}{p_y} + \stackrel{\wedge}{p_z}\\
+  \stackrel{\wedge}{p_x} & = & \left(\frac{h}{i}\frac{\delta}{\delta
+      x}\right)\left(\frac{h}{i}\frac{\delta}{\delta x}\right)\\
+  & = & -h\frac{\delta^2}{\delta x^2}
+\end{eqnarray*}
+
+D'où
+$$\H = -\frac{h^2}{2m}\left(\frac{\delta^2}{\delta x^2} +
+  \frac{\delta^2}{\delta y^2} + \frac{\delta^2}{\delta z^2}\right) + \stackrel{\wedge}{V}$$
+
+\par
+On peut réecrire l'équation de Schrödinger:
+\begin{eqnarray*}
+  \H | \psi_N ) & = & E_N | \psi_N ) \\
+  -\frac{h^2}{2m}\Delta \psi_N + \stackrel{\wedge}{V} \psi_N & = & E_N
+  \psi_N
+\end{eqnarray*}
+
+\par
+Quand $V = 0$ sur une seule dimension $x$:
+$$-\frac{h^2}{2m}\frac{\delta^2 \psi_N}{\delta x^2} = E_N \psi_N$$
+
+
+\end{document}

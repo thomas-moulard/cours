@@ -1,0 +1,114 @@
+#header
+{
+  background-color: #282828;
+  position: absolute;
+  left: 150px;
+  width: 100%;
+  }
+
+#header h2, h1
+{
+  background-color: #282828;
+  padding: 5px 5px 5px 0;
+  margin: 0 0 0 0;
+  text-align: center;
+  color: white;
+  }
+
+#header h1
+{
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  font-size: 3.5em;
+  font-weight: bold;
+  }
+
+#header h2
+{
+  font-size: 1.5em;
+  font-weight: normal;
+  }
+
+#menu ul, li, a, img
+{
+  margin: 0 0 0 0;
+  padding: 0 2px 0 0;
+  background-color: #282828;
+  color: white;
+  }
+
+#menu ul
+{
+  height: 100%;
+  width: 150px;
+  padding-top: 15px;
+  }
+
+#menu li
+{
+  list-style-type: none;
+  margin-bottom: 10px;
+  padding-left: 5px;
+  font-weight: bold;
+ }
+
+#menu a
+{
+  text-decoration: none;
+  }
+
+#menu a:hover
+{
+  text-decoration: underline;
+  }
+
+
+#menu a:visited
+{
+  text-decoration: none;
+  color: purple;
+  }
+
+#body
+{
+  position: absolute;
+  left: 200px;
+  top: 150px;
+  background-color: #586058;
+  }
+
+#body img, p, h2
+{
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  background-color: #586058;
+  }
+
+#body p
+{
+  width: 90%;
+  margin: 0 0 25px 30px;
+  }
+
+#body img
+{
+  margin-right: 5px;
+  }
+
+#body h2
+{
+  text-align: left;
+  margin-bottom: 20px;
+  }
+
+body
+{
+  background-color: #586058;
+  }
+
+img
+{
+  border-style: none;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  }

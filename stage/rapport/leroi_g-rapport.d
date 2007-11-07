@@ -1,0 +1,1 @@
+leroi_g-rapport.dvi leroi_g-rapport.d : leroi_g-rapport.tex src/intro.tex src/travail.tex src/conclusion.tex src/annexe.tex   img/Affichage.png.eps img/Overview.png.eps img/Packages.png.eps img/routing.png.eps img/ui.png.eps img/transition.png.eps img/menu.png.eps  

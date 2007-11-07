@@ -1,0 +1,636 @@
+\documentclass[a4paper, 12pt, leqno]{report}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+
+\title{\huge{Traitement du signal}}
+
+\lhead{Traitement du signal}
+\chead{}
+\rhead{EPITA 2008}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\renewcommand{\L}{\mathscr{L}}
+
+
+\pagestyle{fancy}
+\headheight 15pt
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+
+\par
+Dans ce cours sera étudié la transformation de Laplace et la
+transformation en $Z$. Ces outils ont pour objectif de faire un
+passage du domaine temporel au domaine fréquentiel.
+Il est aussi nécessaire de pouvoir retourner dans le domaine temporel,
+grâce au transformées inverses.
+
+\par
+La transformation de Laplace s'utilise dans le cas d'un signal continu
+dans le temps. Tandis que la transformée en $Z$ s'utilise dans le cas
+d'un temps discret (souvent $t =kT$).
+
+\paragraph{Bibliographie}
+\begin{itemize}
+\item Automatique de base (P. Siarry Ed. ELLIPSES)
+\end{itemize}
+
+
+\chapter{Transformation de Laplace (inverse)}
+
+\section{Outils mathématiques}
+
+\subsection{Équations différentielles}
+
+\par
+On s'intéressera en particulier aux équations différentielles
+linéaires et à coefficients constants.
+
+\par
+Une équation différentielle peut être vu comme une sorte de boîte
+noire prenant en entrée un signal $u(t)$, donnant un signal sortant
+$y(t)$ tel que $a_0y''(t) + a_1y'(t) + a_2y(t) = b_0u''(t) + b_1u'(t)
++ b_2u(t)$. Cette équation semble générale, elle est cependant
+linéaire et à coefficients constants.
+
+\paragraph{La méthode classique de résolution d''un équation
+  différentielle}
+\begin{itemize}
+\item D'abord on cherche une solution générale de l'équation sans
+  second membre (ESSM).
+\item Puis on cherche une solution particulière de l'EASM (avec second
+  membre).
+\end{itemize}
+Soit dans l'exemple précédent, ESSM:
+
+$$a_0y''(t) + a_1y'(t) + a_2y(t) = 0$$
+a une solution de la forme
+$$y(t) = e^{rt}$$
+
+$$a_0r^2e^{rt} + a_1re^{rt} + a_2e^{rt} = 0$$
+$$a_0r^2 + a_1r + a_2 = 0 \; \textrm{:équation caractéristique}$$
+L'équation caracteristique a deux racines $r_1$ et $r_2$. D'où une
+solution ESSM:
+$$y(t) = Ae^{r_1t} + Be^{r_2t}$$
+
+Puis on cherche une solution particulière avec le second membre.
+
+\paragraph{Exemple:}
+$$y''(t) + y'(t) - 6 = 12t + 20$$
+ESSM
+\begin{eqnarray}
+  y''(t) + y'(t) - 6y & = & 0 \\
+  y & = & e^{rt} \\
+  r² + r - 6 & = & 0 \\
+  (r-2)(r+3) & = & 0 \\
+  y(t) & = & Ae^{2t} + Be^{-3t}
+\end{eqnarray}
+ASSM
+\begin{eqnarray}
+  y(t) & = & at + b \\
+  a - 6at - 6b & = & 12t + 20 \\
+  a & = & -2 \\
+  b & = & -\frac{11}{3}
+\end{eqnarray}
+
+$$y(t) = Ae^{2t} + Be^{-3t} - 2t -\frac{11}{3}$$
+A,B dépendent de 2 conditions initiales.
+
+\subsection{Produit de convolution}
+
+$$x(t) \star y(t) = \int_{-\infty}^{+\infty} x(t)y(t)dt$$
+
+\paragraph{Unité de convolution}
+$$\exists \; u(t) / x(t) \star u(t) = u(t) \star x(t) = x(t)$$
+$u(t)$ existe et est aussi appelé impulsion de DIRAC dans la
+théorie des distributions.
+
+\subsection{Fonction complexe d'une variable complexe}
+Soit $p \in \mathbb{C}$ tel que $p = \sigma + j \omega$.\\
+On peut écrire $F(p) = Re[F(p)] + jIm[F(p)]$.
+
+
+\section{Définition de la transformation de Laplace}
+
+\par
+Soit $f(t)$ une fonction du temps t (continu), et $f(t)$ est supposée
+causale (i.e $f(t) = 0$ si $ t \leq 0$)
+
+$$F(p) = \int_0^{+\infty} f(t)e^{-pt}dt$$
+
+où $p = \sigma + j \omega$. On appelle $\omega$ la pulsation et
+$\omega = 2\pi f$ ($f$: fréquence).\\
+$F(p)$: transformée de Laplace de $f(t)$.\\
+$\L$: transformation de Laplace.
+
+\par
+La question de la convergence (intégrale impropre) est evacuée
+rapidement. Car si $f$ est un signal qui a un sens physique, il n'y a
+pas de problème de convergence.
+
+\subsection{Propriétés de la $\L$}
+
+\par
+En pratique, la définition est utilisée très rarement.
+
+\paragraph{P1: linéarité}
+Soit $f(t),g(t)$ et $\lambda , \mu = c^{tes}$ alors
+$$\L\left[\lambda f(t) + \mu g(t)\right] = \lambda F(p) + \mu G(p)$$
+
+\paragraph{P2: théorème du retard}
+Soit deux signaux $f(t)$ et $f(t - \mu)$ (decalage à droite).
+$$\L\left[f(t-\mu)\right] = e^{-\mu p}F(p)$$
+
+\paragraph{P3: Dérivation}
+$$\L\left[ \frac{df(t)}{dt}\right] = pF(p) - f(t = 0)$$
+$f(t = 0)$: condition initiale.\\
+Si $f$ est causale, les conditions initiales sont nulles.
+Alors la dérivation est une multiplication par $p$ et l'intégration
+est une division par $p$.
+
+\paragraph{P4: convolution}
+
+$$\L\left[ f(t) \star g(t)\right] = F(p).G(p)$$
+
+\paragraph{P5:Théorème de la valeur initiale et théorème de la valeur
+  finale}
+
+$$\lim_{t \rightarrow 0} f(t) = \lim_{p \rightarrow +\infty} pF(p)$$
+
+$$\lim_{t \rightarrow +\infty} f(t) = \lim_{p \rightarrow 0} pF(p)$$
+
+\par
+La dernière propriété dénote le régime permanent (ou régime statique).
+
+\subsection{Transformées de Laplace usuelles}
+
+\begin{eqnarray*}
+  t & \rightarrow & p \\
+  \delta (t) & \rightarrow & 1 \\
+  u(t) & \rightarrow & \frac{1}{p} \\
+  e^{-at}.u(t) & \rightarrow & \frac{1}{p + a} \\
+  t.u(t) & \rightarrow & \frac{1}{p^2}
+\end{eqnarray*}
+
+
+\chapter{Echantillonage et reconstitution du signal continu}
+
+\par
+Dans un ordianteur les signaux sont pour la plupart numériques. Il
+nous faut donc un outil pour retrouver une forme continue: la
+tranformée en $Z$.
+
+\section{Echantillonage et transformée en $Z$}
+
+\subsection{Définition de l'echantillonage d'un signal}
+
+\par
+Soit $f(t)$ avec $f(t) = 0$ si $t \leq 0$ (singal causal), avec $T$
+période d'échantillonage. On note $f^*(t)$ le signal echantillonné.
+$$f^*(t) = \{f(0), f(T), \cdots \}$$
+
+\par
+Cependant pour traiter ces echantillons, il nous faut passer dans le
+domaine fréquentiel. On aimerait utilisé la transformation de Laplace,
+malheureusement celle ci n'est pas définie pour une suite de nombre.
+
+\paragraph{2eme définition:}
+$$f^*(t) = \sum_{n = 0}^{+\infty} f(nT)\delta(t - nT)$$
+où $\delta(t)$: ``pic'' de Dirac (largeur 0, hauteur infinie).
+
+\par
+Cette expression est équivalente à la première qui est plus intuitive
+du point de vue contenue.
+
+$$\sum_{n = 0}^{+\infty} \delta (t - nT)$$
+
+est appellé peigne de Dirac (elle ressemble graphiquement à un peigne).
+Chaque ``raie'' verticale a une surface de $1$.
+
+$$f^*(t) = \sum_{n = 0}^{+\infty} f(nT)\delta(t - nT)$$
+
+\par
+Le coefficient $f(nT)$ pondèrent chaque raie et changent la surface de
+chaque raie. On peut définir le peigne de Dirac comme un train
+d'impulsion vide. $f*(t)$ les échantillons prennent le train où chaque
+echantillon s'installe dans un wagon, dont ils occupent toute la surface.
+
+\par
+On peut alors appliquer la transformée de Laplace au signal
+echantillonné. On note
+
+$$F^*(t) = \L\left[f^*(t)\right]$$
+
+\begin{eqnarray*}
+  F*(p) & = & \L\left[\sum_{n = 0}^{+\infty} f(nT)\delta(t - nT)\right] \\
+  & = & \sum_{n = 0}^{+\infty} \L\left[f(nT)\delta(t - nT)\right] \\
+  & = & \sum_{n = 0}^{+\infty} f(nT)\L\left[\delta(t - nT)\right] \\
+  & = & \sum_{n = 0}^{+\infty} f(nT)e^{-nTp}\L\left[\delta(t)\right] \\
+  & = & \sum_{n = 0}^{+\infty} f(nT)e^{-nTp}
+\end{eqnarray*}
+
+\par
+On appelle $F^*(p)$ la tranformée de Laplace du signal echantilonné,
+ou transformée de Laplace echantillonée du signal continu (la
+transformation est alors notée ($L^*$).
+
+\section{Choix de la période d'échantillonage}
+
+\paragraph{Remarque:}notion sur l'échantillonage idéal et réel.\\
+En electronique, un interrupteur ne peut pas rester fermé pendant une
+durée nulle. On prend en compte $h$, la durée du prélèvement.
+Le calcul général pour tout $h$ et $T$ est trop difficile. Cependant
+$h$ est beaucoup plus petit face a $T$ et on peut approximer la
+transformée par
+
+$$\L\left[f^*_h(t)\right] = hF^*(p)$$
+
+L'échantillonage réel équivaut alors à un simple gain.
+\paragraph{Conséquence:}
+On va faire tous les calculs avec f*(t), F*(p). Et si on veut tenir
+compte de $h$, on peut le faire a la fin en multipliant par $h$.
+
+\subsection{Reconstitution du signal continu}
+
+\par
+On transmet une signal échantillonné sur une longue distance et
+on désire reconstituer le signal continu. C'est possible mais il faut
+que $T$ ait été ``bien choisi''.
+
+\subsection{Perte d'information lors de l'échantillonage}
+
+\par
+Il nous faut un instrument pour mesurer la quantité d'information
+contenue dans un signal. On utilise le spectre de Fourier $|F(\nu)|$.
+
+\par
+$F(\nu)$: transformée de Fourier de f(t). Elle est ressemble à la
+transformée de Laplace, a la différence que sa variable $\nu$ est
+réelle (la fonction reste complexe).
+
+\par
+On mesure la quantité d'information d'un signal par l'aire sous la courbe
+du spectre de Fourier.
+
+\subsection{Spectre de Fourier d'un signal échantilloné}
+
+$$F^*(\nu) = \frac{1}{T} \sum_{k = -\infty}^{+\infty}F\left(\nu -
+  \frac{k}{T}\right)$$
+
+\par
+on applique un filtre passe-bas idéal laissant passer les fréquence
+entre $-\frac{1}{2T}$ et $\frac{1}{2T}$.
+
+\subsection{Théorème de Shannon}
+
+\par
+Lorsqu'on echantillone un signal continu à un spectre fréquentiel
+bornée $\left[-N, +N\right]$, on ne perd aucune information si la
+fréquence d'échantillonage est supérieur au double de $N$.
+
+$$f(t) = \frac{1}{T} > 2N$$
+
+\par
+Si cette condition n'est pas vérifiée, l'information est brouillée
+lors de l'échantillonage.
+
+\paragraph{Exemple:}
+CD audio $N =$ 20kHZ, la fréquence doit être supérieure à $40$kHz.
+Si on ne respecte pas Shannon il est impossible de retrouver le signal
+continu d'origine.
+
+\subsection{Problème pratique}
+
+\par
+Il n'existe pas de filtre idéal pour une bande passante comprise entre
+$-\frac{1}{2T}$ et $\frac{1}{2T}$. On a donc recours à un filtre approché.
+
+\section{Reconstitution du signal approché}
+
+\par
+On suppose Shannon respecté: $f_e > 2N$. On utilise comme filtre
+passe-bas approché: le BLOQUEUR d'ordre $0$. Le bloqueur reproduit le
+dernier échantillonr recu jusqu'au prochain (signal en escalier $f_{B_0}(t)$).
+
+\subsection{Comportement fréquentiel de $B_0$}
+
+$$B_0(p) = \frac{\L\left[f_{B_0}(t)\right]}{\L\left[f^*(t)\right]}$$
+
+\begin{eqnarray*}
+  f_{B_0}(t) & = & f(0) \; , \; 0 \leq t < T \\
+  f_{B_0}(t) & = & f(T) \; , \;  T \leq t < 2T \\
+  & \vdots &
+\end{eqnarray*}
+
+\chapter{Transformée en $Z$ (inverse)}
+
+\section{Transformée en $Z$}
+
+
+$$F*(t) = \sum_{n = 0}^{+\infty} f(nT)e^{-nTp}$$
+
+\par
+On effectue un changement de variable pour simplifier cette dernière
+expression un peu lourde. On pose $z = e^{Tp}$. On a alors
+
+$$F(z) = \sum_{n = 0}^{+\infty} f(nT)z^{-n}$$
+
+Ceci est la définition de la transformation en $Z$.
+
+\paragraph{Remarque:} On remarque que les resultats auront des
+puissance négatives en $z$. Il existe une autre transformée pour
+palier à ce problème: la tranformée en $\gamma$. On pose $\gamma =
+e^{-Tp}$
+
+$$F(\gamma ) = \sum_{n = 0}^{+\infty} f(nT)\gamma^n$$
+
+\subsection{Propriétés de la transformée en $Z$}
+
+
+\paragraph{P1: linéarité}
+
+$$Z\left[a.f(t) + b.g(t)\right] = a.F(z) + b.F(z)$$
+
+\paragraph{P2: théorème du retard}
+
+$$Z\left[ f(t - kT)\right] = z^{-k}F(z)$$
+
+le retard est un multiple de $T \; (k > 0 \in \mathbb{N}$
+
+\paragraph{P3: convolution}
+
+On définit le produit de convolution discret:
+
+$$f(n) \star g(n) = \sum_{k = 0}^{+\infty} f(k).g(n - k)$$
+
+$$Z\left[f(n) \star g(n)\right] = F(z) . G(z)$$
+
+\paragraph{P4: Théorème de la valeur initiale et de la valeur finale}
+
+
+$$\lim_{n \rightarrow 0} f(nT) = \lim_{z \rightarrow +\infty} F(z)$$
+
+
+$$\lim_{n \rightarrow +\infty} f(nT) = \lim_{z \rightarrow 1} \left[
+\frac{z - 1}{z} F(z)\right]$$
+
+
+\subsection{Méthodes de calcul directes}
+
+\par
+Il existe deux voies à suivre:
+
+\begin{itemize}
+\item on peut calculer directement $F(z)$ à partir de $f(t)$:
+$$F(z) = \sum_{n = 0}^{+\infty} f(nT).z^{-n}$$
+\item on calcule directement à partir de $F(p)$:
+$$F(z) = \sum_{pôles p_i de F(p)}\left(\textrm{résidus de } \frac{F(p)}{1 -
+    e^{Tp}z^{-1}} \right)$$
+\end{itemize}
+
+En supposant que $F(p)$ est une rationnelle en $p$. Ainsi on doit
+chercher les pôles de F(p):
+
+\begin{itemize}
+\item pôles simples
+\item pôles multiples d'ordre n
+\end{itemize}
+
+Attention! On ne peut avoir $z = e^{Tp}$.
+
+\subsection{Formule des résidus}
+
+$$F(p) = \frac{N(p)}{D(p)}$$
+
+\begin{itemize}
+\item pour les pôles simples:
+$$r_i = \frac{N(p_i)}{D'(p_i)}\frac{1}{1 - e^{Tp_i}z^{-1}}$$
+\item pour les pôles multiples d'ordre n:
+$$r_i = \frac{1}{(n - 1)!}\frac{d^{n - 1}}{dp^{n -
+    1}}\left((p - p_i)^n \frac{F(p)}{1 - e^{Tp}z^{-1}}\right)$$
+Si $p = p_i$, $F(p) = \sum r_i$.
+\end{itemize}
+
+\subsection{Exemple}
+
+Soit $u(t)$ un fonction nulle pour les $x < 0$ et $x(t) = 1$ pour $t
+\geq 0$. La transformée de Laplace de $u$ vaut:
+$$\L\left[u(t)\right] = \frac{1}{p}$$
+
+\par
+Si on pose $f(t) = u(t)$, on obtient $F(z)$ par la méthode 1.
+si on pose $F(p) = \frac{1}{p}$, on obtient $F(z)$ par la méthode 2.
+
+\subsubsection{Voie 1}
+
+\begin{eqnarray*}
+  \label{eq:méthode1}
+  F(z) & = & \sum_{n = 0}^{+\infty} u(nT).z^{-n} \\
+  F(z) & = & \sum_{n = 0}^{+\infty} \frac{1}{z^n} \\
+  F(z) & = & \frac{1}{1 - \frac{1}{z}}
+\end{eqnarray*}
+
+\subsubsection{Voie 2}
+
+\begin{eqnarray*}
+  F(z) & = & \sum_{\textrm{pôles $p_i$ de F(p)}}\left(\textrm{résidus de
+    } \frac{F(p)}{1 - e^{Tp}z^{-1}} \right) \\
+  F(p) & = & \frac{N(p)}{D(p)} = \frac{1}{p^2} \\
+  D'(p) & = & 2p \\
+  \textrm{Pôles d'ordre 2 } p_1 & = & 0 \\
+  r_i & = & \frac{1}{(n - 1)!}\frac{d^{n - 1}}{dp^{n -
+      1}}\left((p - p_i)^n \frac{F(p)}{1 - e^{Tp}.z^{-1}}\right)\\
+  r_1 & = &
+  \frac{1}{1!}\frac{d}{dp}\left(p^2\frac{\frac{1}{p^2}}{1 -
+      e^{Tp}.z^{-1}}\right)\\
+  r_1 & = & \frac{d}{dp}\left(\frac{1}{1 - e^{Tp}.z^{-1}}\right)\\
+  r_1 & = & \left(\frac{Te^{Tp}z^{-1}}{(1 -
+      e^{Tp}.z^{-1})^2}\right)_{p=0}\\
+  r_1 & = & \frac{Tz^{-1}}{(1-z^{-1})^2} \\
+  r_1 & = & \frac{Tz}{(z - 1)^2}
+\end{eqnarray*}
+
+\subsection{Méthodes de calcul indirectes}
+
+\paragraph{Table des transformées en $Z$ élémentaires}
+
+\begin{eqnarray*}
+  u(t) & \rightarrow & \frac{1}{p} \rightarrow \frac{z}{z - 1} \\
+  e^{-at}u(t) & \rightarrow & \frac{1}{p + a} \rightarrow
+  \frac{z}{z - e^{-aT}} \\
+  t.u(t) & \rightarrow & \frac{1}{p^2} \rightarrow \frac{z}{(z - 1)^2}
+\end{eqnarray*}
+
+\paragraph{Méthode 1}
+
+On peut décomposer $F(p)$ en élèments simples puis se servir de la
+table.\\
+ex: $$F(p) = \frac{1}{(p+a)(p+b)}$$
+
+\paragraph{Méthode 2: le cas des fonctions trigonométriques}
+
+Grâce aux formules d'Euler, on peut transformer les sinus et cosinus
+en exponentielles et utiliser la table.
+
+\section{Transformée en $Z$ inverse}
+
+\subsection{Définition}
+
+$$Z^{-1}\left\{ F(z)\right\} = \left\{ f(nT) \right\}$$
+
+\par
+Attention! On ne peut se servir de la table des transformées en $Z$
+usuelles dans l'autre sens!
+
+\subsection{Développement en fractions élémentaires}
+
+\par
+On ne peut pas décomposer directement $F(z)$ en élèments simples, car
+$\frac{1}{z + cte}$ n'est pas dans la table. La méthode à appliquer se
+divise donc en deux étapes:
+
+\begin{enumerate}
+\item On pose une fonction auxiliaire $G(z) = \frac{F(z)}{z}$ que l'on
+  décompose en éléments simples.
+  $$G(z) = \frac{F(z)}{z} = \frac{A}{z + a} + \frac{B}{z + b} + \cdots$$
+\item On multiplie les deux membres par $z$
+  $$F(z) = \frac{zA}{z + a} + \frac{zB}{z + b} + \cdots$$
+\end{enumerate}
+
+\par
+Finalement, on peut se servir de la table des transformations en
+cherchant $\alpha$ tel que $a = (e^{\alpha t})^n$.
+
+
+\subsection{Division selon les puissances croissantes de $z^{-1}$}
+
+\subsection{Méthode de l'équation aux différences}
+
+\paragraph{L'équation aux différences}
+ est l'équivalent dans le domaine discret de l'équation différentielle
+ dans le domaine continu.
+
+\paragraph{Principe:}
+On se sert du théorème du retard.
+
+\begin{eqnarray*}
+Z\left[ f(t - kT)\right] & = & z^{-k}\mathscr{F}(z) \; \; (k \in
+\mathbb{N} > 0)\\
+Z^{-1}\left[z^{-k}\mathscr{F} (z)\right] & = & \left[f((x - k)T)\right]\\
+Z^{-1}\left[\mathscr{F} (z)\right] & = & \left[f_{n-k}\right]
+\end{eqnarray*}
+
+\paragraph{Exemple:}
+Transmittance échantillonée:
+$$\frac{X(z)}{Y(z)} = \frac{0,3z}{z - 0,2}$$
+On cherche $Z^{-1}\left[X(z)\right]$, i.e
+$\left[x_n\right]_{n=0,1...}$
+
+\par
+Equation au différences: on divise en haut et en bas par z pour
+n'avoir que des puissances inférieures ou égales à 0.
+
+\begin{eqnarray*}
+  \frac{X(z)}{Y(z)} & = & \frac{0,3}{1 - 0,2z^{-1}} \\
+  X(z) - 0,2z^{-1}X(z) & = & 0,3Y(z)
+\end{eqnarray*}
+On prend $Z^{-1}$ des deux membres
+\begin{eqnarray*}
+  Z^{-1}\left[X(z)\right] & = & \left[x_n\right] \\
+  Z^{-1}\left[z^{-1}X(z)\right] & = & \left[x_{n-1}\right] \\
+  x_n - 0,2x_{n-1} & = & 0,3y_n
+\end{eqnarray*}
+
+\par
+On obtient une équation aux différences du 1er ordre (car $x_n$ connu
+si $x_{n-1}$ connu). Elle se resout numériquement en partant d'une
+condition initiale. On pose comme condition intiale $x_{-1} = 0$.
+
+\par
+On construit un tableau en utilisant l'équation $x_n = 0,2x_{n-1} +
+0,3y_n$.
+\par
+Cette méthode est très générale, elle s'applique pour toute
+transformée en $Z$ inverse recherchée. Cependant, il faut faire
+attention à l'accumulation des erreurs d'arrondi.
+
+\chapter{Application en automatique discrète de la transformée en Z
+  (invers)}
+
+
+\section{Transmittance échantillonée}
+
+\par
+Le passage du signal échantilloné (théorie du signal) au système
+échantilloné (automatique) se fait en définissant la transmittance
+échantillonée (T.E).
+
+\subsection{1ère idée pour définit la T.E}
+
+$$\frac{\L (sortie)}{\L (entree)} = \frac{\L (s(t))}{\L (e^*(t))} =
+\frac{S(p)}{E^*(p)}$$
+
+\par
+$E^*(p)$ va nous donner un polynome en $e^{Tp}$... pas top.
+
+\subsection{2e idée: un échantilloneur fictif}
+
+$s(t)$ est en réalité continu mais on ne manipule que les valeurs
+prises par $s(t)$ aux instants d'échantillonage.
+
+\par
+On définit T.E comme:
+
+$$T.E = \frac{\L (s^*(t))}{\L(e^*(t))} = \frac{S^*(p)}{E^*(p)} =
+\frac{S(z)}{E(z)}$$
+
+\par
+On n'aura alors plus accés à l'information continue.
+
+\subsection{Théorème fondamental des T.E}
+
+\par
+La transmittance échantillonée du signal s(t) est égal à la
+transmittance échantillonée du système.
+
+\par
+La transformée en $Z$ est un outil pour manipuler les signaux
+échantillonés.
+\par
+La transformée en $Z$ est aussi un outil pour manipuler les systèmes échantillonées.
+
+
+\paragraph{Conséquences}
+Construction d'un système par association de différents blocs.
+
+En continue:
+\begin{itemize}
+\item association en série: $G(p) = G_1(p). G_2(p)$
+\item association en parallèle: $G(p) = \frac{G_1}{1 + G_1.G_2}$
+\end{itemize}
+
+En échantillonnée:
+\begin{itemize}
+\item association en série: $T.E = G_1(z). G_2(z)$
+\item assiciation en série (2):$T.E = Z\left[G_1(p).G_2(p)\right](z)$
+\item association en parallèle: $G(p) = \frac{G_1(z)}{1 + G_1G_2(z)}$
+\end{itemize}
+
+
+
+\end{document}

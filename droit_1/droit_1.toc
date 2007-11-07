@@ -1,0 +1,23 @@
+\select@language {french}
+\contentsline {section}{\numberline {1}Le droit}{2}
+\contentsline {subsection}{\numberline {1.1}Droit public}{2}
+\contentsline {subsubsection}{\numberline {1.1.1}Les types de droit public}{2}
+\contentsline {subsubsection}{\numberline {1.1.2}Le droit p\'enal}{2}
+\contentsline {subsection}{\numberline {1.2}Droit priv\'e}{2}
+\contentsline {subsubsection}{\numberline {1.2.1}Les types de droit priv\'e}{2}
+\contentsline {section}{\numberline {2}Les juridictions}{2}
+\contentsline {paragraph}{Principe de la gratuit\'e de la justice\\}{3}
+\contentsline {paragraph}{La justice est publique}{3}
+\contentsline {subsection}{\numberline {2.1}Les juridictions civiles de 1\`ere instance}{3}
+\contentsline {paragraph}{Les tribunals d'instance}{3}
+\contentsline {paragraph}{Le tribunal de commerce}{3}
+\contentsline {paragraph}{Le conseil des prud'hommes}{3}
+\contentsline {subsection}{\numberline {2.2}Les juridictions p\'enales de 1\`ere instance}{3}
+\contentsline {paragraph}{La cour d'assise}{4}
+\contentsline {subsection}{\numberline {2.3}Les juridictions de deuxi\`eme instance}{4}
+\contentsline {subsubsection}{\numberline {2.3.1}Les cours d'appel}{4}
+\contentsline {paragraph}{}{4}
+\contentsline {paragraph}{}{4}
+\contentsline {paragraph}{}{4}
+\contentsline {subsubsection}{\numberline {2.3.2}La cours de cassation}{4}
+\contentsline {paragraph}{Un arr\^et de cassation}{4}

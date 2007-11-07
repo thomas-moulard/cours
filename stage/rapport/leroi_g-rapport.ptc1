@@ -1,0 +1,15 @@
+{\reset@font\ptcCfont\mtc@string\contentsline{chapter}{\noexpand \leavevmode \numberline {1}Mod\'elisation}{\reset@font\ptcCfont 16}}
+{\reset@font\ptcCfont\mtc@string\contentsline{chapter}{\noexpand \leavevmode \numberline {2}Screenshots}{\reset@font\ptcCfont 19}}
+{\reset@font\ptcCfont\mtc@string\contentsline{chapter}{\noexpand \leavevmode \numberline {3}Documentation}{\reset@font\ptcCfont 21}}
+{\reset@font\ptcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.1}Modules}{\reset@font\ptcSfont 21}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.1.1}src/vgi}{\reset@font\ptcSSfont 21}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.1.2}src/vgitoolkit/vaucanson/vgitoolkit}{\reset@font\ptcSSfont 22}}
+{\reset@font\ptcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode VJGraph}{\reset@font\ptcSSSfont 22}}
+{\reset@font\ptcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Geometry module}{\reset@font\ptcSSSfont 22}}
+{\reset@font\ptcPfont\mtc@string\contentsline{paragraph}{\noexpand \leavevmode Geometry Properties:}{\reset@font\ptcPfont 22}}
+{\reset@font\ptcPfont\mtc@string\contentsline{paragraph}{\noexpand \leavevmode Layouts:}{\reset@font\ptcPfont 22}}
+{\reset@font\ptcPfont\mtc@string\contentsline{paragraph}{\noexpand \leavevmode GeometricUtilities:}{\reset@font\ptcPfont 23}}
+{\reset@font\ptcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Drawing module}{\reset@font\ptcSSSfont 23}}
+{\reset@font\ptcPfont\mtc@string\contentsline{paragraph}{\noexpand \leavevmode Drawing Properties:}{\reset@font\ptcPfont 23}}
+{\reset@font\ptcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode XML}{\reset@font\ptcSSSfont 23}}
+{\reset@font\ptcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Translation to JGraph}{\reset@font\ptcSSSfont 23}}

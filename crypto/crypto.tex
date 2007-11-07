@@ -1,0 +1,799 @@
+\documentclass[a4paper, 12pt, leqno]{report}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{vaucanson-g}
+\usepackage{listings}
+
+\title{\huge{Introduction à la cryptographie}}
+
+\lhead{Introduction à la cryptographie}
+\chead{}
+\rhead{EPITA 2008}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\lstset{language=ADA,frame=single, mathescape=true, showspaces=false}
+\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt,
+  basicstyle=\small, frameround=tttf, frame=tRBl}
+
+\pagestyle{fancy}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+
+La cryptographie permet de protéger des informations, empecher la
+copie\ldots Elle est un élément de la sécurisation des réseaux (même
+si elle n'est pas suffisante à elle seule).
+
+Quel but pour la cryptographie?
+\begin{itemize}
+\item confidentialité: garantir qu'une information n'est pas
+  accessible par des tiers à l'aide du \emph{chiffrement}.
+\item intégrité: s'assurer que le contenu d'une communication ou d'un
+  fichier n'a pas été modifié à l'aide du \emph{hachage}.
+\item authenticité: garantir la source d'une information. Cas
+  pratique: la signature électronique, permettre la non-répudiation.
+\end{itemize}
+
+
+\paragraph{La cryptologie} se décompose en deux champs principaux qui
+s'opposent et en même se complètent
+
+\begin{itemize}
+\item cryptographie: ensemble des méthodes assurant les services CIA
+  et par extension, de tout service lié à l'information en milieu
+  hostile.
+\item cryptanalyse: recherche des failles dans les mécanismes
+  cryptographiques (failles du WEP, SSLv3, carte bleu).
+\end{itemize}
+
+\paragraph{Principes de Kerckoff}
+
+\begin{itemize}
+\item la sécurité d'un système ne doit pas être fondée sur son
+  caractère secret (un système reste sur même si ces plans sont
+  connus).
+\item seule une donnée de petite taille (la clef) doit assurer la
+  sécurité du système.
+\end{itemize}
+
+\section{Notions de sécurité}
+
+On peut toujours casser un système en testant toutes les clefs
+possibles. La sécurité dépend de la puissance de calculs disponibles.
+Le record de calcul est estimé à environ $2^{64}$ cycles (septembre
+2002). Ce record a duré 4 ans et utilisé 300000 machines.
+
+On estime la puissance de calcul vendue par an à $2^{84}$ cycles. Le
+niveau de sécurité généralement admis pour une clef est de 128 bits,
+c'est à dire $2^{128}$ opérations pour tester toutes les clefs
+possibles.
+
+\begin{itemize}
+\item haute sécurité: $\geq$ 128 bits.
+\item sécurité moyenne: 64 à 80 bits: dans l'ordre des records.
+\item petite sécurité: 40 à 56 bits (cassage facile avec des machines
+  dédiées).
+\end{itemize}
+
+Le niveau de sécurité choisi dépend de la valeur de l'information
+protégée. On s'assure que le coût du cassage est largement supérieur
+aux bénéfices que l'on peut tirer du cassage (ticket de métro
+(moyenne)) Le niveau de sécurité dépends aussi de la durée de
+protection désirée (match de foot (moyenne)).
+
+De plus, une grosse clef n'est pas suffisante, l'algorithme doit être
+efficace. Si l'on prend pour exemple le chiffrement par décalage de
+l'alphabet (César), on dispose de $2^{88}$ permutations possibles,
+cependant la clef est facilement cassable par analyse des fréquences
+des lettres.
+
+En général, les données à chiffrer ne sont pas aléatoires, il faut
+donc s'assurer que les données cryptées le sont pour éviter le cassage
+par analyse de fréquence ou la recherche de motif.
+
+\section{Chiffrement symétrique}
+
+Le destinataire et l'expéditeur sont interchangeables et utilisent la
+même clef.
+
+\subsection{DES}
+
+\begin{itemize}
+\item chiffre des blocs de 64 bits à l'aide d'une clef K de 56 bits.
+\item permutations des bits du message.
+\item 16 itérations par bloc.
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=7cm, height=6.5cm]{img/des.eps}
+  \caption{Une itération sur un bloc}
+  \label{fig:des}
+\end{figure}
+
+\begin{itemize}
+\item K est modifié au fur et à mesure, à chaque itération.
+\item La fonction $f$ est en fait l'application de 8 fonctions $S$
+  différentes qui transforme 6 bits en 4 bits. Ainsi l'entrée de 48
+  bits est réduite à 32 bits.
+\item Il existe $2^{256}$ fonctions $S$ différentes.
+\end{itemize}
+
+\subsubsection{Sécurité de DES}
+
+\begin{itemize}
+\item fiable, mais aujourd'hui les clefs sont trop petites.
+\item 1998: une machine de 250000\$ casse DES en 2-3 jours.
+\item DES a été conçu pour être efficace en hard (10 Gb/s en hardware
+  contre 15Mo/s en software).
+\item AES: remplaçant de DES. (5Gb/s en hardware, 30 Mo/s en software).
+\end{itemize}
+
+\section{Chiffrement asymétrique}
+
+Jusqu'alors le chiffrement était symétrique, l'expéditeur et le
+destinataire partage une clef qui doit rester secrète. En 1976
+apparaît l'idée du chiffrement asymétrique, proposé par Diffie et
+Hellman dans un l'article ``New directions in cryptography''.
+
+Ces deux types de chiffrement sont complémentaires et souvent utilisé
+de manière conjointe
+\begin{itemize}
+\item symétrique est beaucoup plus rapide que l'asymétrique.
+\item tout deux reposent sur des branches mathématiques très
+  différentes.
+\end{itemize}
+
+\chapter{Cryprographie sans secret}
+La cryptographie sans secret utilise et cherche des fonctions à sens
+unique, facile à calculer, et calculatoirement impossible à
+inverser. Des cas particuliers de la cryptographie sans secret sont:
+\begin{itemize}
+\item le hachage: entrée arbitraire, sortie de taille fixe.
+\item générateur pseudo-aléatoire: entrée de taille fixe, sortie
+  arbitrairement longue.
+\end{itemize}
+
+\section{Hachage cryptographique}
+
+Une fonction de hachage fournit une ``empreinte'' de n'importe quelle
+donnée. L'empreinte doit être petite, et une petite modification des
+données doit grandement modifier l'empreinte.
+
+Les propriétés requises sont:
+\begin{itemize}
+\item sens unique.
+\item résistance à la deuxième préimage: impossibilité de trouver $x'$
+  étant donné $x$ tel que $H(x) = H(x')$.
+\item résistance aux collisions: impossibilité calculatoire de trouver
+  une paire $(x, y)$ d'éléments distincts tel que $H(x) = H(y)$.
+\item oracle aléatoire: la sortie de la fonction de hachage doit se
+  comporter comme un nombre aléatoire.
+\end{itemize}
+
+\paragraph{Probabilité de collisions}
+
+Pour $n$ éléments, le nombre d'éléments nécessaire pour que la probabilité
+qu'une collision se produise est de $\sqrt{\pi \frac{n^2}{2}}$.
+
+\paragraph{Hachage itératif}
+
+\subsection{MD5}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=7cm, height=9cm]{img/MD5.eps}
+  \caption{Un itération de MD5}
+\end{figure}
+
+\begin{itemize}
+\item empreinte de 128 bits.
+\item exécuté 64 fois.
+\item $M_i$ 32 bits du message d'entrée.
+\item $K_i$ mot de 32 bits, différent a chaque opérations.
+\item Très efficace.
+\end{itemize}
+
+On connaît quelques faiblesses à MD5, en particulier des collisions
+ont été exhibées. En effet, pour de blocs de 512 bits $m_1$ et $m_2$,
+on peut trouver en quelques minutes $MD5(m_1) = MD5(m_2)$ et $MD5(d \|
+m_1 \| f) = MD5(d \| m_2 \| f)$
+
+
+\subsection{SHA-1: Secure Hash Algorithm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=7.5cm, height=8cm]{img/SHA-1.eps}
+  \caption{Une itération de SHA-1}
+\end{figure}
+
+\begin{itemize}
+\item empreinte de 160 bits.
+\item 80 itérations.
+\item Plus sûr que MD5.
+\end{itemize}
+
+\subsection{Performances et applications}
+
+\begin{description}
+\item[MD5] 101Mo/s
+\item[SHA-1] 48Mo/s
+\item[SHA-256] 25Mo/s
+\item[SHA-512] 8Mo/s
+\end{description}
+
+\begin{description}
+\item[signature] signer le hache d'un long message plutôt que de
+  signer le message.
+\item[intégrité] stocker/transmettre de façon sûre une empreinte de la donnée.
+\item[cryptographie] construire et renforcer la sécurité de certaines
+  fonctions cryptographiques.
+\end{description}
+
+
+\section{Les générateurs pseudo-aléatoires}
+
+Par exemple, on a une petite clef secrète. On a besoin d'une clef
+secrète plus grande, on va donc la générer.
+
+Autre exemple, on dispose d'une source d'aléa parfaite mais lente, on
+utilise donc la source d'aléa pour générer un flot pseudo-aléatoire
+plus important.
+
+\paragraph{Contraintes de sécurité}
+
+\begin{itemize}
+\item la sortie du générateur doit être indistinguables d'un flot de
+  bits véritablement aléatoires.
+\item étant donné deux flots, une chance sur deux de se tromper pour
+  désigner le flot pseudo-aléatoire du flot aléatoire.
+\item étant donné 1Go de données, on ne doit pas pouvoir trouver le
+  bit suivant avec une probabilité supérieure à $\frac{1}{2}$.
+\end{itemize}
+
+\paragraph{Exemple de générateur}
+
+On concatène la graine et un compteur de 4 octets, que l'on hache avec
+SHA-\{1,256,384,512\}. On génère alors un flot pseudo-aléatoire de
+$160$ bits $\times 2^{32}$.
+
+
+
+\chapter{Chiffrement symétrique}
+
+Une clef secrète est partagée par l'expéditeur et le destinataire.
+
+\section{Chiffrement par flot}
+
+\begin{itemize}
+\item En entrée, un flot de données M.
+\item On dispose d'une clef secrète K (de 64 à 128 bits typiquement)
+  et d'une valeur initiale IV variable.
+\item En sortie, un flot de données C.
+\end{itemize}
+
+
+Il existe deux types de chiffrements par flots: synchrone et
+asynchrone. Le chiffrement synchrone correspond à l'idée suivante, le
+message est additionné avec un flot alèatoire:
+$$C = M \oplus FlotAleatoire(K, IV)$$
+Le chiffrement asynchrone correspond aux machines ENIGMA, l'ordre dans
+lequel les données arrivent a une influence sur le message en sortie.
+On préfère en général le chiffrement symétrique synchrone à
+l'asynchrone pour les raisons suivantes:
+
+\begin{itemize}
+\item peu ou pas de propagations des erreurs.
+\item débit élevé
+\item implémentation simple, peu coûteuse.
+\item le chiffré a la même taille que le clair.
+\end{itemize}
+
+
+\paragraph{Fonctionnement}
+
+\begin{itemize}
+\item la clef secrète initialise l'état interne du système.
+\item on utilise l'état interne pour générer un flot.
+\item on effectue la mise à jour du système.
+\item et on recommence.
+\end{itemize}
+
+\subsection{RC4}
+
+\begin{itemize}
+\item par Ron Rivest (de RSA).
+\item aucun rapport avec RC5 et RC6 (qui sont des algorithmes de
+  chiffrement par bloc).
+\item les premiers octets générés par RC4 ne sont pas aléatoires (on
+  jette généralement les 1024 premiers octets).
+\item adapté à une implémentation software.
+\item utilisé dans WEP, SSL, WPA.
+\end{itemize}
+
+
+\subsection{LFSR}
+
+LFSR signifie Linear Feedback Shift Register. Un LSFR consiste en un
+registre de $n$ bits. On extrait le $n^{ieme}$ bit. La mise à jour du
+registre se fait par un XOR avec un feedback sur certains bits.
+
+\begin{itemize}
+\item rapide, bon en hardware.
+\item il faut plusieurs LFSR pour assurer une sécurité correcte: en
+  effet pour un LFSR de $n$ bits, connaissant $2n$ bits consécutifs on
+  peut deviner le fonctionnement du LFSR correspondant.
+\item pour éviter les attaques par collération, il faut que la sortie
+  soit ``presque'' décollérée de chacun des LFSR.
+\end{itemize}
+
+
+\section{Chiffrement par bloc}
+
+Le chiffrement par bloc est plus répandu dans le domaine public. Il
+existe de nombreux algorithmes qui sont considérés sûr, et notamment
+libre de brevets. Dans le chiffrement par bloc, on tente de simuler
+une permutation aléatoire sur un nombre de bits donné.
+
+\paragraph{Exemple: DES}
+
+\begin{itemize}
+\item On travaille sur des blocs de 64 bits. On a donc $2^{64}$
+  éléments différents, soit $(2^{64})!$ permutations possibles.
+\item Cependant DES ne permet que $2^{56}$ permutations différentes.
+\item Il existe plus d'éléments différents que de permutations
+  possibles, d'où la difficulté a généré des permutations aléatoires.
+\end{itemize}
+
+Un algorithme de chiffrement par bloc ne décrit que les manipulations
+nécessaires pour chiffrer un bloc, cependant les données à chiffrer
+sont souvent bien plus grosse que la taille d'un bloc. Il existe donc
+différents modes opératoires permettant de chiffrer ces données par
+bloc.
+
+\subsection{Modes opératoires}
+
+\paragraph{ECB}
+
+\begin{itemize}
+\item chiffrement déterministe.
+\item pas d'authenticité.
+\end{itemize}
+
+
+\paragraph{CBC}
+
+\begin{itemize}
+\item même procédé que ECD mais avec une IV (valeur initiale aléatoire).
+\item toujours pas d'authenticité, mais il est difficile de modifier
+  le message chiffré en gardant un sens.
+\end{itemize}
+
+\paragraph{OFB}
+
+\begin{itemize}
+\item permet de faire du chiffrement par flot synchrone à partir de
+  chiffrement par bloc.
+\end{itemize}
+
+\paragraph{CFB}
+
+\begin{itemize}
+\item chiffrement asynchrone.
+\item dépendance entre les blocs de messages pour le chiffrement.
+\end{itemize}
+
+\paragraph{CTR}
+
+\begin{itemize}
+\item chiffrement asynchrone.
+\item Objectif de sécurité. On vise a ce que la meilleure attaque
+  possible soit la recherche exhaustive de la clé.
+\end{itemize}
+
+
+\subsection{Chiffrement itératif}
+
+\begin{itemize}
+\item Diversification de la clef: on transforme la clé en une clé plus
+  longue en utilisant un algorithme simple (et non pas un générateur
+  aléatoire).
+\item Itérations: deux méthodes principales existent:
+  \begin{itemize}
+  \item DES: schéma de teistel.
+  \item AES: réseaux de substitution et permutations.
+  \end{itemize}
+\item Une bonne itération satisfait deux conditions:
+  \begin{itemize}
+  \item confusion: cacher la relation entre le clair et le chiffré par
+    des opérations non linéaires.
+  \item diffusion: cacher la redondance du clair par des opérations
+    linéaires.
+  \end{itemize}
+\end{itemize}
+
+
+\paragraph{AES}
+
+\begin{itemize}
+\item 10 à 14 itérations selon la taille de la clef / du bloc.
+\item blocs de 128 bits.
+\item permutation faite par décalage des lignes et mélange des colonnes.
+\item la seule opération non linéaire est la substitution.
+\item très performant en soft. Portable.
+\item plus sûr que DES.
+\end{itemize}
+
+\subsection{Types d'attaques}
+
+\paragraph{Cryptanalyse différentielle}
+
+\begin{itemize}
+\item attaque à clair choisi.
+\item on peut apprendre des bits de la clé diversifié.
+\item DES a été crée pur résister à ce type d'attaque.
+\end{itemize}
+
+\paragraph{Cryptanalyse linéaire}
+
+\begin{itemize}
+\item attaque à clair connu.
+\item on essaie de trouver un système d'équation linéaire.
+\item elles ne sont vraies qu'avec une probabilité proche de $\frac{1}{2}$.
+\end{itemize}
+
+\paragraph{Cryptanalyse algébrique}
+
+\begin{itemize}
+\item équivalent à la cryptanalyse linéaire, mais les fonctions ne
+  sont pas linéaires.
+\end{itemize}
+
+\subsection{MAC: Message authentification codes}
+
+Les fonctions de hachages (comme MD5 et SHA-1) sont aussi des
+algorithmes de chiffrement par bloc.
+
+\paragraph{Analogie}
+
+\begin{itemize}
+\item clair $\leftrightarrow$ IV
+\item chiffré $\leftrightarrow$ haché
+\item clé $\leftrightarrow i^{ème}$ bloc du message
+\end{itemize}
+
+
+\paragraph{MAC: exemple dans APOP}
+
+MAC équivaut à une fonction de hachage paramétrée par une clef
+secrète.
+
+\begin{itemize}
+\item Le client envoie son nom d'utilisateur.
+\item Le serveur répond par un challenge $c$.
+\item Le client renvoie $MD5(c \| u)$.
+\item Le serveur peut vérifier le mot de passe en calculant de son
+  côté aussi $MD5(c \| u)$.
+\item Attention: il n'y a pas de non-répudiation, on s'assure juste
+  que le mot de passe n'est pas transmis en clair sur le réseau.
+\end{itemize}
+
+
+\chapter{Chiffrement asymétrique}
+
+\begin{itemize}
+\item la securite est \emph{garantie} si un problème est algorithmiquement
+  difficile. Par exemple, la factorisation est un problème difficile,
+  actuellement les meilleurs algorithmes sont sous-exponentielles, et
+  aucun n'est polynomiales.
+\item Il doit etre facile de chiffrer, et difficile de déchiffrer.
+\item beaucoup moins rapide que le chiffrement symétrique.
+\item implémentation plus complique: besoin d'opérations sur de grands
+  entiers, sur les corps finis.
+\item le choix de la taille des clefs est plus difficile.
+\end{itemize}
+
+En général, une clef de $n$ bits fournit moins de $n$ bits de
+sécurité, ce qui explique la grande taille des clefs du chiffrement
+asymétrique.
+
+
+\section{Arithmétique et algorithmique}
+
+\subsection{Quelques résultats de la théorie des nombres}
+
+En sélectionnant un nombre dans un intervalle allant de $1$ à $n$, la
+probabilité que ce nombre soit premier est de $\frac{1}{n}$.
+
+\paragraph{Quelques conjectures}
+
+\begin{itemize}
+\item Tout nombre supérieur à 5 est la somme de 3 nombres premiers.
+\item il existe une infinité de nombres premiers jumeaux (i.e leur
+  différence vaut 2).
+\end{itemize}
+
+\paragraph{Factorisation}
+
+La factorisation d'un nombre choisi aléatoirement est relativement
+facile. Cependant il est apparemment difficile de factoriser un
+produit de deux nombres premiers.
+
+Le record actuelle de factorisation est un nombre de 200 chiffres (663
+bits). Sa factorisation a nécessité un temps équivalent à 170 ans pour
+un Pentium 1GHz.
+
+Le meilleur algorithme de factorisation est le crible algébrique. Sa
+complexité est sous-exponentielle. C'est actuellement, et depuis près
+de 15 ans, le meilleur algorithme dont nous disposons.
+
+\subsection{Arithmétique modulaire}
+
+\subsubsection{Division euclidienne}
+
+\begin{itemize}
+\item Pour tout couple $(a, b) \in \mathbb{Z}^²$ il existe un unique couple
+$(q, r)$ tel que $b = qa + r$.
+\item Lorsque $r = 0$, on dit que a divise b, et on note $a | b$.
+\item Si $d | a$ et $d | b$ alors $d | pgcd(a, b)$.
+\item (Bézout) On dit que $a$ et $b$ sont premiers entre eux lorsque $ax + by =
+  1$ ou encore $pgcd(a, b) = 1$.
+\end{itemize}
+
+\paragraph{L'algorithme d'Euclide}
+
+\begin{itemize}
+\item Complexité: quadratique.
+\end{itemize}
+
+\begin{lstlisting}
+  $\text{Input: (a, b) integers}$
+  if $a < b$ then
+    swap ($a, b$)
+  while $b \neq 0$
+    $(a, b) \leftarrow (b, a \mod b)$
+  return $a$
+\end{lstlisting}
+
+\subsubsection{Congruence}
+
+\begin{itemize}
+\item On dit que $a$ congrue à $b$ modulo $n$, noté $a \equiv b [n]$.
+\item Si $a \equiv b [n]$ et $c \equiv d [n]$ alors
+  \begin{eqnarray*}
+    a + c & \equiv & b + d [n]\\
+    a - c & \equiv & b - d [n]\\
+    a \times c & \equiv & b \times d [n]
+  \end{eqnarray*}
+\item Lorsque $a \times c  \equiv 1 [n]$, on dit que $c$ est l'inverse de
+  $a$ module $n$.
+  \begin{eqnarray*}
+    a \times c \equiv 1[n] & \Leftrightarrow & a \times c = 1 + kn \\
+    & \Leftrightarrow & a.c - k.n = 1 \; \; \text{(Bézout)}
+  \end{eqnarray*}
+\item On remarque que $c$ existe si $a$ et $n$ sont premier entre eux.
+\end{itemize}
+
+
+\subsubsection{L'indicateur d'Euler}
+
+L'indicateur d'Euler, noté $\phi (n)$ donne le nombre de nombres compris entre
+$1$ et $n$ qui sont inversibles modulo $n$.
+
+$$\phi (n) = Card\left(  k \; | \; k \in \left[1..n\right[
+    \;\text{et}\;  k \;\textrm{premier avec}\; n  \right)$$
+
+\paragraph{Cas particuliers}
+
+\begin{itemize}
+\item Si $p$ est premier alors $\phi (n) = p - 1$.
+\item Si $p$ et $q$ sont premiers alors $\phi (pq) = (p - 1)(q - 1)$.
+\end{itemize}
+
+\paragraph{Théorème d'Euler}
+
+Si $a$ est premier avec $n$, alors $a^{\phi (n)} \equiv 1 [n]$.
+
+On remarque alors que si $p$ est premier et $p$ ne divise pas $a$ alors $a^{p -1}
+\equiv 1 [n]$.
+
+\subsubsection{Théorème des restes chinois}
+
+Soit $m$ et $n$ premiers entre eux:
+$$a \equiv b[nm] \Leftrightarrow a \equiv b[n] \text{ et } a \equiv b[m] $$
+
+\paragraph{Autre formulation}
+Soit $m$ et $n$ premiers entre eux:
+$$\forall b,c \in \mathbb{N}, \exists a \in \mathbb{Z} \text{ tel que } %
+a \equiv b[n] \text{ et } a \equiv c[m]$$
+
+\paragraph{Comment trouver $a$?}
+
+Grace a l'algorithme d'euclide etendu, on trouve $(x,y) \ in
+\mathbb{Z}^2$ tel que $nx + my = 1$.
+Donc:
+\begin{eqnarray*}
+  nx & \equiv & 0 [n]\\
+  nx & \equiv & 1 [m]\\
+  my & \equiv & 0 [m]\\
+  my & \equiv & 1 [n]
+\end{eqnarray*}
+Et donc:
+$$a = b(my) + c(nx)$$
+
+
+\subsection{Compléxite des algorithmes sur entier}
+
+\subsubsection{L'exponentiation modulaire}
+
+On fait $t$ carrés et $h$ multiplications. Si l'exposant est gros $h
+\rightarrow t$ d'où $2t$ multiplications modulaires.
+
+\begin{lstlisting}
+  $\text{Input: } (g, e) \; e \text{ composé de } t  \text{ bits}$
+  $\text{Output: } g^e$
+  $h \leftarrow 1$
+  for $i$ from $t$ to $0$
+    $h \leftarrow h^2 \mod n$
+    if $e_i = 1$ then
+      $h \leftarrow gh \mod n$
+  return $h$
+\end{lstlisting}
+
+\subsubsection{Classification}
+
+\begin{tabular}[center]{c | c | c | c | c}
+  linéaire & quasi-linéaire & quadratique & cubique & quartique \\
+  \hline
+
+  $+$ & $\times , \div$ (sophistiqué)& $\times, \div$ (simple) & test %
+  de primalité & générer un \\
+
+  $-$ & pgcd (sophistiqué) & pgcd (euclide et étendue) & %
+  exponentiation & nombre premier  \\
+
+  & & exponentiation modulaire & modulaire & \\
+
+  & & (avec gros exposant) & &
+\end{tabular}
+
+
+
+\section{RSA}
+
+
+\subsection{Génération des clefs}
+
+\begin{enumerate}
+\item Alice génère $p$ et $q$ ($N = pq$ et $\phi (N) = (p-1)(q-1)$).
+\item Trouver $e$ premier avec $\phi (N)$.
+\item Calculer $d$, inverse de $e$ modulo $\phi (N)$
+\end{enumerate}
+
+
+\subsection{Théorème RSA}
+
+Si $ed \equiv 1[\phi (N)]$ alors pour tout $m$, $(m^e)^d \equiv (m^d)^e \equiv m [N]$
+
+\paragraph{Démonstration}
+
+D'après le théorème des restes chinois, il  suffit de démontrer que
+$\forall m, m^{ed} \equiv m [p]$ et $m^{ed} \equiv m [q]$.
+On a
+\begin{eqnarray*}
+  ed & = & 1 + k(p-1)(q-1) \\
+  m^{ed} & = & m^{1+k(p-1)(q-1)} \\
+    & = & m \times m^{k(p-1)(q-1)}
+\end{eqnarray*}
+
+Il y a deux cas possibles:
+\begin{enumerate}
+\item $m$ n'est pas premier avec $p$, donc $p | m$ donc $m^{ed} \equiv 0[p] \equiv
+  m [p]$.
+\item $m$ est premier avec $p$ alors, d'après le théorème d'Euler,
+  $m^{p-1} \equiv 1 [p]$, d'où $(m^{p-1})^{k(q-1)} \equiv 1^{k(q-1)} \equiv 1 [p]$.
+\end{enumerate}
+
+\subsection{Sécurité de RSA}
+
+\begin{itemize}
+\item Si on connait $d$, on peut retrouver les facteurs de $N$ ($p$ et
+  $q$) car on connait un multiple de $\phi (N)$.
+\item Si on sait factoriser $N$, on peut determiner l'exposant secret
+  $d$ et donc casser RSA.
+\item De plus rien ne prouve que l'exposant secret soit indispensable
+  au déchiffrement. On n'est donc pas sûr que la sécurité de RSA
+  dépend de la difficulté de la factorisation.
+\end{itemize}
+
+\paragraph{Transformation des messages}
+
+Il est indispensable de transformer préalablement les messages clairs
+avant de les chiffrer par RSA. En effet, RSA est déterministe. On peut
+donc vérifier si un chiffré donné correspond à un clair choisi.
+
+\paragraph{Attaque sur les implémentations}
+
+\begin{description}
+\item[Faille SSL3/PKCS1] certains serveurs renvoyés une erreur si le
+  message ne commencait pas par 00 02 (séquence défini par le
+  standard). De cette erreur et en faisant varier les messages envoyés
+  ont pouvait cassé RSA. Cela restait difficile tout de meme puisqu'il
+  faillait envoyer environ un million de requête au serveur.
+\item[Chronométrage] en mesurant précisemment le temps de calcul du
+  déchiffrement pour beaucoup de chiffrés, on peut retrouver $d$. En
+  effet dans l'algorithme d'exponentiation, si on a un bit a 1 on fait
+  deux multiplications, sinon une seule.
+\item[Consommation] Si on peut mesurer la consommation électrique lors
+  du déchiffrement, on peut retrouver $d$ aussi. C'est une attaque
+  très efficace sur carte à puce.
+\end{description}
+
+
+\section{La signature electronique}
+
+\subsection{Objectifs}
+
+La signature electronique est l'application la plus repandue du
+chiffrement asymetrique. On en trouve dans les certificats, les cartes
+bleues, les console de jeux.
+
+\paragraph{Buts}
+\begin{itemize}
+\item assurer l'authenticite de l'expediteur.
+\item assurer l'integrite du document: preuve non interactive de non
+  modification.
+\item Non repudiation: il doit etre impossible de renier une signature
+  associe a une document.
+\end{itemize}
+
+On dispose donc de deux clefs:
+\begin{itemize}
+\item privee: pour signer tous types de documents.
+\item publique: permet a quiconque de verifier la signature
+  correspondant a un document.
+\end{itemize}
+
+
+\paragraph{Efficacite de la signature}
+
+\begin{itemize}
+\item rapidite des algortihmes: la signature a souvent lieu
+  ``offline'', avec de la puissance de calcul disponible. La
+  verification a lieu au vol ou en embarque (console, carte bleue).
+\item tailles: de la signature, de la clef signature.
+\end{itemize}
+
+\paragraph{Niveaux de securite}
+
+\begin{itemize}
+\item casage total: retrouver la clef privee.
+\item forge selective: signer n'importe quel message.
+\item forge existencielle: signer au moins un message.
+\end{itemize}
+
+\paragraph{Types des attaques}
+
+\begin{itemize}
+\item on ne connait que la clef publique, sans message.
+\item a message connu (on dispose de couples message/signature).
+\end{itemize}
+
+
+
+\end{document}

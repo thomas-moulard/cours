@@ -1,0 +1,211 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <meta name="keywords" content="Leroi Guillaume, ENST, vaucanson,
+				   automate, java"/>
+    <link rel="stylesheet" type="text/css" href="css/stage.css" />
+    <title>Stage de tronc commun 2008 - Leroi Guillaume</title>
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1>
+	Stage de tronc commun 2008
+      </h1>
+      <h2>
+	Guillaume Leroi
+      </h2>
+    </div>
+
+    <div id="menu">
+      <img src="img/vaucanson.png" alt="Icone menu"/>
+      <ul>
+        
+               <li><a href="index.htm"> Le Sujet du stage </a></li>
+          
+               <li><a href="entreprise.htm"> A propos de l'ENST </a></li>
+          
+               <li><a href="travail.htm"> Travail effectué </a></li>
+          
+               <li><a href="conclusion.htm"> Conclusion </a></li>
+          
+               <li><hr/> </li>
+          
+               <li><a href="exercices.htm"> Exercices </a></li>
+          
+       <li><hr/></li>
+       <li><a href="http://www.epita.fr">EPITA</a></li>
+       <li><a href="http://www.entreprises.epita.fr">Relations entreprises</a></li>
+       <li><a href="http://www.enst.fr">ENST</a></li>
+
+       <li>
+          <a href="http://validator.w3.org/check?uri=referer">
+          <img src="img/logo-xhtml.png" alt="Valid XHTML 1.0 Strict" />
+          </a>
+       </li>
+
+       <li>
+          <a href="http://www.mozilla-europe.org/fr/products/firefox/">
+          <img src="img/logo-firefox.png" alt="Conçu pour Firefox" />
+          </a>
+       </li>
+
+
+      </ul>
+    </div>
+
+    <div id="body">
+      <h2><img src="img/mini_vaucanson.png" alt="Icone sous titre"/> Travail effectué </h2>
+       
+          <h3>Réorganisation du code</h3>
+
+       
+          
+
+       
+          <p>
+
+       
+            L'une des premières tâches a accomplir était une réorganisation du
+
+       
+            code. Quatre modules ont été définis: XML, geometry, drawing et
+
+       
+            traduction vers JGraph.<br/>
+
+       
+            Le résultat de ce stage étant de produire une version, certes
+
+       
+            diffusable, mais toujours experimentale, il est important que le
+
+       
+            code soit modulable, et que l'on puisse le modifier et s's retrouver
+
+       
+            facilement. Un documentation développeur est donc en cours d'écriture.
+
+       
+          </p>
+
+       
+          
+
+       
+          <p>
+
+       
+            Le module XML étant chargé de lire et sauvegarder au format XML. Le
+
+       
+            prototype proposait déjà cette fonctionnalité, mais depuis le format
+
+       
+            a évolué. Le module a donc été mis à jour.
+
+       
+          </p>
+
+       
+          
+
+       
+          <p>
+
+       
+            Les trois derniers modules n'existaient pas. Les modules de
+
+       
+            geométrie, de dessin permettent de définir, récuperer les valeurs
+
+       
+            des attributs de géometrie et de dessin d'un automate (par exemple,
+
+       
+            le diamètre d'un état, l'épaisseur d'une transition...). Ces deux
+
+       
+            modules définissent aussi des valeurs par défaut pour les attributs
+
+       
+            dont les valeurs n'étaient pas définies dans le fichier XML.
+
+       
+          </p>
+
+       
+          
+
+       
+          <p>
+
+       
+            Le module de traduction vers JGraph, permet à partir des valeurs des
+
+       
+            attributs de donner a JGraph les instructions qui lui sont
+
+       
+            nécessaires pour afficher l'automate. Ce module est charge de
+
+       
+            traduire, en autres, les coordonnées fictives du document XML en
+
+       
+            coordonnées à l'écran, la forme des états.. toutes les attributs
+
+       
+            définis dans le fichier XML, récupérés par les différents modules
+
+       
+            précédents.
+
+       
+          </p>
+
+       
+          
+
+       
+          
+
+       
+          <h3>Documentation</h3>
+
+       
+          
+
+       
+          <p>
+
+       
+            Pour permettre la diffusion du projet, et les évolutions futures,
+
+       
+            l'interface graphique a besoin d'une documentation. Une
+
+       
+            documentation développeur est donc en cours d'écriture. Elle décrit
+
+       
+            la hiérarchie des dossiers, leurs significations. Elle décrit aussi
+
+       
+            chaque modules, leur classe et l'emplacement de certains calculs
+
+       
+            qu'on l'on souhaitera modifier plus tard sans doute.
+
+       
+          </p>
+
+       
+    </div>
+
+  </body>
+
+</html>

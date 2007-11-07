@@ -1,0 +1,675 @@
+\documentclass[a4paper, 12pt, leqno]{article}
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{gastex}
+\usepackage[usenames]{xcolor}
+
+\geometry{vmargin=3cm, hmargin=2.5cm}
+
+\lstset{language=C++,frame=single, mathescape=true, showspaces=false}
+\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt,
+  basicstyle=\small, frameround=tttf, frame=tRBl}
+\gasset{linewidth=0.3,Nw=7.0,Nh=7.0,Nmr=3.3,AHLength=2.5,AHlength=2.1,%
+  loopdiam=6.0}
+
+
+\title{\huge{Complexité structurelle}}
+
+\lhead{Complexité structurelle}
+\chead{}
+\rhead{EPITA 2008}
+
+\renewcommand{\L}{\ensuremath{\mathcal{L}}}
+\renewcommand{\O}{\ensuremath{\mathcal{O}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+
+\renewcommand{\o}{\ensuremath{\mathcal{o}}}
+
+\newcommand{\DL}{\ensuremath{\text{L}}}
+\newcommand{\NL}{\ensuremath{\text{NL}}}
+
+\renewcommand{\P}{\ensuremath{\text{P}}}
+\newcommand{\NP}{\ensuremath{\text{NP}}}
+
+\newcommand{\RP}{\ensuremath{\text{RP}}}
+\newcommand{\RTIME}{\ensuremath{\text{RPTIME}}}
+\newcommand{\ZPP}{\ensuremath{\text{ZPP}}}
+\newcommand{\BPP}{\ensuremath{\text{BPP}}}
+
+\newcommand{\PSPACE}{\ensuremath{\text{PSPACE}}}
+\newcommand{\DSPACE}{\ensuremath{\text{DSPACE}}}
+\newcommand{\NSPACE}{\ensuremath{\text{NSPACE}}}
+
+\newcommand{\DTIME}{\ensuremath{\text{DTIME}}}
+\newcommand{\NTIME}{\ensuremath{\text{NTIME}}}
+
+\newcommand{\SPACE}{\ensuremath{\text{SPACE}}}
+\newcommand{\TIME}{\ensuremath{\text{TIME}}}
+\newcommand{\EXPTIME}{\ensuremath{\text{EXPTIME}}}
+
+\pagestyle{fancy}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+
+\section{Machines de Turing}
+
+Les machines de Turing (1937) permettent de formaliser la notion de
+calculabilité. Une machine de Turing est composé de rubans infinis. En
+général on utilisera des machines à trois rubans (entrée, sortie,
+travail). Sur ces rubans, on écrit des symboles (en général on se
+limitera aux symboles $\epsilon$, $0$, $1$).
+
+\subsection{Définitions et notations}
+
+\paragraph{Définition}
+
+Soit $K_i$ des structures tel que $K_i = \langle C_1 \ldots C_p, R_1
+\ldots R_m, f_1 \ldots f_n, D_1 \ldots D_k \rangle$ où:
+\begin{description}
+\item[$C$] sont des constantes.
+\item[$R$] sont des relations.
+\item[$f$] sont des fonctions.
+\item[$D$] sont des données.
+\end{description}
+
+
+\paragraph{Un problème de décision} $P$ est défini comme $P : K \rightarrow
+\left \{ 0,1 \right \}$ et $P(U) = 0 \text{ ou } 1$.
+
+\paragraph{Un problème de recherche} $P$ est défini comme $P : K \rightarrow
+\left \{ 0,1 \right \}$ et $P(U) = U'$ (en général $U' \subseteq U$).
+
+
+\paragraph{Déterministe}
+
+Une machine de Turing déterministe à $n$ rubans est un quintuplet $M =
+\langle Q, \Sigma, q_0, \delta, F \rangle$ où $\delta$ est la fonction de
+transitions de la machine de Turing
+
+$$\delta : Q \times \Sigma^n \rightarrow Q \times \Sigma^n \times
+\left \{ -1, 0, 1 \right \}$$
+
+
+\paragraph{Non déterministe}
+
+Une machine de Turing non déterministe est un quintuplet $M = \langle
+Q, q_0, \Sigma, \delta, F \rangle$ où $\delta : Q \times \Sigma \times
+Q \times \Sigma \times \left \{ -1, 0, +1 \right \}$ est la table des
+transitions de $M$.
+
+\paragraph{Exemple}
+
+Le choix de la transition est fait par la machine de Turing et nous
+est inconnu.
+
+\begin{eqnarray*}
+  \delta & = & (q_i, 1, q_j, 1, +1) \\
+         &   & (q_i, 1, q_t, 1, +1)
+\end{eqnarray*}
+
+\paragraph{Problème de décision}
+
+$M$ est une machine de Turing à un ruban, lorsqu'elle se trouve dans
+l'état $q_f$, le ruban ne contient que $\epsilon$ ou $1$.
+
+\paragraph{Définition}
+
+Soit $\L_M$ le langage reconnu par une machine de Turing de $M$.
+
+\begin{enumerate}
+\item $M$ et $M'$ sont équivalentes ($\equiv$) si $\L_M = \L_{M'}$.
+\item $M$ et $M'$ sont fortement équivalentes si $\delta_M = \delta_{M'}$.
+\end{enumerate}
+
+
+\paragraph{Notations}
+
+\begin{description}
+\item[$f:$] $\mathbb{N} \rightarrow \mathbb{N}$
+\item[$\O(f(n)) =$] $\left \{ g / \exists n_0, \exists c \in
+    \mathbb{N}, \forall n \geq n_0 g(n) \leq c.f(n) \right \}$
+\item[$T(x)$] est le nombre de transitions d'une machine de Turing sur
+  l'entrée $x$ ( il existe $q_0 \rightarrow q_f$ pour $x$).
+\item[$T_M(x)=$] $\left \{ \max_x(T(x)) / |x| = n \right \}$
+\item[$S(x)$] l'espace nécessaire pour faire le calcul de $M$ sur $x$.
+\item[$S_M(x)=$] $\left \{ \max_x S(x) / |x| = n \right \}$
+\end{description}
+
+\subsection{Exemples}
+
+\paragraph{La fonction successeur}
+
+\begin{eqnarray*}
+  (q_0, 1) & \rightarrow & (q_0, 1, +1) \\
+  (q_0, \epsilon) & \rightarrow & (q_f, 1, 0)
+\end{eqnarray*}
+
+\paragraph{L'addition}
+
+\begin{eqnarray*}
+  (q_0, ()) & \rightarrow & (q_x, (), 0)  \text{ lire x}\\
+  (q_x, (1, \_, \epsilon)) & \rightarrow & (q_x, (\epsilon, \_, 1),
+  +1) \\
+  (q_x, (\epsilon, \_, \epsilon)) & \rightarrow & (q_r, (), 0)
+  \text{ revenir en arrière} \\
+  (q_r, (\_, \_, \_)) & \rightarrow & (q_r, (\_, \_, \_), -1) \\
+  (q_r, (X, X, X)) & \rightarrow & (q_y, (X, X, X), +1) \text{ lire y}\\
+  (q_y, (\epsilon, 1, _)) & \rightarrow & (q_{ry}, (\epsilon,
+  \epsilon, \_), + 1) \text{ si on lit 1, on va au bout pour l'écrire}
+  \\
+  (q_y, (\epsilon, \epsilon, \_)) & \rightarrow & (q_f, ())
+  \text{ on a finit de lire y} \\
+  (q_{ry}, (\_, \_, 1)) & \rightarrow & (q_{ry}, (\_, \_, 1), +1)
+  \text{ tant qu'on lit des 1 dans le résultat}\\
+  (q_{ry}, (\_, \_, \epsilon)) & \rightarrow & (q_{ryf}, (\_, \_, 1),
+  -1) \text{ on est au bout du résultat, on pose 1} \\
+  (q_{ryf}, (\_, 1, \_)) & \rightarrow & (q_{ryf}, (\_, 1, \_), -1)
+  \text{ on revient au début de y}\\
+  (q_{ryf}, (\_, 0, \_)) & \rightarrow & (q_{ry}, (\_, \epsilon, \_),
+  +1)
+\end{eqnarray*}
+
+
+\section{Classification}
+
+\subsection{Définitions}
+
+Soit $\L$ un langage sur $\Sigma$, $f : \mathbb{N} \rightarrow
+\mathbb{N}$
+
+\begin{itemize}
+\item $\L \in \DTIME(f(n))$ s'il existe une machine de Turing $M$
+  déterministe qui accepte $\L$ et $T_M \in \O(f(n))$.
+\item $\L \in \DSPACE(f(n))$ s'il existe une machine de Turing $M$
+  déterministe qui accepte $\L$ et $S_M \in \O(f(n))$.
+\item $\L \in \NTIME(f(n))$ s'il existe $M$ une machine de Turing non
+  déterministe qui accepte $\L$ et tel que tous les chemins de calculs
+  dans $M$ sont de longueur bornée par $\O(f(n))$.
+\item $\L \in \NSPACE(f(n))$ s'il existe une machine de Turing non
+  déterministe qui accepte $\L$ et tel que l'espace memoire nécessaire
+  pour tous les calculs de $M$ est borné par $\O(f(n))$.
+\end{itemize}
+
+
+\subsection{Les classes $\P$ et $\NP$}
+
+$\P$ (resp. $\NP$) est l' ensemble des langages reconnus par une MT
+déterministe (resp. non déterministe) en temps polynômial.
+
+\begin{eqnarray*}
+  \P & = &\cup_k \DTIME(n^k)\\
+  \NP & = & \cup_k \NTIME(n^k)\\
+  \DL & = & \DSPACE(\log n)\\
+  \NL & = & \NSPACE(\log n)\\
+  \PSPACE & = & \cup_k \DSPACE(n^k)
+\end{eqnarray*}
+
+\paragraph{Propriété}
+
+Soit $C$ une classe de complexité.
+$$\L \in coC \Leftrightarrow co\L \in C$$
+
+
+\paragraph{Exemple: test de parité}
+
+Avec une machine de Turing déterministe, le codage des données est
+binaire.
+Selon le codage, ce problème appartient à deux classes différentes:
+\begin{itemize}
+\item si le bit de poids faible est en premier, on est dans $\DTIME(\O(1))$.
+\item si le bit de poids fort est en premier, on est dans $\DTIME(\O(n))$.
+\end{itemize}
+
+
+\subsection{$\DL \subset \NL \subset \P \subset \NP \subset \PSPACE$}
+
+Nous allons montrer une série de théorème qui nous permettront de
+montrer l'inclusion ci-dessus.
+
+\paragraph{Théorème}
+
+$\L \in \SPACE(f)$ alors $\forall \forall \epsilon, \L \in SPACE(f')$
+avec $f'(n) = \epsilon f(n)$.
+
+\paragraph{Théorème}
+
+Soit $\L \in \TIME(f)$, si $n \in \o(f(n))$ alors
+$\forall \epsilon > 0, \L \in \TIME(f')$ avec $f'(n) = \epsilon f(n)$.
+
+\paragraph{Théorème}
+
+Soit $\L$ un langage reconnu par une MT à $k$-rubans en temps $t(n)$,
+alors $\L$ est reconnu par une MT à $1$ ruban en temps $\O(t(n)^2)$.
+
+\paragraph{Théorème}
+
+\begin{eqnarray*}
+  \TIME(f) & \subset & \NTIME(f)\\
+  \SPACE(f) & \subset & \NSPACE(f)\\
+  \TIME(f) & \subset \SPACE(f)\\
+  \NTIME(f) & \subset & \cup_c \TIME(c^{f(n)})
+\end{eqnarray*}
+
+Notons que $\cup_c \TIME(c^{f(n)}) = \EXPTIME(f(n))$.
+
+\paragraph{Théorème}
+
+$$\NTIME(f) \subset \SPACE(f)$$
+
+\paragraph{Algorithme d'accessibilité dans un graphe}
+
+Reach prend en entrée un graphe $G$ et deux sommets $u,v$. Il retourne
+vrai s'il existe un chemin de $u$ à $v$, faux sinon.
+
+\paragraph{Théorème}
+
+$$\NSPACE(f) \subset \cup_c \TIME(c^{f(n) + \log(n)})$$
+
+\paragraph{Théorème}
+
+$$\text{Reach} \in \SPACE(\log^2 n)$$
+
+
+\paragraph{Théorème de Savitch}
+
+Si $f(n) > \log(n)$ alors $\NSPACE(f) \subset \SPACE(f^2)$.
+
+\paragraph{Corollaire}
+
+$$\PSPACE = \cup_k \NSPACE(n^k)$$
+
+\paragraph{Théorème}
+
+$$\text{Reach} \in \NL$$
+
+\paragraph{Théorème}
+
+$$\text{Reach} \in co\NL$$
+
+\paragraph{Remarque}
+
+Les classes déterministes sont closes par complément.
+
+
+\section{Réduction et complétude}
+
+\subsection{Définitions et théorèmes}
+
+
+\paragraph{Définition}
+
+Un problème $K_1 \in \Sigma^*_1$ se réduit à un problème $K_2 \in
+\Sigma_2^*$ en espace logarithmique en espace (resp. polynomial en
+temps) si il existe une fonction $f:\Sigma_1^* \rightarrow
+\Sigma_2^*$ calculable par une MT déterministe en espace
+logarithmique (resp. en temps polynomial) telle que
+$$\forall x \in \Sigma_1^* \; x \in K_1 \Leftrightarrow f(x) \in K_2$$
+
+\paragraph{Propriété}
+
+La composée de deux réductions est une réduction.
+
+\paragraph{Définition}
+
+Une classe de complexité $C$ est fermée par réduction si $K_1$ se
+réduit à $K_2$ et ($K_2 \in C \Leftrightarrow K_1 \in C$).
+
+\paragraph{Propriété}
+
+\begin{itemize}
+\item $\DL$ et $\NL$ sont closes par réduction logarithmique.
+\item $\P, \NP, \text{EXP}, \text{NEXP}, \PSPACE$ sont closes par
+  réduction polynomiale.
+\end{itemize}
+
+\paragraph{Applications}
+
+Pour montrer que un problème $K_1$ est dans la classe $C$ close par
+réduction, il suffit de réduire $K_1$ à $K_2 \in C$.
+
+\paragraph{Définition}
+
+Soit $C$ une classe de complexité et $K$ un langage:
+\begin{itemize}
+\item $K$ est $C$-dur si tout langage se réduit à $K$.
+\item $K$ est $C$-complet si $K \in C$ et $K$ est $C$-dur ($K$ est
+  représentant de la difficulté de la classe).
+\end{itemize}
+
+\paragraph{Remarques}
+
+\begin{itemize}
+\item Si $K_1$ est $C$-dur et si $K_1$ se réduit à $K_2$ alors $K_2$
+  est $C$-dur.
+\item Si $K_1$ est $C$-dur et $K \in C'$ avec $C'$ close par réduction
+  alors $C \subseteq C'$.
+\end{itemize}
+
+\subsection{Exemples}
+
+Nous allons montrer que le problème des chemins hamiltonien est
+\NP-complet en le reduisant au problème SAT.
+
+\subsubsection{SAT}
+
+
+\paragraph{Formules booléennes:} Forme Normale Conjective
+
+\begin{description}
+\item[littéraux:] variables ou leur négation. $x, \neg x$.
+\item[clause:] disjonction de littéraux. $x_1 \vee \neg x_2 \vee x_3$.
+\item[FNC:] conjonction de clauses. $(x_1 \vee \neg x_2 \vee x_3)
+  \wedge (x_3 \vee x_2)$.
+\item[valuation:] $\sigma : D \rightarrow \{0,1\}$
+\item[évaluation:] $\sigma(\phi) \in \{0,1\}$
+\item[satisfaction:] $\sigma \Vdash \phi$ si $\sigma(\phi) = 1$
+\end{description}
+
+\paragraph{Le problème SAT-VALUE}
+
+Ce problème consiste à évaluer la satisfaction d'une formule booléenne
+FNC. On dispose en entrée d'une formule FNC $\phi$, et d'une fonction
+de valuation $\sigma$. SAT-VALUE calcule $\sigma \Vdash \phi$.
+
+\paragraph{Propriété:}
+
+SAT-VALUE $\in \TIME(n²) \wedge \SPACE(log n)$.
+
+
+\paragraph{Le problème SAT}
+
+On dispose en entrée d'une formule FNC $\phi$, le problème SAT
+consiste à trouver si $\phi$ est satisfiable.
+
+\paragraph{Propriétés}
+
+\begin{itemize}
+\item SAT $\in \NP$.
+\item SAT est \NP-complet.
+\item SAT $\in \text{EXP}$.
+\end{itemize}
+
+
+
+\subsubsection{Chemins Hamiltonien (PCH)}
+
+
+On dispose d'un graphe $G = (V, E)$, et on veut répondre à la question
+suivante: existe t'il un chemin dans $G$ qui passe une et une seule
+fois par chaque sommet.
+
+\paragraph{Propriétés}
+
+\begin{itemize}
+\item PCH $\in \NP$.
+\item PCH se réduit à SAT.
+\end{itemize}
+
+Une chemin halmiltonien est une permutation $\Pi(1), \ldots
+\Pi(n)$. tel que $\forall i, \;  i \leq u \leq n (\Pi(i), \Pi(i+1)) \in
+E$. Pour passer au problème SAT, on code un chemin hamiltonien avec
+$n²$ variables booléennes tel que $x_{i,j} = (\Pi(i) = j)$. La FNC est
+vrai si une valuation des $x_{i,j}$ correspond à un chemin hamiltonien.
+
+
+
+\subsubsection{Compléxité de SAT}
+
+
+\begin{itemize}
+\item SAT est \NP-complet
+\item 3-SAT est \NP-complet, où 3-SAT est SAT dont chaque FNC a au
+  plus 3 littéraux ($(a \vee b \vee c) \wedge (a \vee d \vee e) \ldots$).
+\end{itemize}
+
+\subsubsection{Le problème clique}
+
+
+$G_n = (D_n, E)$, $(<, k)$. Existe t'il une clique de taille $k$ dans
+$G_n$. Une clique de taille $k$ dans $G_n$ est un sous graphe complet
+de taille $k$ dans $G_n$.
+
+\paragraph{Théorème}
+
+Le problème clique est \NP-complet.
+
+\paragraph{Preuve}
+
+\begin{enumerate}
+\item \NP-dur
+\item \NP-complet par réduction à 3-SAT.
+\end{enumerate}
+
+On pose $C_1, C_2, \cdots, C_k$ sont $k$ variables. On va construire
+$G$. Les sommets codent les clauses FNC. Tandis que pour chaque
+clause, on créé un ensemble de sommets qui représentent un ``modèle
+partiel'' de la forme SAT.
+
+\begin{itemize}
+\item un modèle équivaut à une valuation de FNC.
+\item un modèle partiel correspond à une sous partie de la valuation.
+\end{itemize}
+
+\paragraph{Arêtes:}
+
+on met une arête entre deux sommets si les modèles partiels qui
+étiquettent ces sommets sont compatibles (étiquetés par $(x, y)$ où
+$x \in \{ 0, 1\}$ et $y \in \{ 0, 1, U \}$).
+
+La réduction est polynomiale.
+
+\begin{itemize}
+\item S'il existe une valuation alors il existe une clique de taille $k$.
+\item S'il existe une valuation, il existe un modèle partiel pour
+  chaque classe $m_i$, tous les $m_i$ sont compatibles entre eux.
+\item S'il existe une clique de taille $k$ alors il existe une
+  valuation. Deux modèles partiels d'une même clause sont
+  incompatibles.
+\item Voir figure \ref{fig:sat}. Les trois valuations de la première
+  ligne sont compatibles, ainsi que les trois de la dernière ligne de
+  chaque colonne.
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}[center]{c c c}
+    $C_1$ & $C_2$ & $C_3$ \\
+    (0,0,0,U) & (0,U,0,0) & (U,0,0,U)\\
+    (0,0,1,U) & (0,U,0,1) & (U,1,0,U)\\
+    (1,0,0,U) & (0,U,1,0) & (U,1,1,U)\\
+    (1,1,0,U) & (0,U,1,1) & \\
+    (1,0,1,U) & (1,U,0,1) & \\
+    (1,1,1,U) & (1,U,1,0) & \\
+              & (1,U,1,1) & \\
+  \end{tabular}
+  \caption{Modèle correspondant à la clause $(a \vee \neg b \vee \neg
+    c) \wedge (d \vee \neg a \vee c) \wedge (b \vee \neg c)$}
+  \label{fig:sat}
+\end{figure}
+
+
+\subsubsection{Le problème d'independent set}
+
+Existe t'il un ensemble de $k$ sommets totalement déconnectés?
+
+\paragraph{Théorème}
+
+Le problème d'Independent Set est \NP-complet.
+
+\subsubsection{Vertex Cover}
+
+Existe t'il un ensemble de $k$ sommets tel que toutes les arêtes du
+graphe sont au moins une extrémité dans cet ensemble?
+
+\paragraph{Théorème}
+
+Vertex Cover est \NP-complet.
+
+\paragraph{Preuve}
+
+\begin{itemize}
+\item trivialement \NP-dur
+\item IS $<$ VC (polynomial)
+\item $S$ est indépendant de taille $k$ si et seulement si $D_n - S$ est
+  un VC.
+\end{itemize}
+
+\subsubsection{$k$-couleurs}
+
+Un graphe est-il coloriable avec $k$ couleurs tel que deux sommets
+reliés entre eux ne soient pas de la même couleur?
+
+\paragraph{Théorème}
+
+\begin{itemize}
+\item Si $k < 3$, $k$-couleur est dans \P.
+\item Si $k \geq 3$, $k$-couleur est \NP-complet.
+\end{itemize}
+
+
+\section{Les classes randomisées}
+
+\subsection{Machine de Turing randomisée}
+
+\paragraph{Définition}
+
+Une MT randomisée (MTR) est une MT déterministe qui possède un ruban
+spécifique (le nombre d'aléa). La MT a deux têtes de lecture, la
+première est une tête de lecture normale, la seconde pointe sur le
+nombre d'aléa et se déplace à chaque étape de calcul vers la
+droite. Le nombre d'aléa a une longueur $l(n)$.
+
+\paragraph{Définition}
+
+La condition d'acceptation est une condition statistique sur tous les
+rubans d'aléa possible de longueur $l(n)$. Pour $M$ une MTR, on note
+$M(x,r)$ le résultat du calcul de $M$ lorsque le ruban d'aléa contient
+$r$.
+
+\subsection{Les classes randomisées}
+
+\paragraph{Classe \RP}
+
+C'est la classe des langages $L$ tel qu'il existe une MTR $M$ qui
+travaille en temps $P(n)$ (avec $P$ un polynôme) tel que
+\begin{itemize}
+\item Si $x \in L$ alors $Prob_{|x|\in \O(P(n))}(M(x,r) = T) \geq
+  \frac{1}{2}$.
+\item Si $x \notin L$ alors $Prob_{|x|\in \O(P(n))}(M(x,r) = F) = 1$.
+\end{itemize}
+
+
+\paragraph{Classe \RTIME}
+
+Soit $\RTIME(f(n), l(n), accen(n), regen(n))$, soit $M$ une MT
+randomisée de temps $f(n)$ et d'aléa de taille $l(n)$ tel que
+\begin{itemize}
+\item Si $x \in L$ alors $Prob(M(x,r) = F) \leq regen(n)$.
+\item Si $x \notin L$ alors $Prob(M(x,r) = F) \leq accen(n)$.
+\end{itemize}
+
+$$\RP = \cup_{k \in \N} \RTIME \left( n^k, n^k, 0, \frac{1}{2}^{P(n)} \right)$$
+
+
+\paragraph{Classe \ZPP}
+
+$$\ZPP = \RP \cap co\RP$$
+
+
+\paragraph{Classe \BPP}
+
+\begin{itemize}
+\item Si $x \in L$ alors $Prob(M(x,r) = T) \geq \frac{1}{2} + \epsilon$.
+\item Si $x \notin L$ alors $Prob(M(x,r) = T) \leq \frac{1}{2} - \epsilon$.
+\end{itemize}
+
+
+
+\section{Exercices}
+
+\subsection{Les chevaliers}
+
+$n$ chevaliers, il existe des paires de chevaliers ennemis. Comment
+placer les $n$ chevaliers en farandole fermée de telle sorte que deux
+ennemis ne soient pas l'un derrière l'autre? Ce problème est il
+\NP-complet?
+
+\paragraph{Correction\\}
+
+Ce problème se réduit de manière évidente au problème des circuits
+hamiltoniens (un circuit qui passe par tous les sommets d'un graphe
+une seul fois). Il est donc \NP-dur.
+
+On pose donc un graphe dont chaque sommet représente un chevalier,
+deux chevaliers sont ennemis s'il n'y a pas d'arcs entre eux.
+S'il existe un circuit hamiltonien alors il existe une suite
+$(v_n)_{n \in \N}$ de sommets tel que il existe un arc entre chaque
+pair de sommets $(v_i,v_{i+1})$.
+
+Réciproquement, s'il existe un placement des $n$ chevaliers
+$v_1,\ldots,v_n$ tel que $(v_i,v_{i+1})$ ne soient pas ennemis.
+
+\subsection{4-SAT}
+
+Montrer que 4-SAT est \NP-complet.
+
+\paragraph{Correction\\}
+
+4-SAT étant un 3-SAT, il est évident que 4-SAT $<$ 3-SAT, 4-SAT est
+donc \NP-dur.
+
+Soit les $(v_i,t_i) \; i \in \left[ 1 .. k \right]$, existe t'il des
+chemins de $s_i$ vers $t_i$ tel que aucun de ces $k$ chemins n'ait de
+points communs?
+On choisit $p$ paires de sommets reliés disjoints.
+
+
+\subsection{Les chemins parallèles}
+
+\begin{description}
+\item[Entrée:] Un graphe connecté $(V,E)$ est des couples $(s_i,t_i)$.
+\item[Question:] Y a t'il des chemins de chaque $s_i$ vers chaque
+  $t_i$ tel qu'il n'y ait pas de points communs entre ces chemins.
+\item[Idée:] réduire à 3-SAT.
+\end{description}
+
+\paragraph{Théorème}
+
+Les chemins parallèles ($CP$) sont \NP-complet.
+\begin{enumerate}
+\item $Cp \in \NP$.
+\item 3-SAT $<$ $CP$ (polynomial).
+\end{enumerate}
+
+
+\subsection{Le problème de la règle}
+
+\begin{description}
+\item[Entrée:] une règle pliable ($a_1,\ldots,a_n \in \N^*$), un entier $k$.
+\item[Question:] Peut on plier la règle pour la ranger dans une boîte
+  de taille $k$?
+\end{description}
+
+\paragraph{Théorème}
+
+Le problème de la règle est \NP-complet.
+
+
+
+
+
+
+\end{document}

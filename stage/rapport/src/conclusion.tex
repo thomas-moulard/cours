@@ -1,0 +1,41 @@
+Le but de ce stage était de produire une interface graphique pour
+Vaucanson à partir d'un prototype existant. Le logiciel produit serait
+toujours un prototype mais légèrement plus évolué, et surtout ayant
+subi une réorganisation de son code. Une documentation devait aussi
+être écrite.\\
+
+Dans ce rapport, nous avons détaillé la nouvelle modélisation du
+projet, plus modulaire, qui rend le logiciel plus évolutif. En
+particulier cette nouvelle modélisation simplifie grandement les
+modifications portant l'ajout de nouvelles propriétés géométriques et
+graphiques.
+Cette modélisation a été mise au point au cours de plusieurs réunions
+avec M. Sakarovitch et M. Pouchet, en étudiant la manière dont l'on
+dessine un automate à la main et par comparaison avec l'expérience
+acquise lors de la réalisation du premier prototype.\\
+
+De plus, avec la documentation développeur produite, la prise en main
+du code par de futures stagiaires sera plus aisée. La documentation
+donne des indications sur la modélisation, l'utilité et le
+fonctionnement des différents modules. Elle identifie aussi
+l'emplacement de certains calculs importants pour la mise en forme de
+l'automate.\\
+
+Le prototype produit lors de ce stage comporte aussi la correction de
+plusieurs bugs, un interface plus agréable pour rapporter le résultat
+de certains algorithmes à l'utilisateur, et une mise à jour général du
+code par rapport au évolution de Vaucanson, du format XML et de JGraph
+depuis le prototype du stage précédent.\\
+
+On notera que même si les objectifs de ce stage sont
+globalement atteints, l'interface graphique nécessitera encore de
+nombreuses améliorations avant d'être largement diffusable. En
+particulier au niveau de l'ergonomie de l'interface. Il faudra faire
+face aussi à des problèmes de rapidité et de qualité du rendu
+graphique, car bien que ce dernier élément soit correct, il n'a pas
+été testé avec des automates possédant de nombreux états.
+
+Finalement, Vaucanson possède un embryon d'interface graphique. Et
+cette interface graphique permettra à plus long terme d'utiliser la
+plateforme Vaucanson plus facilement que par l'API C++ et avec plus de
+souplesse que le TAF-KIT.

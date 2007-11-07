@@ -1,0 +1,48 @@
+<h3>Réorganisation du code</h3>
+
+<p>
+  L'une des premières tâches a accomplir était une réorganisation du
+  code. Quatre modules ont été définis: XML, geometry, drawing et
+  traduction vers JGraph.<br/>
+  Le résultat de ce stage étant de produire une version, certes
+  diffusable, mais toujours experimentale, il est important que le
+  code soit modulable, et que l'on puisse le modifier et s's retrouver
+  facilement. Un documentation développeur est donc en cours d'écriture.
+</p>
+
+<p>
+  Le module XML étant chargé de lire et sauvegarder au format XML. Le
+  prototype proposait déjà cette fonctionnalité, mais depuis le format
+  a évolué. Le module a donc été mis à jour.
+</p>
+
+<p>
+  Les trois derniers modules n'existaient pas. Les modules de
+  geométrie, de dessin permettent de définir, récuperer les valeurs
+  des attributs de géometrie et de dessin d'un automate (par exemple,
+  le diamètre d'un état, l'épaisseur d'une transition...). Ces deux
+  modules définissent aussi des valeurs par défaut pour les attributs
+  dont les valeurs n'étaient pas définies dans le fichier XML.
+</p>
+
+<p>
+  Le module de traduction vers JGraph, permet à partir des valeurs des
+  attributs de donner a JGraph les instructions qui lui sont
+  nécessaires pour afficher l'automate. Ce module est charge de
+  traduire, en autres, les coordonnées fictives du document XML en
+  coordonnées à l'écran, la forme des états.. toutes les attributs
+  définis dans le fichier XML, récupérés par les différents modules
+  précédents.
+</p>
+
+
+<h3>Documentation</h3>
+
+<p>
+  Pour permettre la diffusion du projet, et les évolutions futures,
+  l'interface graphique a besoin d'une documentation. Une
+  documentation développeur est donc en cours d'écriture. Elle décrit
+  la hiérarchie des dossiers, leurs significations. Elle décrit aussi
+  chaque modules, leur classe et l'emplacement de certains calculs
+  qu'on l'on souhaitera modifier plus tard sans doute.
+</p>
