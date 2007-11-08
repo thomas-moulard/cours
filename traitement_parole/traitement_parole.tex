@@ -291,13 +291,45 @@ matrices sont donc ici toute identique.
 
 
 
-\subsection{GMM}
+\subsection{Autres méthodes}
 
-\subsection{Chaînes de Markov}
+Un problème se pose cependant, en général on ne connaît pas $\mu$ et
+$\Sigma$, par ailleurs les données ne suivent pas la loi gausienne.
+
+Il existe toute fois différentes solutions pour trouver un séparateur:
+\begin{itemize}
+\item Utiliser un réseau de neurones: mais on ne contrôle peu de
+  choses à part le nombre de couche.
+\item Utiliser un mélange de gausienne (GMM): on somme trois gaussienne pour
+  modéliser une distribution non gaussienne.
+\end{itemize}
+
+\subsubsection{GMM}
+
+$$P(x) = \sum_{i = 1}^N w_i P(x, \mu_i, \Sigma_i)$$
+où
+\begin{itemize}
+\item $\mu_i \in \R^n$
+\item $\Sigma_i \in \R^{n \times n}$
+\item $\sum w_i = 1 \;\; w_i \geq 0$
+\end{itemize}
+
+Mais il faut encore trouver les différents $\mu_i$ et $\Sigma_i$. Pour
+cela on utilise un algorithme: \emph{Expectation Maximization} (EM).
 
 
+\subsubsection{Chaînes de Markov}
 
+Jusqu'ici le fait que nous tentais d'analyser un phenomène
+séquentiel. La parole a une dimension dans le temps, et l'ordre des
+échantillons dans une sequence a son importance.
+Pour cela les HMM (Hidden Markov Model) vont modéliser la
+distribution, tout en prenant en compte l'ordre de la séquence.
 
-
+Les paramètres à estimer sont:
+\begin{itemize}
+\item la topologie du graphe.
+\item les probabilités sur les transitions.
+\end{itemize}
 
 \end{document}
