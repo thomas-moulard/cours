@@ -22,9 +22,12 @@
 \newcommand{\M}{\ensuremath{\mathcal{M}}}
 \newcommand{\FN}{\ensuremath{\mathcal{N}}}
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
 
 \newcommand{\argmax}{\mathop{\mathrm{argmax}}}
 \newcommand{\transpose}[1]{{\vphantom{#1}}^{\mathit t}{#1}}
+\renewcommand{\leq}{\ensuremath{\leqslant}}
+\renewcommand{\geq}{\ensuremath{\geqslant}}
 
 \pagestyle{fancy}
 
@@ -684,7 +687,7 @@ On peut envisager des cas où les dimensions du jeu sont infinies
 \paragraph{Définition}
 
 Un jeu à horizon infini est un jeu pour lequel on ne peut borner le
-nombre de coup.*
+nombre de coup.
 
 \paragraph{Exemple}
 \begin{itemize}
@@ -695,7 +698,7 @@ nombre de coup.*
 \item La bataille est à horizon infini où la partie peut être à temps
   infini.
 \end{itemize}
-r
+
 
 \paragraph{Démonstration}
 
@@ -739,6 +742,41 @@ gagnante n'est pas assuré.
   variée. Chaque joueur à son tour prend au plus $k$ pièces sur une
   même pile. Le perdant est celui qui ne peut plus rien enlever.
 \end{itemize}
+
+\paragraph{Théorème}
+
+(Jeu des allumettes)
+
+Soit un jeu à $N$ allumettes. Soit $k \in \N$ tel que $0 < k < N$.
+
+\begin{enumerate}
+\item Si $N \equiv 1[k+1]$ alors le joueur 2 possède une stratégie gagnante.
+\item Si $N \not\equiv 1[k+1]$ alors le joueur 1 possède une stratégie gagnante.
+\end{enumerate}
+
+\paragraph{Démonstration\\}
+
+Supposons 1:\\
+Alors $N = 1 + n(k+1)$
+
+Si $n = 0$, remarquons que 2 gagne car 1 est obligé de prendre la
+première allumettes.
+
+Si $n \geq 1$ alors $\forall q \leq k$ le nombre d'allumettes prises
+par 1, 2 se contentera d'en prendre $(k + 1) - q$, ainsi après une
+séquence, on se retrouve en situation 1. avec
+\begin{eqnarray*}
+  N' & = & N - (k+1) \\
+  N' & \equiv & 1[k+1]
+\end{eqnarray*}
+
+Supposons 2:\\
+Le joueur 1 par son premier coup va prendre $q \geq k$ allumettes,
+d'où que le nombre restant d'allumettes $N_1 \equiv 1[k+1]$. On se
+retrouve alors dans la situation 1 avec le rôle des joueurs inversés.
+
+
+
 
 
 
