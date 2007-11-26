@@ -26,40 +26,40 @@ Preparing the release of a new version of a project is a long and tedious
 work. The package has to be clean, \emph{i.e} everything in the package has to
 work properly. We have to check that all necessary files are present.
 
-My work was to verify that all our programs work properly. If some of them are
-incorrect, I have to check that the user is warned of that somewhere, or to
+My work was to verify that all our programs work properly. If some of them were
+incorrect, I had to check that the user is warned of that somewhere, or to
 remove the program.
 
 \paragraph{}
 
 My seminar's subject is synchronized transducers, again. So i re-develop the
 synchronization algorithm. I am also working on developing a new data structure
-for synchronized transducer.
+for synchronized transducers.
 
-One of the particularity of a synchronized transducer is that it can be seen as
-a classic automaton. Therefore it may be used with already existing algorithms
-of Vaucanson for classical automata.
+One of the particularity of a synchronized transducer is it can be seen as a
+classic automaton. Therefore it may be used with already existing algorithms of
+Vaucanson for classical automata.
 
 For that reason, a new structure is added to Vaucanson, allowing a synchronized
-transducer to be used as an automaton. This addition is bring to light some
+transducer to be used as an automaton. This addition has brought to light some
 problems in Vaucanson and its supposed genericity.
 
 First, Vaucanson is generally used with letters. For synchronized transducers to
-be seen as automata, pairs of letter are need. So some compilations and
-input/output issues were revealed and need to fixed.
+be seen as automata, pairs of letter are needed. So some compilations and
+input/output issues were revealed and need to be fixed.
 
 Second, in Vaucanson, every transitions have the same type of label. But
-synchronized transducer have two types of label. Therefore, I am extending
-Vaucanson to be able to used different types of label in the same
-automaton. This with the work of Guillaume Lazzara is a good test for the
-genericity of Vaucanson and its extensibility.
+synchronized transducers have two types of label. Therefore, I am extending
+Vaucanson to be able to used different types of label in the same automaton.
+This, with the work of Guillaume Lazzara is a good test for the genericity and
+extensibility of Vaucanson.
 
 \paragraph{}
 
-Finally after months of work, i worked on the graphical user-interface of
-Vaucanson. The Vaucanson group has connection with Taiwanese researchers who are
-specialized in displaying automata on a screen, and are interested in using
-their own automaton's data in Vaucanson.
-The user interface is now up-to-date with the last release of Vaucanson.
+Finally, I worked on the graphical user-interface of Vaucanson. The Vaucanson
+group has a connection with Taiwanese researchers who are specialized in
+displaying automata on a screen, and are interested in using their own
+automaton's data in Vaucanson.  The user interface is now up-to-date with the
+last release of Vaucanson.
 
 \end{document}
