@@ -1,0 +1,135 @@
+\documentclass[a4paper, 12pt, leqno]{article}
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+\geometry{vmargin=3cm, hmargin=3cm}
+
+\title{\huge{Traitement de la parole - Résumé}}
+
+\lhead{Traitement de la parole - Résumé}
+\chead{}
+\rhead{EPITA 2008}
+
+\pagestyle{fancy}
+
+\begin{document}
+
+\maketitle
+
+\section{Traitement du signal et extraction des paramètres}
+\subsection{LPC : Linear Predictive Coding}
+
+Description : Modélise un conduit vocal.
+
+\begin{itemize}
+  \item Extrait Généralement 17 coéfficients environ.
+  \item Permet d'extraire le pitch qui correspond à la fréquence de base des
+  cordes vocales propres à un individu.
+\end{itemize}
+
+\subsection{MFCC : Main Frequency Cesptre Coefficient}
+
+Description : Modélise le fonctionnement de l'oreille interne.
+
+\begin{itemize}
+  \item Utilise des FFT sur des fenêtres du signal.
+  \item Calculs réalisés dans une echelle de Mel.
+  \item Le plus utilisé.
+  \item 16 coefficients environ.
+\end{itemize}
+
+\subsection{Commentaires divers}
+\begin{itemize}
+  \item Méthodes assez complémentaires.
+  \item On obtient uniquements des coefficients.
+\end{itemize}
+
+\section{Identification du locuteur}
+\subsection{EM : Expectation Maximization}
+
+Description : A partir d'un ensemble de points, on veut trouver les gaussiennes
+qui départagent au mieux notre ensemble tout en maximisant l'espérance au
+sein de chacune d'entre elle.
+On part d'un certain nombre de gaussiennes qu'on translate et modifie au fur et
+à mesure des iterations.
+
+Pour un meilleur résultat il est possible de combiner EM avec LBG. Dans ce cas
+on part d'une seul gaussienne qu'on splitte à chaque itération. A chaque
+itération, on lance EM pour faire converger le résultat temporaire.
+
+\begin{itemize}
+  \item Voir les formules dans le cours de Chuck.
+  \item Apprends des distributions de gaussiennes ce qui permet de faire de la
+  classification.
+  \item Est donc capable de dire si oui ou non un échantillon correspond à
+  ce qui a été appris.
+  \item Nécessite beaucoup de données d'apprentissage.
+\end{itemize}
+
+\subsection{Modèle du monde et apprentissage}
+
+Le modèle du monde est un apprentissage général d'un ensemble
+d'echantillons indifférenciés. Lorsqu'on veut apprendre à reconnaître un
+nouvel individu, on va tenter d'adapter le modèle du monde à ses
+caractéristiques. Pour ce faire, on va effectuer des translations des
+gaussiennes sans toutefois changer la variance. Cela revient à faire une sorte
+de EM sans modification des variances.
+
+\subsection{GMM}
+
+Description : ensemble de Gaussiennes caractérisant un individu.
+
+\textbf{Problèmes avec les GMM} : lorsqu'on cherche à connaître
+l'identité d'un individu, on va tester notre echantillon dans l'ensemble des
+GMM à notre disposition. Chaque GMM va nous donner un score et le meilleur
+score nous indiquera l'identité de l'individu. Le problème c'est qu'on ne
+peut pas comparer les scores directement pour des problèmes de normalisation.
+
+\textbf{Solution} : Utiliser l'une des trois méthodes de normalisation suivantes.
+\begin{itemize}
+  \item \textbf{Z Norme} : à utiliser dans le cas où les modèles
+  réagissent très fortement ou très faiblement. Cette méthode ne
+  s'applique qu'une fois, quelque soit l'échantillon.
+  \item \textbf{T Norme} : à utiliser dans le cas où un échantillon fait
+  réagir tous les modèles. Cette méthode sàpplique au moment des tests
+  de l'echantillon puisqu'elle dépend de celui-ci.
+  \item \textbf{Z T Norme} : combinaison des deux méthodes précédentes.
+\end{itemize}
+
+\textbf{Idée d'amélioration d'un GMM} : utiliser en plus un SVM et mieux
+  identifier les imposteurs.
+
+
+\section{Reconnaisance de la parole}
+\subsection{DTW : Dynamic Time Warping}
+
+Deprecated.
+See also HMM.
+
+\subsection{HMM : Hidden Markov Model}
+
+Description : Chaînes de Markov cachées. Se représente sous forme
+d'automate. Permet de gérer la dimension de temps dans le signal et de
+reconnaître des symbols ou des phonèmes.
+
+\begin{itemize}
+  \item Chaque noeud du HMM = un GMM ou un HMM.
+  \item Passage d'un noeud à l'autre = production d'un symbol ou d'un
+  phonème.
+  \item Couplé à d'autres HMM, il est possible de vérifier la cohérence
+  des enchaînements des symbols ou des phonèmes.
+\end{itemize}
+
+\subsection{Viterbi}
+
+Description : permet de faire du rescaling spatial. Utilise des algos de plus
+court chemin.
+
+Voir cours de Chuck!
+
+\end{document}
